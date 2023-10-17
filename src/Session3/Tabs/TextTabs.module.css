@@ -1,0 +1,54 @@
+.TabContainer {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+}
+
+.TabList {
+    display: flex;
+    width: 100%;
+    justify-content: center;
+    flex-wrap: wrap;
+    border-bottom: #66666690 solid 1px;
+}
+
+.Tab {
+    padding: 15px 40px;
+    transition: 0.3s;
+    text-transform: uppercase;
+    font-size: 12px;
+    letter-spacing: 2px;
+    font-weight: 700;
+    text-align: center;
+    cursor: pointer;
+    margin-bottom: -1px;
+}
+
+.inactiveTab {
+    color: #66666690;
+}
+
+.inactiveTab:hover {
+    color: #000;
+}
+
+.currentTab {
+    color: #47B475;
+    position: relative;
+}
+
+.currentTab::after {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 1px;
+    background: #47B475;
+    bottom: 1px;
+    left: 0;
+}
+
+.content {
+    width: 100%;
+}

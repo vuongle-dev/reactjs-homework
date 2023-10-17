@@ -1,0 +1,74 @@
+.BlockUI6 {
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 30px;
+    padding: 20px;
+    border: #00000020 solid 1px;
+}
+
+.ProductWidget {
+    width: 350px;
+    padding: 5px 40px 20px 40px;
+    border: #4EC67F30 solid 3px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 30px;
+    color: #00000090;
+}
+
+.button {
+    display: flex;
+    gap: 5px;
+    padding: 15px 30px;
+    border-radius: 5px;
+    font-weight: 700;
+    font-size: 18px;
+}
+
+.content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 30px;
+    width: 100%;
+    text-align: center;
+}
+
+.productname {
+    font-size: 20px;
+    text-transform: uppercase;
+    font-weight: 900;
+}
+
+.order {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    font-size: 18px;
+}
+
+.variant {
+    font-weight: 500;
+}
+
+.price {
+    font-weight: 900;
+    font-size: 20px;
+    letter-spacing: 1px;
+}
+
+.description {
+    font-size: 19px;
+    line-height: 1.5em;
+    font-weight: 500;
+    color: #00000050;
+}
+
+.image {
+    width: 100%;
+    aspect-ratio: 1/1.5;
+    object-fit: cover;
+}

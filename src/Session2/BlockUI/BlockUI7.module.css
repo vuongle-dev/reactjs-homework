@@ -1,0 +1,155 @@
+.BlockUI7 {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+    padding: 20px;
+    border: #00000020 solid 1px;
+}
+
+
+.saleList,
+.titleBar {
+    width: 100%;
+    display: flex;
+    justify-content: start;
+    gap: 10px;
+    overflow-x: scroll;
+}
+
+.titleBar {
+    overflow-x: initial;
+    justify-content: space-between;
+    padding-bottom: 10px;
+    align-items: center;
+    border-bottom: #00000020 solid 1px;
+}
+
+.titleStart {
+    display: flex;
+    gap: 80px;
+    align-items: center;
+}
+
+.viewAll {
+    font-size: 14px;
+    font-weight: 500;
+    padding: 10px 0;
+    border-bottom: #00000060 solid 1px;
+}
+
+.title {
+    font-size: 20px;
+    font-weight: 500;
+}
+
+.countdown {
+    color: #fff;
+    padding: 5px 20px;
+    background-color: #F24604;
+    border-radius: 5px;
+    display: flex;
+    gap: 15px;
+    align-items: center;
+}
+
+.countdown p {
+    font-size: 16px;
+    font-weight: 700;
+}
+
+.SaleWidget {
+    width: 180px;
+    display: flex;
+    flex: 1 0;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+    color: #00000060;
+    position: relative;
+}
+
+.saleoffTag {
+    padding: 5px 10px;
+    background-color: #F24604;
+    color: #fff;
+    border-radius: 5px;
+    position: absolute;
+    top: 0;
+    right: 0;
+    font-size: 14px;
+    font-weight: 700;
+}
+
+.category {
+    width: 100%;
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    padding-bottom: 10px;
+    border-bottom: #00000020 solid 1px;
+}
+
+.PriceRow {
+    width: 100%;
+    display: flex;
+    justify-content: start;
+    align-items: end;
+    gap: 8px;
+}
+
+.price {
+    font-size: 15px;
+    font-weight: 700;
+    color: #70A416;
+}
+
+.ogprice,
+.saleoff {
+    font-size: 12px;
+    font-weight: 500;
+    text-decoration: line-through;
+    color: #00000080;
+}
+
+.saleoff {
+    text-decoration: none;
+    color: #70A416;
+    margin-left: 2px;
+}
+
+.content {
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    gap: 15px;
+    width: 100%;
+}
+
+.productname {
+    font-size: 14px;
+    font-weight: 500;
+    color: #67A2E2;
+}
+
+.PercentageBar {
+    width: 100%;
+    height: 10px;
+    background-color: #E4E4E4;
+}
+
+.percentage {
+    height: 100%;
+    background-color: #FDB600;
+}
+
+.sold {
+    font-size: 13px;
+    font-weight: 500;
+}
+
+.image {
+    width: 100%;
+    aspect-ratio: 1/1;
+    object-fit: cover;
+}

@@ -1,0 +1,113 @@
+.BlockUI5 {
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 30px;
+    padding: 20px;
+    border: #00000020 solid 1px;
+    background-color: #F4F7FC;
+}
+
+.InfoRow {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    padding-bottom: 10px;
+    border-bottom: #00000020 dashed 1px;
+    font-size: 16px;
+}
+
+.InfoRow .info {
+    display: flex;
+    gap: 10px;
+    font-weight: 500;
+    color: #696969;
+    text-transform: uppercase;
+    font-weight: 500;
+}
+
+.InfoRow .value {
+    color: #acacac;
+}
+
+.InfoButton {
+    width: 100%;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    font-size: 18px;
+    color: #ffff;
+    box-shadow: 5px 5px #00000010;
+
+}
+
+.InfoButton .info {
+    text-transform: uppercase;
+    font-weight: 500;
+}
+
+.InfoButton .value {
+    display: flex;
+    gap: 10px;
+}
+
+.InfoWidget {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 350px;
+    padding: 25px;
+    background-color: #ffff;
+    box-shadow: 5px 5px #00000020;
+    gap: 40px;
+    border: #00000020 solid 2px;
+}
+
+.content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+    width: 100%;
+}
+
+.titleSession {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+}
+
+.avatar {
+    width: 100%;
+    aspect-ratio: 1/1;
+    object-fit: cover;
+}
+
+.name {
+    font-weight: 500;
+    font-size: 20px;
+    text-transform: uppercase;
+    color: #696969;
+}
+
+.career {
+    font-size: 18px;
+    color: #acacac;
+}
+
+.infoRows {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.InfoButtons {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}

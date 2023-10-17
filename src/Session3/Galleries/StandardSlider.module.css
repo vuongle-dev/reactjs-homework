@@ -1,0 +1,75 @@
+.ImageViewer {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+.image {
+    width: 100%;
+    position: relative;
+    height: 100vh;
+    transition: all 0.3s ease;
+    background-size: cover !important;
+    background-repeat: no-repeat !important;
+    background-position: center !important
+}
+
+
+
+.previoustButton,
+.nextButton {
+    position: absolute;
+    left: 5px;
+    top: 0;
+    bottom: 0;
+    margin: auto 0;
+    height: fit-content;
+    padding: 5px;
+    color: #fff;
+}
+
+.nextButton {
+    right: 5px;
+    left: initial;
+}
+
+.previoustButton>svg,
+.nextButton>svg {
+    font-size: 50px;
+    cursor: pointer;
+}
+
+.navigationList {
+    width: fit-content;
+    display: flex;
+    position: absolute;
+    bottom: 30px;
+    left: 0;
+    right: 0;
+    margin: 0 auto;
+    gap: 10px;
+}
+
+.navigation {
+    width: 10px;
+    height: 10px;
+    transition-duration: 0.3s;
+    position: relative;
+    cursor: pointer;
+    border-radius: 50%;
+    border: #fff solid 2px;
+    transition: all 0.3s ease;
+}
+
+.currentNavigation {
+    background-color: #fff;
+    cursor: initial;
+}
+
+.navigation:hover {
+    background-color: #000;
+}
+
+.currentNavigation:hover {
+    background-color: #fff;
+}

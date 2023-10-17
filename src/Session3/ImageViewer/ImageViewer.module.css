@@ -1,0 +1,85 @@
+.ImageViewer {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+.image {
+    width: 100%;
+    position: relative;
+    height: 80vh;
+    transition-duration: 0.3s;
+    background-size: contain !important;
+    background-repeat: no-repeat !important;
+    background-position: center !important
+}
+
+.image>img {
+    width: 100%;
+    object-fit: contain;
+}
+
+.previoustButton,
+.nextButton {
+    position: absolute;
+    left: 10px;
+    top: 0;
+    bottom: 0;
+    margin: auto 0;
+    height: fit-content;
+    padding: 5px;
+}
+
+.nextButton {
+    right: 10px;
+    left: initial;
+}
+
+.previoustButton>svg,
+.nextButton>svg {
+    font-size: 40px;
+    transition-duration: 0.3s;
+}
+
+.previoustButton:hover,
+.nextButton:hover {
+    cursor: pointer;
+    color: red;
+}
+
+.previoustButton>svg:hover,
+.nextButton>svg:hover {
+    font-size: 50px;
+}
+
+.thumbnailList {
+    display: flex;
+    height: 20vh;
+}
+
+.thumbnail {
+    width: 20%;
+    height: 100%;
+    transition-duration: 0.3s;
+    position: relative;
+}
+
+.thumbnail:hover::after {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    content: "";
+    left: 0;
+    top: 0;
+    background: radial-gradient(15% 50% at 0 50%, rgba(0, 0, 0, 0.1) 0%, rgba(0, 0, 0, 0) 100%) left center, radial-gradient(15% 50% at 100% 50%, rgba(0, 0, 0, 0.1) 0%, rgba(0, 0, 0, 0) 100%) right center;
+}
+
+.thumbnail>img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+.thumbnail:hover {
+    cursor: pointer;
+}

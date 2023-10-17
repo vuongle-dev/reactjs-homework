@@ -1,0 +1,28 @@
+.Widget {
+    width: 400px;
+    display: flex;
+    border: #9c9c9c solid 1px;
+    padding: 10px;
+}
+
+.catimage {
+    width: 45%;
+}
+
+.content {
+    display: flex;
+    flex-direction: column;
+    padding: 5px;
+    line-height: 1.7;
+    gap: 10px;
+}
+
+.content h2 {
+    font-size: 17px;
+    font-weight: 600;
+}
+
+.categoryName {
+    font-weight: 600;
+    font-size: 30px;
+}

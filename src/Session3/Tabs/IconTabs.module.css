@@ -1,0 +1,46 @@
+.TabContainer {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+}
+
+.TabList {
+    display: flex;
+    max-width: 700px;
+    flex-wrap: wrap;
+}
+
+.Tab {
+    padding: 15px 40px;
+    transition: 0.3s;
+    text-transform: uppercase;
+    font-size: 12px;
+    letter-spacing: 2px;
+    font-weight: 700;
+    flex: 1;
+    text-align: center;
+    cursor: pointer;
+}
+
+.Tab>svg {
+    width: 64px;
+    height: 64px;
+}
+
+.inactiveTab {
+    color: #66666690;
+}
+
+.inactiveTab:hover {
+    color: #000;
+}
+
+.currentTab {
+    color: #47B475;
+}
+
+.content {
+    max-width: 600px;
+}

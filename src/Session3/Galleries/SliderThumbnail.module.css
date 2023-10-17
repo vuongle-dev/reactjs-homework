@@ -1,0 +1,97 @@
+@media (min-width: 600px) {
+
+    .previoustButton,
+    .nextButton {
+        display: none;
+    }
+}
+
+.SliderThumbnail {
+    display: flex;
+    flex-direction: column;
+    width: 90vw;
+    overflow: hidden;
+    position: relative;
+}
+
+.slide {
+    display: flex;
+    height: 80vh;
+    transition-duration: 0.3s;
+}
+
+.slideitem {
+    width: 90vw;
+}
+
+
+.previoustButton,
+.nextButton {
+    position: absolute;
+    left: 5px;
+    top: 0;
+    bottom: 0;
+    margin: auto 0;
+    height: fit-content;
+    padding: 5px;
+    color: #fff;
+    cursor: pointer;
+}
+
+.nextButton {
+    right: 5px;
+    left: initial;
+}
+
+.previoustButton>svg,
+.nextButton>svg {
+    font-size: 50px;
+}
+
+.thumbnailList {
+    display: flex;
+    height: 20vh;
+    width: 100%;
+}
+
+@media (max-width:600px) {
+    .thumbnailList {
+        display: none;
+    }
+}
+
+.thumbnail {
+    flex: 1 1;
+    height: 100%;
+    transition-duration: 0.3s;
+    position: relative;
+}
+
+.thumbnail::after {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    content: "";
+    left: 0;
+    top: 0;
+    transition-duration: 0.3s;
+    background: #fffFFF30;
+}
+
+.thumbnail:hover::after {
+    background: #fffFFF02;
+}
+
+.currentThumbnail::after {
+    background: none;
+}
+
+.thumbnail>img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.thumbnail:hover {
+    cursor: pointer;
+}

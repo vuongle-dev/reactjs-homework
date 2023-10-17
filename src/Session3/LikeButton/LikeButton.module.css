@@ -1,0 +1,49 @@
+@keyframes iconactive {
+    from {
+        font-size: 20px;
+    }
+
+    to {
+        font-size: 22px;
+        transform: rotate(-20deg);
+    }
+}
+
+.Button {
+    width: fit-content;
+    display: flex;
+    gap: 5px;
+    align-items: center;
+    font-size: 18px;
+    padding: 10px 30px;
+    border-radius: 10px;
+    transition: background-color 0.3s;
+}
+
+.Button>svg {
+    font-size: 20px;
+}
+
+.Button:hover {
+    background-color: #00000020;
+
+}
+
+.Button:active {
+    font-size: 19px;
+}
+
+.inactive {
+    color: #3e3e3e;
+}
+
+.active {
+    color: #1E76FF;
+}
+
+.active>svg {
+    animation-name: iconactive;
+    animation-timing-function: ease-out;
+    animation-duration: 0.3s;
+    animation-direction: alternate;
+}

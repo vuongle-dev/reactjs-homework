@@ -1,0 +1,15 @@
+.starlist {
+    display: flex;
+    gap: 5px
+}
+
+.starlist>div {
+    width: 24px;
+    height: 24px;
+    position: relative;
+}
+
+.starlist>div:active {
+    width: 26px;
+    height: 26px;
+}
