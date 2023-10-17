@@ -18,7 +18,7 @@ export default function SliderThumbnail({ images }: Props) {
       () => setCurrentImage(forwardIndex(currentImage, images.length)),
       3000
     );
-    return () => clearInterval(autoSwitch);
+    return () => clearTimeout(autoSwitch);
   });
 
   return (
