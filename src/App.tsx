@@ -27,6 +27,7 @@ import TabModules from "./Session3/Tabs";
 import AccordionModules from "./Session3/Accordions";
 import Galleries from "./Session3/Galleries";
 import LoveButton from "./Session3/LoveButton";
+import FigmaApp from "./Session3/FigmaApp";
 
 function App() {
   return (
@@ -330,6 +331,7 @@ function App() {
       <AccordionModules />
       <Galleries />
       <LoveButton />
+      <FigmaApp />
     </div>
   );
 }

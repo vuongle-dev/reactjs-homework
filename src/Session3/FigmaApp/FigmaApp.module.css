@@ -1,0 +1,13 @@
+.container {
+    padding: 40px;
+    background-color: #dadada;
+}
+
+.mobileFrame {
+    width: 375px;
+    height: 812px;
+    background-color: #fff;
+    border-radius: 20px;
+    overflow-x: hidden;
+    position: relative;
+}

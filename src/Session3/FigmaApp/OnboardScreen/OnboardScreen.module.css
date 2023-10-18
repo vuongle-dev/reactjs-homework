@@ -1,0 +1,146 @@
+.container {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+    height: 100%;
+}
+
+.logo {
+    position: absolute;
+    top: 48px;
+    left: 0;
+    right: 0;
+    margin: 0 auto;
+    width: 190px;
+    height: 60px;
+}
+
+.slideContainer {
+    width: 100%;
+    overflow: hidden;
+}
+
+.slide {
+    display: flex;
+    transition: all 0.3s ease;
+}
+
+.SlideItem {
+    width: 375px;
+    flex: none;
+    display: flex;
+    flex-direction: column;
+    gap: 54px;
+}
+
+.slideTop {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 156px;
+    background-size: contain;
+    background-repeat: no-repeat;
+}
+
+.slideImage {
+    height: 305px;
+    width: auto;
+}
+
+.slideContent {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+    padding: 0 33px;
+    text-align: center;
+}
+
+.slideContent>h3 {
+    color: #111a2c;
+    font-size: 24px;
+    font-weight: 600;
+    line-height: 32px;
+
+}
+
+.slideContent>span {
+    color: #525c67;
+    font-size: 14px;
+    font-weight: 300;
+    line-height: 24px;
+}
+
+.SlideNavigation {
+    display: flex;
+    gap: 10px;
+}
+
+.normalNavigation {
+    width: 10px;
+    height: 8px;
+    border-radius: 4px;
+    opacity: 0.4;
+    background-color: #FF6C44;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.currentNavigation {
+    width: 30px;
+    height: 8px;
+    opacity: 1;
+}
+
+.bottomContainer {
+    width: 100%;
+    flex: auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding-top: 40px;
+    padding-bottom: 32px;
+    align-items: center;
+}
+
+.buttonsContainer {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    padding: 0 24px;
+    align-items: center;
+}
+
+#skipButton {
+    color: #757d85;
+    font-size: 16px;
+    font-weight: 500;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.hide {
+    visibility: hidden;
+    opacity: 0;
+    width: 0;
+}
+
+#nextButton {
+    border-radius: 8px;
+    height: 56px;
+    position: relative;
+    width: 168px;
+    background-color: #FF6C44;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 16px;
+    font-weight: 600;
+    color: #fff;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
