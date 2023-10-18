@@ -26,6 +26,7 @@ import ImageViewer from "./Session3/ImageViewer";
 import TabModules from "./Session3/Tabs";
 import AccordionModules from "./Session3/Accordions";
 import Galleries from "./Session3/Galleries";
+import LoveButton from "./Session3/LoveButton";
 
 function App() {
   return (
@@ -328,6 +329,7 @@ function App() {
       <TabModules />
       <AccordionModules />
       <Galleries />
+      <LoveButton />
     </div>
   );
 }
