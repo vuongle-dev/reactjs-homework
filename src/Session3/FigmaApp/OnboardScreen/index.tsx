@@ -1,9 +1,16 @@
-import React, { useState } from "react";
+import React, { ReactElement, ReactNode, useState } from "react";
 import styles from "./OnboardScreen.module.css";
+import { type } from "os";
+import SignUp from "../SignUp";
 
 type Props = {
   logo?: string;
   slide: SlideProps[];
+  setNextPage(data: {
+    change: string;
+    effect: string;
+    component: ReactElement;
+  }): void;
 };
 type SlideProps = {
   images?: string;
@@ -47,6 +54,7 @@ const SlideNavigation = ({
     <div className={styles.SlideNavigation}>
       {slide.map((item, index) => (
         <div
+          key={index}
           className={`${styles.normalNavigation} ${
             index == currentSlide ? styles.currentNavigation : ""
           }`}
@@ -57,9 +65,17 @@ const SlideNavigation = ({
   );
 };
 
+export const Button = (props: any) => {
+  return (
+    <button {...props} className={`${styles.button} ${props.className}`}>
+      {props.children}
+    </button>
+  );
+};
 export default function OnboardScreen({
   logo = "Day03/FigmaApp/logo.svg",
   slide,
+  setNextPage,
 }: Props) {
   const [currentSlide, setCurrentSlide] = useState(0);
   return (
@@ -87,19 +103,45 @@ export default function OnboardScreen({
           <div
             id={styles.skipButton}
             className={currentSlide == slide.length - 1 ? styles.hide : ""}
+            onClick={() =>
+              setNextPage({
+                change: "next",
+                effect: "vertical",
+                component: (
+                  <SignUp
+                    logo="Day03/FigmaApp/logo.svg"
+                    title="Getting Started"
+                    description="Create an account to continue!"
+                    setNextPage={setNextPage}
+                  />
+                ),
+              })
+            }
           >
             Skip
           </div>
-          <div
+          <Button
             id={styles.nextButton}
             style={currentSlide == slide.length - 1 ? { width: "100%" } : {}}
             onClick={() => {
-              currentSlide < slide.length - 1 &&
-                setCurrentSlide((currentSlide) => currentSlide + 1);
+              currentSlide < slide.length - 1
+                ? setCurrentSlide((currentSlide) => currentSlide + 1)
+                : setNextPage({
+                    change: "next",
+                    effect: "vertical",
+                    component: (
+                      <SignUp
+                        logo="Day03/FigmaApp/logo.svg"
+                        title="Getting Started"
+                        description="Create an account to continue!"
+                        setNextPage={setNextPage}
+                      />
+                    ),
+                  });
             }}
           >
             {currentSlide == slide.length - 1 ? "Let's Get Started" : "Next"}
-          </div>
+          </Button>
         </div>
       </div>
     </div>

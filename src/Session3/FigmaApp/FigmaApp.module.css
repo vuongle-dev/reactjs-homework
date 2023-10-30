@@ -1,13 +1,78 @@
+:root {
+    --screenWidth: 375px;
+    --screenHeight: 812px;
+}
+
 .container {
     padding: 40px;
     background-color: #dadada;
 }
 
 .mobileFrame {
-    width: 375px;
-    height: 812px;
-    background-color: #fff;
+    width: var(--screenWidth);
+    height: var(--screenHeight);
+
     border-radius: 20px;
     overflow-x: hidden;
     position: relative;
+    background-color: #fff;
+}
+
+.navigationContainer {
+    background-color: #fff;
+    width: var(--screenWidth);
+    height: var(--screenHeight);
+    position: absolute;
+    left: 0;
+    right: 0;
+}
+
+@keyframes vertical {
+    from {
+        transform: translateY(0);
+    }
+
+    to {
+        transform: translateY(calc(0px - var(--screenHeight)));
+    }
+}
+
+@keyframes horizontal {
+    from {
+        transform: translateX(0);
+    }
+
+    to {
+        transform: translateX(calc(0px - var(--screenWidth)));
+    }
+}
+
+.nextvertical {
+    z-index: 1;
+    animation-name: vertical;
+    animation-timing-function: ease;
+    animation-duration: 0.5s;
+}
+
+.backvertical {
+    z-index: 1;
+    animation-name: vertical;
+    animation-direction: reverse;
+    animation-timing-function: ease;
+    animation-duration: 0.5s;
+}
+
+.nexthorizontal {
+    z-index: 1;
+    animation-name: horizontal;
+    animation-timing-function: ease;
+    animation-duration: 0.5s;
+}
+
+.backhorizontal {
+    z-index: 1;
+    animation-name: horizontal;
+    animation-direction: reverse;
+    animation-timing-function: ease;
+    animation-duration: 0.5s;
 }

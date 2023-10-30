@@ -1,15 +1,26 @@
 .starlist {
     display: flex;
-    gap: 5px
+    gap: 5px;
 }
 
-.starlist>div {
-    width: 24px;
-    height: 24px;
+.starlist>label {
+    color: #b9b9b9;
     position: relative;
 }
 
-.starlist>div:active {
-    width: 26px;
-    height: 26px;
+.starlist>label>div {
+    overflow: hidden;
+    position: relative;
+}
+
+.starlist>label>input {
+    opacity: 0;
+    position: absolute;
+    width: 0;
+}
+
+.starlist>label>svg {
+    position: absolute;
+    top: 0;
+    left: 0;
 }

@@ -1,0 +1,131 @@
+.container {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+    height: 100%;
+    padding: 140px 24px 32px 24px;
+    gap: 32px;
+}
+
+.logo {
+    position: absolute;
+    top: 48px;
+    left: 0;
+    right: 0;
+    margin: 0 auto;
+    width: 190px;
+    height: 60px;
+}
+
+.title h3 {
+
+    color: #111a2c;
+    font-size: 24px;
+    font-weight: 600;
+    line-height: 32px;
+}
+
+.title span {
+    color: #525c67;
+    font-size: 14px;
+    font-weight: 300;
+    line-height: 24px;
+}
+
+
+.signUp {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.inputContainer {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 9px;
+}
+
+.inputname {
+    color: #898b9a;
+    font-size: 14px;
+}
+
+.input {
+    position: relative;
+    width: 100%;
+    height: fit-content;
+}
+
+.input input {
+    width: 100%;
+    outline: none;
+    color: #111a2c;
+    font-size: 14px;
+    padding: 20px 54px 20px 24px;
+    background-color: #F5F5F8;
+    border-radius: 8px;
+}
+
+.input input::placeholder {
+    color: #BBBDC1;
+}
+
+.input .icon {
+    font-size: 16px;
+    position: absolute;
+    right: 24px;
+    top: 0;
+    bottom: 0;
+    margin: auto 0;
+    height: fit-content;
+}
+
+.submit {
+    width: 100%;
+    display: flex;
+    gap: 16px;
+    flex-direction: column;
+    align-items: center;
+}
+
+.submit>p {
+    line-height: 1;
+    color: #525c67;
+    font-size: 16px;
+}
+
+.submit>p>span {
+    color: #ff6b43;
+    font-size: 16px;
+    font-weight: 700;
+    text-decoration: none;
+}
+
+
+.hide {
+    visibility: hidden;
+    opacity: 0;
+    width: 0;
+}
+
+#signupButton {
+    background-color: #FF6C44;
+    font-weight: 500;
+}
+
+#facebookSignIn {
+    background-color: #0064C0;
+    font-size: 14px;
+    padding: 17px 0;
+}
+
+#googleSignIn {
+    background-color: #F5F5F8;
+    font-size: 14px;
+    padding: 17px 0;
+    color: #000;
+}

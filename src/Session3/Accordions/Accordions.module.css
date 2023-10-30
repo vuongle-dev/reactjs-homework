@@ -1,13 +1,10 @@
-* {
-    font-size: 13px;
-    line-height: 2;
-}
-
 .AccordionModules {
     display: flex;
     flex-direction: column;
     gap: 40px;
     padding: 0 4vw;
+    font-size: 13px;
+    line-height: 2;
 }
 
 .AccordionModulesContainer {

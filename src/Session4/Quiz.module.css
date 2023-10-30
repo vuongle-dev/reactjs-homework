@@ -1,0 +1,19 @@
+.Quiz {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.submit {
+    width: 100px;
+    background-color: #FF6C44;
+    font-weight: 500;
+    color: #fff;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.submit:active {
+    background-color: #ff4613;
+}

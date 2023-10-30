@@ -1,0 +1,39 @@
+.answerPick {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    font-size: 14px;
+    font-weight: 600;
+    color: #111a2c;
+    font-size: 16px;
+    font-weight: 600;
+}
+
+.answerList {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.answer {
+    width: 100%;
+    height: fit-content;
+    position: relative;
+    line-height: 2;
+}
+
+.answer input {
+    display: inline;
+    color: #111a2c;
+    font-size: 14px;
+    padding: 0 5px;
+    background-color: #dbdbdb;
+    border-radius: 8px;
+    margin: 0 5px;
+}
+
+.answer input:focus {
+    outline: #FF6C44 solid 1px;
+}

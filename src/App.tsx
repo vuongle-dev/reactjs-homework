@@ -28,11 +28,12 @@ import AccordionModules from "./Session3/Accordions";
 import Galleries from "./Session3/Galleries";
 import LoveButton from "./Session3/LoveButton";
 import FigmaApp from "./Session3/FigmaApp";
+import Quiz from "./Session4";
 
 function App() {
   return (
     <div className="container">
-      <BasicUI1
+      {/* <BasicUI1
         catimage="Day02/basic-images/1.jpg"
         category="Clothing & Apparel"
         subcategory={["Accessories", "Bags", "Kid's Fashion", "Mens"]}
@@ -330,8 +331,9 @@ function App() {
       <TabModules />
       <AccordionModules />
       <Galleries />
-      <LoveButton />
-      <FigmaApp />
+      <LoveButton /> */}
+      {/* <FigmaApp /> */}
+      <Quiz />
     </div>
   );
 }

@@ -129,18 +129,23 @@
     width: 0;
 }
 
-#nextButton {
+.button {
     border-radius: 8px;
-    height: 56px;
+    padding: 20px 0;
     position: relative;
-    width: 168px;
-    background-color: #FF6C44;
     display: flex;
     justify-content: center;
     align-items: center;
     font-size: 16px;
-    font-weight: 600;
     color: #fff;
-    cursor: pointer;
     transition: all 0.3s ease;
+    cursor: pointer;
+    width: 100%;
+    gap: 10px;
+}
+
+#nextButton {
+    width: 168px;
+    background-color: #FF6C44;
+    font-weight: 600;
 }
