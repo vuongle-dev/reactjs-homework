@@ -3,7 +3,7 @@ import styles from "./ButtonTabs.module.css";
 
 type TabProps = {
   name?: string;
-  content?: string;
+  content?: string | React.ReactElement;
 };
 type TabListProps = {
   tablist: TabProps[];
