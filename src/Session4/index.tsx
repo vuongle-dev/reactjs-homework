@@ -6,6 +6,7 @@ import * as yup from "yup";
 import OneChoice from "./OneChoice";
 import MultipleChoice from "./MultipleChoice";
 import FillInTheBlanks from "./FillInTheBlanks";
+import ArrangeAnswers from "./ArrangeAnswers";
 
 type Props = {};
 
@@ -15,6 +16,7 @@ const schema = yup
     // .test("is-1", "Sai cmnr", (value) => value == "1 năm"),
     1: yup.array(yup.string()),
     2: yup.array(yup.string()),
+    3: yup.array(yup.string()),
   })
   .required();
 const questionlist = [
@@ -37,9 +39,25 @@ const questionlist = [
   },
   {
     question: "Hãy điền vào chỗ trống",
-    questiontype: "fillintheblank",
+    questiontype: "fillintheblanks",
     text: "Không ___ mà đòi có ăn thì chỉ có ăn ___, ăn ___.",
     answer: ["làm", "cứt", "đầu buồi"],
+  },
+  {
+    question: "Thầy Huấn có những biệt danh gì",
+    questiontype: "arrangeanswer",
+    answerlist: [
+      "Huấn hoa cứt lợn",
+      "Huấn hoa vạn thọ",
+      "Huấn hoa hồng",
+      "Huấn Rose",
+    ],
+    answer: [
+      "1_Huấn hoa cứt lợn",
+      "2_Huấn hoa vạn thọ",
+      "3_Huấn Rose",
+      "4_Huấn hoa hồng",
+    ],
   },
 ];
 export default function Quiz({}: Props) {
@@ -97,7 +115,8 @@ export default function Quiz({}: Props) {
                 register={register}
               />
             ))
-          : (question = (
+          : item.questiontype == "fillintheblanks"
+          ? (question = (
               <FillInTheBlanks
                 key={index}
                 questionnumber={index.toString()}
@@ -105,9 +124,18 @@ export default function Quiz({}: Props) {
                 text={item.text}
                 register={register}
               />
+            ))
+          : (question = (
+              <ArrangeAnswers
+                register={register}
+                answerlist={item.answerlist}
+                questionnumber={index.toString()}
+                title={item.question}
+              />
             ));
         return question;
       })}
+
       <input type="submit" value={"Kiểm tra"} className={styles.submit} />
       <h4>{answerValidate}</h4>
     </form>

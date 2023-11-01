@@ -29,6 +29,8 @@ import Galleries from "./Session3/Galleries";
 import LoveButton from "./Session3/LoveButton";
 import FigmaApp from "./Session3/FigmaApp";
 import Quiz from "./Session4";
+import And from "./And";
+import DragToReorderList from "./Session4/ArrangeAnswers";
 
 function App() {
   return (
@@ -334,6 +336,8 @@ function App() {
       <LoveButton /> */}
       {/* <FigmaApp /> */}
       <Quiz />
+
+      {/* <And /> */}
     </div>
   );
 }
