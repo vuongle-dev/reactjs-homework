@@ -1,18 +1,9 @@
 table {
-    margin: 0 0 40px 0;
     width: 100%;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
-    display: table;
-}
-
-@media screen and (max-width: 580px) {
-    .table {
-        display: block;
-    }
+    box-shadow: 0 1px 3px #00000033;
 }
 
 tr {
-    display: table-row;
     background: #f6f6f6;
 }
 
@@ -27,54 +18,21 @@ th {
     padding: 1em 0;
 }
 
-tr.green {
-    background: #27ae60;
-}
-
-tr.blue {
-    background: #2980b9;
-}
-
-@media screen and (max-width: 580px) {
-    tr {
-        padding: 14px 0 7px;
-        display: block;
-    }
-
-    tr.header {
-        padding: 0;
-        height: 6px;
-    }
-
-    tr.header td {
-        display: none;
-    }
-
-    tr td {
-        margin-bottom: 10px;
-    }
-
-    tr td:before {
-        margin-bottom: 3px;
-        content: attr(data-title);
-        min-width: 98px;
-        font-size: 10px;
-        line-height: 10px;
-        font-weight: bold;
-        text-transform: uppercase;
-        color: #969696;
-        display: block;
-    }
-}
-
 td {
     padding: 6px 12px;
-    display: table-cell;
 }
 
-@media screen and (max-width: 580px) {
-    td {
-        padding: 2px 16px;
-        display: block;
-    }
+td.numberData {
+    text-align: end;
+}
+
+.popup {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    padding: 20px;
+    background-color: #fff;
+    box-shadow: #00000040 0 0 10px;
+    border-radius: 10px;
 }

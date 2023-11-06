@@ -1,52 +1,191 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import styles from "./Networking.module.css";
-import Login, { Button } from "./Login";
-import { GetAll } from "./Category";
-import ButtonTabs from "../Session3/Tabs/ButtonTabs";
+// import Login, { Button } from "./Login";
+// import Category from "./Category";
+// import ButtonTabs from "../Session3/Tabs/ButtonTabs";
+import {
+  Button,
+  ConfigProvider,
+  Flex,
+  Layout,
+  Space,
+  Tabs,
+  message,
+  notification,
+} from "antd";
+import { Content, Header } from "antd/es/layout/layout";
+import Loginant from "./Login/Loginant";
+import Categoryant from "./Category/Categoryant";
+import Supplierant from "./Supplier";
+import Employeeant from "./Employee";
+import locale from "antd/locale/vi_VN";
+
+import "dayjs/locale/vi";
+import Customerant from "./Customer";
+import Productant from "./Product";
+import Orderant from "./Order";
 
 type Props = {};
 
-const Logout = ({ setIsLoggedIn }: { setIsLoggedIn: (data: any) => void }) => {
+const Logout = ({
+  setIsLoggedIn,
+  messageApi,
+}: {
+  setIsLoggedIn: (data: any) => void;
+  messageApi: any;
+}) => {
   let email = localStorage.getItem("email");
   let role = localStorage.getItem("role");
+
   const logoutHandle = () => {
     localStorage.removeItem("email");
     localStorage.removeItem("role");
     localStorage.removeItem("access_token");
     setIsLoggedIn(false);
-    alert("Logged Out");
+    messageApi.open({
+      type: "success",
+      content: "Successfully Logged Out",
+      duration: 2,
+    });
   };
   return (
-    <div className={styles.Logout}>
-      <h4>
-        {email} <span>{role}</span>
-      </h4>
+    <Space size={20} style={{ height: "100%" }}>
+      <Flex vertical style={{ lineHeight: "initial", color: "#fff" }}>
+        <strong style={{ fontWeight: 600 }}>{email}</strong> <span>{role}</span>
+      </Flex>
       <Button onClick={() => logoutHandle()}>Logout</Button>
-    </div>
+    </Space>
   );
 };
 
-const Header = ({ ...props }) => {
+// const HeaderContent = ({ ...props }) => {
+//   const [loginPopup,setLoginPopup] = useState(false)
+//   return (
+//     <div className={styles.Header}>
+//       {props.isLoggedIn === false ? (
+//         <Login setIsLoggedIn={props.setIsLoggedIn} />
+//       ) : (
+//         <Logout setIsLoggedIn={props.setIsLoggedIn} />
+//       )}
+//     </div>
+//   );
+// };
+
+const HeaderContent = ({ ...props }) => {
+  const [loginPopup, setLoginPopup] = useState(false);
   return (
-    <div className={styles.Header}>
+    <>
       {props.isLoggedIn === false ? (
-        <Login setIsLoggedIn={props.setIsLoggedIn} />
+        <Loginant
+          setIsLoggedIn={props.setIsLoggedIn}
+          messageApi={props.messageApi}
+        />
       ) : (
-        <Logout setIsLoggedIn={props.setIsLoggedIn} />
+        <Logout
+          setIsLoggedIn={props.setIsLoggedIn}
+          messageApi={props.messageApi}
+        />
       )}
-    </div>
+    </>
   );
-};
-const GetTab = ({}) => {
-  return <GetAll url="/online-shop/categories" name="Categories" />;
 };
 
 export default function Networking({}: Props) {
   const [isLoggedIn, setIsLoggedIn] = React.useState(false);
+  const [messageApi, contextHolder] = message.useMessage();
+  const [collapseSidebar, setCollapseSidebar] = React.useState(false);
+  useEffect(() => {
+    localStorage.getItem("access_token")
+      ? setIsLoggedIn(true)
+      : setIsLoggedIn(false);
+  }, []);
   return (
-    <div className={styles.container}>
-      <Header isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn} />
-      <ButtonTabs tablist={[{ name: "Category", content: <GetTab /> }]} />
-    </div>
+    // {<div className={styles.container}>
+    //   <Header isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn} />
+    //   <ButtonTabs
+    //     tablist={[
+    //       { name: "Category", content: <Category isLoggedIn={isLoggedIn} /> },
+    //     ]}
+    //   />
+    // </div>}
+    <ConfigProvider locale={locale}>
+      <Layout>
+        {contextHolder}
+        <Header
+          style={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "end",
+          }}
+        >
+          <HeaderContent
+            isLoggedIn={isLoggedIn}
+            setIsLoggedIn={setIsLoggedIn}
+            messageApi={messageApi}
+          />
+        </Header>
+        <Content>
+          <Tabs
+            tabPosition="left"
+            items={[
+              {
+                key: "category",
+                label: "Category",
+                children: (
+                  <Categoryant
+                    isLoggedIn={isLoggedIn}
+                    messageApi={messageApi}
+                  />
+                ),
+              },
+              {
+                key: "supplier",
+                label: "Supplier",
+                children: (
+                  <Supplierant
+                    isLoggedIn={isLoggedIn}
+                    messageApi={messageApi}
+                  />
+                ),
+              },
+              {
+                key: "employee",
+                label: "Employee",
+                children: (
+                  <Employeeant
+                    isLoggedIn={isLoggedIn}
+                    messageApi={messageApi}
+                  />
+                ),
+              },
+              {
+                key: "customer",
+                label: "Customer",
+                children: (
+                  <Customerant
+                    isLoggedIn={isLoggedIn}
+                    messageApi={messageApi}
+                  />
+                ),
+              },
+              {
+                key: "product",
+                label: "Product",
+                children: (
+                  <Productant isLoggedIn={isLoggedIn} messageApi={messageApi} />
+                ),
+              },
+              {
+                key: "order",
+                label: "Order",
+                children: (
+                  <Orderant isLoggedIn={isLoggedIn} messageApi={messageApi} />
+                ),
+              },
+            ]}
+          />
+        </Content>
+      </Layout>
+    </ConfigProvider>
   );
 }
