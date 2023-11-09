@@ -32,6 +32,7 @@ import Quiz from "./Session4";
 import And from "./And";
 import DragToReorderList from "./Session4/ArrangeAnswers";
 import Networking from "./Session6";
+import Router from "./Session6/Router";
 
 function App() {
   return (
@@ -337,7 +338,7 @@ function App() {
       <LoveButton /> */}
       {/* <FigmaApp /> */}
       {/* <Quiz /> */}
-      <Networking />
+      <Router />
       {/* <And /> */}
     </div>
   );

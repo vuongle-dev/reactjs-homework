@@ -8,6 +8,7 @@ import {
   ConfigProvider,
   Flex,
   Layout,
+  Menu,
   Space,
   Tabs,
   message,
@@ -25,7 +26,20 @@ import Customerant from "./Customer";
 import Productant from "./Product";
 import Orderant from "./Order";
 
-type Props = {};
+import {
+  createBrowserRouter,
+  RouterProvider,
+  Outlet,
+  Link,
+  BrowserRouter,
+} from "react-router-dom";
+import Sider from "antd/es/layout/Sider";
+
+type Props = {
+  isLoggedIn: boolean;
+  messageApi: any;
+  setIsLoggedIn: (data: any) => void;
+};
 
 const Logout = ({
   setIsLoggedIn,
@@ -58,23 +72,10 @@ const Logout = ({
   );
 };
 
-// const HeaderContent = ({ ...props }) => {
-//   const [loginPopup,setLoginPopup] = useState(false)
-//   return (
-//     <div className={styles.Header}>
-//       {props.isLoggedIn === false ? (
-//         <Login setIsLoggedIn={props.setIsLoggedIn} />
-//       ) : (
-//         <Logout setIsLoggedIn={props.setIsLoggedIn} />
-//       )}
-//     </div>
-//   );
-// };
-
 const HeaderContent = ({ ...props }) => {
   const [loginPopup, setLoginPopup] = useState(false);
   return (
-    <>
+    <div style={{ marginLeft: "auto" }}>
       {props.isLoggedIn === false ? (
         <Loginant
           setIsLoggedIn={props.setIsLoggedIn}
@@ -86,38 +87,37 @@ const HeaderContent = ({ ...props }) => {
           messageApi={props.messageApi}
         />
       )}
-    </>
+    </div>
   );
 };
 
-export default function Networking({}: Props) {
-  const [isLoggedIn, setIsLoggedIn] = React.useState(false);
-  const [messageApi, contextHolder] = message.useMessage();
+export default function Networking({
+  isLoggedIn,
+  messageApi,
+  setIsLoggedIn,
+}: Props) {
   const [collapseSidebar, setCollapseSidebar] = React.useState(false);
-  useEffect(() => {
-    localStorage.getItem("access_token")
-      ? setIsLoggedIn(true)
-      : setIsLoggedIn(false);
-  }, []);
+
   return (
-    // {<div className={styles.container}>
-    //   <Header isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn} />
-    //   <ButtonTabs
-    //     tablist={[
-    //       { name: "Category", content: <Category isLoggedIn={isLoggedIn} /> },
-    //     ]}
-    //   />
-    // </div>}
     <ConfigProvider locale={locale}>
       <Layout>
-        {contextHolder}
         <Header
           style={{
             display: "flex",
             alignItems: "center",
-            justifyContent: "end",
+            justifyContent: "space-between",
+            gap: 10,
           }}
         >
+          <Menu
+            theme="dark"
+            items={[
+              {
+                key: "home",
+                label: "Trang chủ",
+              },
+            ]}
+          />
           <HeaderContent
             isLoggedIn={isLoggedIn}
             setIsLoggedIn={setIsLoggedIn}
@@ -125,65 +125,40 @@ export default function Networking({}: Props) {
           />
         </Header>
         <Content>
-          <Tabs
-            tabPosition="left"
-            items={[
-              {
-                key: "category",
-                label: "Category",
-                children: (
-                  <Categoryant
-                    isLoggedIn={isLoggedIn}
-                    messageApi={messageApi}
-                  />
-                ),
-              },
-              {
-                key: "supplier",
-                label: "Supplier",
-                children: (
-                  <Supplierant
-                    isLoggedIn={isLoggedIn}
-                    messageApi={messageApi}
-                  />
-                ),
-              },
-              {
-                key: "employee",
-                label: "Employee",
-                children: (
-                  <Employeeant
-                    isLoggedIn={isLoggedIn}
-                    messageApi={messageApi}
-                  />
-                ),
-              },
-              {
-                key: "customer",
-                label: "Customer",
-                children: (
-                  <Customerant
-                    isLoggedIn={isLoggedIn}
-                    messageApi={messageApi}
-                  />
-                ),
-              },
-              {
-                key: "product",
-                label: "Product",
-                children: (
-                  <Productant isLoggedIn={isLoggedIn} messageApi={messageApi} />
-                ),
-              },
-              {
-                key: "order",
-                label: "Order",
-                children: (
-                  <Orderant isLoggedIn={isLoggedIn} messageApi={messageApi} />
-                ),
-              },
-            ]}
-          />
+          <Layout>
+            <Sider>
+              <Menu
+                // theme="dark"
+                items={[
+                  {
+                    key: "category",
+                    label: <Link to="category">Category</Link>,
+                  },
+                  {
+                    key: "supplier",
+                    label: <Link to={"supplier"}>Supplier</Link>,
+                  },
+                  {
+                    key: "employee",
+                    label: <Link to={"employee"}>Employee</Link>,
+                  },
+                  {
+                    key: "customer",
+                    label: <Link to={"customer"}>Customer</Link>,
+                  },
+                  {
+                    key: "product",
+                    label: <Link to={"product"}>Product</Link>,
+                  },
+                  {
+                    key: "order",
+                    label: <Link to={"order"}>Order</Link>,
+                  },
+                ]}
+              />
+            </Sider>
+            <Outlet />
+          </Layout>
         </Content>
       </Layout>
     </ConfigProvider>
