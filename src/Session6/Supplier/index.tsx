@@ -11,11 +11,12 @@ import {
   Modal,
   Popconfirm,
   Space,
+  Spin,
   Table,
   message,
 } from "antd";
 import Title from "antd/es/typography/Title";
-import type { ColumnsType } from "antd/es/table";
+import type { ColumnType, ColumnsType } from "antd/es/table";
 import { AiOutlineDelete, AiOutlineEdit } from "react-icons/ai";
 import TextArea from "antd/es/input/TextArea";
 type Props = {};
@@ -289,83 +290,12 @@ interface SupplierType {
 
 const GetAllSuppliers = ({
   refresh,
-  setRefresh,
-  isLoggedIn,
-  messageApi,
+  supplierColumn,
 }: {
   refresh: boolean;
-  setRefresh: (data: any) => void;
-  isLoggedIn: boolean;
-  messageApi: any;
+  supplierColumn: ColumnsType<SupplierType>;
 }) => {
   const [data, setData] = useState([]);
-  const [currentId, setCurrentId] = useState<number | null>(null);
-  const [patchPopup, setPatchPopup] = useState(false);
-  const supplierColumn: ColumnsType<SupplierType> = [
-    {
-      title: "ID",
-      dataIndex: "id",
-      key: "id",
-      align: "right",
-      width: 80,
-    },
-    {
-      title: "Supplier Name",
-      dataIndex: "name",
-      key: "name",
-    },
-    {
-      title: "Email",
-      dataIndex: "email",
-      key: "email",
-    },
-    {
-      title: "Phone Number",
-      dataIndex: "phoneNumber",
-      key: "phoneNumber",
-    },
-    {
-      title: "Address",
-      dataIndex: "address",
-      key: "address",
-    },
-    {
-      title: "",
-      dataIndex: "actions",
-      key: "actions",
-      fixed: "right",
-      width: 200,
-      render: (text: any, record: SupplierType, index: number) => {
-        return (
-          <Space>
-            <Button
-              icon={<AiOutlineEdit />}
-              onClick={() => {
-                setCurrentId(record.id);
-                setPatchPopup(true);
-              }}
-            >
-              Edit
-            </Button>
-            <Popconfirm
-              placement="topRight"
-              title="Delete Supplier"
-              description="Are you sure to delete this supplier?"
-              onConfirm={() =>
-                DeleteSupplier(record.id, refresh, setRefresh, messageApi)
-              }
-              okText="Yes"
-              cancelText="No"
-            >
-              <Button icon={<AiOutlineDelete />} danger>
-                Delete
-              </Button>
-            </Popconfirm>
-          </Space>
-        );
-      },
-    },
-  ];
 
   useEffect(() => {
     let getData = async () => {
@@ -384,7 +314,7 @@ const GetAllSuppliers = ({
     <Flex vertical>
       <Title level={3}>All Suppliers</Title>
       {data.length == 0 ? (
-        "Loading"
+        <Spin />
       ) : (
         <Table
           rowKey="id"
@@ -392,21 +322,6 @@ const GetAllSuppliers = ({
           dataSource={data}
           scroll={{ x: 400, y: 700 }}
         />
-      )}
-      {isLoggedIn && (
-        <>
-          {currentId && (
-            <PatchSupplier
-              currentId={currentId}
-              setCurrentId={setCurrentId}
-              refresh={refresh}
-              setRefresh={setRefresh}
-              patchPopup={patchPopup}
-              setPatchPopup={setPatchPopup}
-              messageApi={messageApi}
-            />
-          )}
-        </>
       )}
     </Flex>
   );
@@ -418,85 +333,15 @@ interface getschemaInput {
 
 const GetSupplier = ({
   refresh,
-  setRefresh,
-  isLoggedIn,
-  messageApi,
+  supplierColumn,
 }: {
   refresh: boolean;
-  setRefresh: (data: any) => void;
-  isLoggedIn: boolean;
-  messageApi: any;
+  supplierColumn: ColumnsType<SupplierType>;
 }) => {
   const [data, setData] = useState<SupplierType[] | null>(null);
   const [loading, setLoading] = useState(false);
   const [getsupplier] = Form.useForm();
-  const [currentId, setCurrentId] = useState<number | null>(null);
-  const [patchPopup, setPatchPopup] = useState(false);
-  const supplierColumn: ColumnsType<SupplierType> = [
-    {
-      title: "ID",
-      dataIndex: "id",
-      key: "id",
-      align: "right",
-      width: 80,
-    },
-    {
-      title: "Supplier Name",
-      dataIndex: "name",
-      key: "name",
-    },
-    {
-      title: "Email",
-      dataIndex: "email",
-      key: "email",
-    },
-    {
-      title: "Phone Number",
-      dataIndex: "phoneNumber",
-      key: "phoneNumber",
-    },
-    {
-      title: "Address",
-      dataIndex: "address",
-      key: "address",
-    },
-    {
-      title: "",
-      dataIndex: "actions",
-      key: "actions",
-      fixed: "right",
-      width: 220,
-      render: (text: any, record: SupplierType, index: number) => {
-        return (
-          <Flex>
-            <Button
-              icon={<AiOutlineEdit />}
-              onClick={() => {
-                setCurrentId(record.id);
-                setPatchPopup(true);
-              }}
-            >
-              Edit
-            </Button>
-            <Popconfirm
-              placement="topRight"
-              title="Delete Supplier"
-              description="Are you sure to delete this supplier?"
-              onConfirm={() =>
-                DeleteSupplier(record.id, refresh, setRefresh, messageApi)
-              }
-              okText="Yes"
-              cancelText="No"
-            >
-              <Button icon={<AiOutlineDelete />} danger>
-                Delete
-              </Button>
-            </Popconfirm>
-          </Flex>
-        );
-      },
-    },
-  ];
+
   const submitGetSupplier = async (data: getschemaInput) => {
     try {
       setLoading(true);
@@ -552,22 +397,6 @@ const GetSupplier = ({
             rowKey="id"
             scroll={{ x: 400 }}
           />
-
-          {isLoggedIn && (
-            <>
-              {currentId && (
-                <PatchSupplier
-                  currentId={currentId}
-                  setCurrentId={setCurrentId}
-                  refresh={refresh}
-                  setRefresh={setRefresh}
-                  patchPopup={patchPopup}
-                  setPatchPopup={setPatchPopup}
-                  messageApi={messageApi}
-                />
-              )}
-            </>
-          )}
         </>
       )}
     </Flex>
@@ -582,15 +411,86 @@ const Supplierant = ({
   messageApi: any;
 }) => {
   const [refresh, setRefresh] = useState(false);
+  const [currentId, setCurrentId] = useState<number | null>(null);
+  const [patchPopup, setPatchPopup] = useState(false);
+  const defaultColumns: ColumnsType<SupplierType> = [
+    {
+      title: "ID",
+      dataIndex: "id",
+      key: "id",
+      align: "right",
+      defaultSortOrder: "descend",
+      sorter: (a, b) => a.id - b.id,
+      width: 80,
+    },
+    {
+      title: "Supplier Name",
+      dataIndex: "name",
+      key: "name",
+    },
+    {
+      title: "Email",
+      dataIndex: "email",
+      key: "email",
+    },
+    {
+      title: "Phone Number",
+      dataIndex: "phoneNumber",
+      key: "phoneNumber",
+    },
+    {
+      title: "Address",
+      dataIndex: "address",
+      key: "address",
+    },
+  ];
+  const actionColumn: ColumnType<SupplierType> = {
+    title: "",
+    dataIndex: "actions",
+    key: "actions",
+    fixed: "right",
+    width: 200,
+    render: (text: any, record: SupplierType, index: number) => {
+      return (
+        <Space>
+          <Button
+            icon={<AiOutlineEdit />}
+            onClick={() => {
+              setCurrentId(record.id);
+              setPatchPopup(true);
+            }}
+          >
+            Edit
+          </Button>
+          <Popconfirm
+            placement="topRight"
+            title="Delete Supplier"
+            description="Are you sure to delete this supplier?"
+            onConfirm={() =>
+              DeleteSupplier(record.id, refresh, setRefresh, messageApi)
+            }
+            okText="Yes"
+            cancelText="No"
+          >
+            <Button icon={<AiOutlineDelete />} danger>
+              Delete
+            </Button>
+          </Popconfirm>
+        </Space>
+      );
+    },
+  };
+  const [supplierColumn, setSupplierColumn] =
+    useState<ColumnsType<SupplierType>>(defaultColumns);
+  useEffect(() => {
+    isLoggedIn
+      ? setSupplierColumn([...defaultColumns, actionColumn])
+      : setSupplierColumn(defaultColumns);
+  }, [isLoggedIn]);
 
   return (
     <Flex vertical gap={15}>
-      <GetSupplier
-        refresh={refresh}
-        setRefresh={setRefresh}
-        isLoggedIn={isLoggedIn}
-        messageApi={messageApi}
-      />
+      <GetSupplier refresh={refresh} supplierColumn={supplierColumn} />
       {isLoggedIn && (
         <AddSupplier
           messageApi={messageApi}
@@ -598,12 +498,22 @@ const Supplierant = ({
           setRefresh={setRefresh}
         />
       )}
-      <GetAllSuppliers
-        refresh={refresh}
-        setRefresh={setRefresh}
-        isLoggedIn={isLoggedIn}
-        messageApi={messageApi}
-      />
+      <GetAllSuppliers refresh={refresh} supplierColumn={supplierColumn} />
+      {isLoggedIn && (
+        <>
+          {currentId && (
+            <PatchSupplier
+              currentId={currentId}
+              setCurrentId={setCurrentId}
+              refresh={refresh}
+              setRefresh={setRefresh}
+              patchPopup={patchPopup}
+              setPatchPopup={setPatchPopup}
+              messageApi={messageApi}
+            />
+          )}
+        </>
+      )}
     </Flex>
   );
 };

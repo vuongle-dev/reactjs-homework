@@ -12,12 +12,13 @@ import {
   Popconfirm,
   Select,
   Space,
+  Spin,
   Statistic,
   Table,
   message,
 } from "antd";
 import Title from "antd/es/typography/Title";
-import type { ColumnsType } from "antd/es/table";
+import type { ColumnType, ColumnsType } from "antd/es/table";
 import { AiOutlineDelete, AiOutlineEdit } from "react-icons/ai";
 import TextArea from "antd/es/input/TextArea";
 type Props = {};
@@ -356,114 +357,12 @@ interface ProductType extends addschemaInput {
 
 const GetAllProducts = ({
   refresh,
-  setRefresh,
-  isLoggedIn,
-  messageApi,
+  productColumn,
 }: {
   refresh: boolean;
-  setRefresh: (data: any) => void;
-  isLoggedIn: boolean;
-  messageApi: any;
+  productColumn: ColumnsType<ProductType>;
 }) => {
   const [data, setData] = useState([]);
-  const [currentId, setCurrentId] = useState<number | null>(null);
-  const [patchPopup, setPatchPopup] = useState(false);
-  const productColumn: ColumnsType<ProductType> = [
-    {
-      title: "ID",
-      dataIndex: "id",
-      key: "id",
-      align: "right",
-      width: 80,
-    },
-    {
-      title: "Product Name",
-      dataIndex: "name",
-      key: "name",
-    },
-    {
-      title: "Price",
-      dataIndex: "price",
-      key: "price",
-      align: "right",
-      render: (text: any, record: ProductType, index: number) => {
-        return (
-          <Statistic
-            valueStyle={{ fontSize: "1em" }}
-            value={record.price}
-            prefix="$"
-          />
-        );
-      },
-    },
-    {
-      title: "Discount",
-      dataIndex: "discount",
-      key: "discount",
-      align: "right",
-      render: (text: any, record: ProductType, index: number) => {
-        return <>{record.discount}%</>;
-      },
-    },
-    {
-      title: "Stock",
-      dataIndex: "stock",
-      key: "stock",
-      align: "right",
-    },
-    {
-      title: "Category",
-      dataIndex: "category",
-      key: "category",
-      render: (text: any, record: ProductType, index: number) => {
-        return <>{record.category.name}</>;
-      },
-    },
-    {
-      title: "Supplier",
-      dataIndex: "supplier",
-      key: "supplier",
-      render: (text: any, record: ProductType, index: number) => {
-        return <>{record.supplier.name}</>;
-      },
-    },
-    {
-      title: "",
-      dataIndex: "actions",
-      key: "actions",
-      fixed: "right",
-      width: 200,
-      render: (text: any, record: ProductType, index: number) => {
-        return (
-          <Space>
-            <Button
-              icon={<AiOutlineEdit />}
-              onClick={() => {
-                setCurrentId(record.id);
-                setPatchPopup(true);
-              }}
-            >
-              Edit
-            </Button>
-            <Popconfirm
-              placement="topRight"
-              title="Delete Product"
-              description="Are you sure to delete this product?"
-              onConfirm={() =>
-                DeleteProduct(record.id, refresh, setRefresh, messageApi)
-              }
-              okText="Yes"
-              cancelText="No"
-            >
-              <Button icon={<AiOutlineDelete />} danger>
-                Delete
-              </Button>
-            </Popconfirm>
-          </Space>
-        );
-      },
-    },
-  ];
 
   useEffect(() => {
     let getData = async () => {
@@ -482,7 +381,7 @@ const GetAllProducts = ({
     <Flex vertical>
       <Title level={3}>All Products</Title>
       {data.length == 0 ? (
-        "Loading"
+        <Spin />
       ) : (
         <Table
           rowKey="id"
@@ -490,21 +389,6 @@ const GetAllProducts = ({
           dataSource={data}
           scroll={{ x: 400, y: 700 }}
         />
-      )}
-      {isLoggedIn && (
-        <>
-          {currentId && (
-            <PatchProduct
-              currentId={currentId}
-              setCurrentId={setCurrentId}
-              refresh={refresh}
-              setRefresh={setRefresh}
-              patchPopup={patchPopup}
-              setPatchPopup={setPatchPopup}
-              messageApi={messageApi}
-            />
-          )}
-        </>
       )}
     </Flex>
   );
@@ -516,103 +400,14 @@ interface getschemaInput {
 
 const GetProduct = ({
   refresh,
-  setRefresh,
-  isLoggedIn,
-  messageApi,
+  productColumn,
 }: {
   refresh: boolean;
-  setRefresh: (data: any) => void;
-  isLoggedIn: boolean;
-  messageApi: any;
+  productColumn: ColumnsType<ProductType>;
 }) => {
   const [data, setData] = useState<ProductType[] | null>(null);
   const [loading, setLoading] = useState(false);
   const [getproduct] = Form.useForm();
-  const [currentId, setCurrentId] = useState<number | null>(null);
-  const [patchPopup, setPatchPopup] = useState(false);
-  const productColumn: ColumnsType<ProductType> = [
-    {
-      title: "ID",
-      dataIndex: "id",
-      key: "id",
-      align: "right",
-      width: 80,
-    },
-    {
-      title: "Product Name",
-      dataIndex: "name",
-      key: "name",
-    },
-    {
-      title: "Price",
-      dataIndex: "price",
-      key: "price",
-      render: (text: any, record: ProductType, index: number) => {
-        return <>${record.price}</>;
-      },
-    },
-    {
-      title: "Discount",
-      dataIndex: "discount",
-      key: "discount",
-      render: (text: any, record: ProductType, index: number) => {
-        return <>{record.discount}%</>;
-      },
-    },
-    {
-      title: "Category",
-      dataIndex: "category",
-      key: "category",
-      render: (text: any, record: ProductType, index: number) => {
-        return <>{record.category.name}</>;
-      },
-    },
-    {
-      title: "Supplier",
-      dataIndex: "supplier",
-      key: "supplier",
-      render: (text: any, record: ProductType, index: number) => {
-        return <>{record.supplier.name}</>;
-      },
-    },
-    {
-      title: "",
-      dataIndex: "actions",
-      key: "actions",
-      fixed: "right",
-      width: 200,
-      render: (text: any, record: ProductType, index: number) => {
-        return (
-          <Space>
-            <Button
-              icon={<AiOutlineEdit />}
-              onClick={() => {
-                setCurrentId(record.id);
-                setPatchPopup(true);
-              }}
-            >
-              Edit
-            </Button>
-            <Popconfirm
-              placement="topRight"
-              title="Delete Product"
-              description="Are you sure to delete this product?"
-              onConfirm={() =>
-                DeleteProduct(record.id, refresh, setRefresh, messageApi)
-              }
-              okText="Yes"
-              cancelText="No"
-            >
-              <Button icon={<AiOutlineDelete />} danger>
-                Delete
-              </Button>
-            </Popconfirm>
-          </Space>
-        );
-      },
-    },
-  ];
-
   const submitGetProduct = async (data: getschemaInput) => {
     try {
       setLoading(true);
@@ -668,22 +463,6 @@ const GetProduct = ({
             rowKey="id"
             scroll={{ x: 400 }}
           />
-
-          {isLoggedIn && (
-            <>
-              {currentId && (
-                <PatchProduct
-                  currentId={currentId}
-                  setCurrentId={setCurrentId}
-                  refresh={refresh}
-                  setRefresh={setRefresh}
-                  patchPopup={patchPopup}
-                  setPatchPopup={setPatchPopup}
-                  messageApi={messageApi}
-                />
-              )}
-            </>
-          )}
         </>
       )}
     </Flex>
@@ -698,15 +477,117 @@ const Productant = ({
   messageApi: any;
 }) => {
   const [refresh, setRefresh] = useState(false);
+  const [currentId, setCurrentId] = useState<number | null>(null);
+  const [patchPopup, setPatchPopup] = useState(false);
+  const defaultColumns: ColumnsType<ProductType> = [
+    {
+      title: "ID",
+      dataIndex: "id",
+      key: "id",
+      align: "right",
+      defaultSortOrder: "descend",
+      sorter: (a, b) => a.id - b.id,
+      width: 80,
+    },
+    {
+      title: "Product Name",
+      dataIndex: "name",
+      key: "name",
+    },
+    {
+      title: "Price",
+      dataIndex: "price",
+      key: "price",
+      align: "right",
+      render: (text: any, record: ProductType, index: number) => {
+        return (
+          <Statistic
+            valueStyle={{ fontSize: "1em" }}
+            value={record.price}
+            prefix="$"
+          />
+        );
+      },
+    },
+    {
+      title: "Discount",
+      dataIndex: "discount",
+      key: "discount",
+      align: "right",
+      render: (text: any, record: ProductType, index: number) => {
+        return <>{record.discount}%</>;
+      },
+    },
+    {
+      title: "Stock",
+      dataIndex: "stock",
+      key: "stock",
+      align: "right",
+    },
+    {
+      title: "Category",
+      dataIndex: "category",
+      key: "category",
+      render: (text: any, record: ProductType, index: number) => {
+        return <>{record.category.name}</>;
+      },
+    },
+    {
+      title: "Supplier",
+      dataIndex: "supplier",
+      key: "supplier",
+      render: (text: any, record: ProductType, index: number) => {
+        return <>{record.supplier.name}</>;
+      },
+    },
+  ];
+  const actionColumn: ColumnType<ProductType> = {
+    title: "",
+    dataIndex: "actions",
+    key: "actions",
+    fixed: "right",
+    width: 200,
+    render: (text: any, record: ProductType, index: number) => {
+      return (
+        <Space>
+          <Button
+            icon={<AiOutlineEdit />}
+            onClick={() => {
+              setCurrentId(record.id);
+              setPatchPopup(true);
+            }}
+          >
+            Edit
+          </Button>
+          <Popconfirm
+            placement="topRight"
+            title="Delete Product"
+            description="Are you sure to delete this product?"
+            onConfirm={() =>
+              DeleteProduct(record.id, refresh, setRefresh, messageApi)
+            }
+            okText="Yes"
+            cancelText="No"
+          >
+            <Button icon={<AiOutlineDelete />} danger>
+              Delete
+            </Button>
+          </Popconfirm>
+        </Space>
+      );
+    },
+  };
+  const [productColumn, setProductColumn] =
+    useState<ColumnsType<ProductType>>(defaultColumns);
+  useEffect(() => {
+    isLoggedIn
+      ? setProductColumn([...defaultColumns, actionColumn])
+      : setProductColumn(defaultColumns);
+  }, [isLoggedIn]);
 
   return (
     <Flex vertical gap={15}>
-      <GetProduct
-        refresh={refresh}
-        setRefresh={setRefresh}
-        isLoggedIn={isLoggedIn}
-        messageApi={messageApi}
-      />
+      <GetProduct refresh={refresh} productColumn={productColumn} />
       {isLoggedIn && (
         <AddProduct
           messageApi={messageApi}
@@ -714,12 +595,22 @@ const Productant = ({
           setRefresh={setRefresh}
         />
       )}
-      <GetAllProducts
-        refresh={refresh}
-        setRefresh={setRefresh}
-        isLoggedIn={isLoggedIn}
-        messageApi={messageApi}
-      />
+      <GetAllProducts refresh={refresh} productColumn={productColumn} />
+      {isLoggedIn && (
+        <>
+          {currentId && (
+            <PatchProduct
+              currentId={currentId}
+              setCurrentId={setCurrentId}
+              refresh={refresh}
+              setRefresh={setRefresh}
+              patchPopup={patchPopup}
+              setPatchPopup={setPatchPopup}
+              messageApi={messageApi}
+            />
+          )}
+        </>
+      )}
     </Flex>
   );
 };

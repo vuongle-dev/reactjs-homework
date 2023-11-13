@@ -14,12 +14,13 @@ import {
   Radio,
   Select,
   Space,
+  Spin,
   Statistic,
   Table,
   message,
 } from "antd";
 import Title from "antd/es/typography/Title";
-import type { ColumnsType } from "antd/es/table";
+import type { ColumnType, ColumnsType } from "antd/es/table";
 import { AiOutlineDelete, AiOutlineEdit } from "react-icons/ai";
 import TextArea from "antd/es/input/TextArea";
 import { EnumType } from "typescript";
@@ -676,19 +677,129 @@ interface OrderType extends addschemaInput {
 
 const GetAllOrders = ({
   refresh,
-  setRefresh,
+  orderColumn,
+}: {
+  refresh: boolean;
+  orderColumn: ColumnsType<OrderType>;
+}) => {
+  const [data, setData] = useState([]);
+
+  useEffect(() => {
+    let getData = async () => {
+      try {
+        const response = await axiosClient.get("/online-shop/orders");
+        setData(response.data);
+        setData((data) => [...data].reverse());
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    getData();
+  }, [refresh]);
+
+  return (
+    <Flex vertical>
+      <Title level={3}>All Orders</Title>
+      {data.length == 0 ? (
+        <Spin />
+      ) : (
+        <Table
+          rowKey="id"
+          columns={orderColumn}
+          dataSource={data}
+          scroll={{ x: 400, y: 700 }}
+        />
+      )}
+    </Flex>
+  );
+};
+
+interface getschemaInput {
+  orderid: number;
+}
+
+const GetOrder = ({
+  refresh,
+  orderColumn,
+}: {
+  refresh: boolean;
+  orderColumn: ColumnsType<OrderType>;
+}) => {
+  const [data, setData] = useState<OrderType[] | null>(null);
+  const [loading, setLoading] = useState(false);
+  const [getorder] = Form.useForm();
+  const submitGetOrder = async (data: getschemaInput) => {
+    try {
+      setLoading(true);
+      const response = await axiosClient.get(
+        "/online-shop/orders/" + data.orderid
+      );
+      setData([response.data]);
+      setLoading(false);
+      getorder.resetFields();
+    } catch (error: any) {
+      setData(null);
+      setLoading(false);
+      message.error(error.response.data.message, 2);
+    }
+  };
+  useEffect(() => {
+    setData(null);
+  }, [refresh]);
+  return (
+    <Flex vertical>
+      <Title level={3}>Get Order by ID</Title>
+      <Form
+        form={getorder}
+        onFinish={submitGetOrder}
+        labelCol={{ span: 8 }}
+        wrapperCol={{ span: 16 }}
+      >
+        <Form.Item
+          name="orderid"
+          rules={[
+            { required: true, message: "ID must be required" },
+            { type: "number", message: "ID must be a number" },
+            { type: "integer", message: "ID must be interger" },
+          ]}
+        >
+          <InputNumber
+            type="number"
+            name="orderid"
+            min={1}
+            step={1}
+          ></InputNumber>
+        </Form.Item>
+        <Button loading={loading} onClick={() => getorder.submit()}>
+          Get this Order ID
+        </Button>
+      </Form>
+      {data && (
+        <>
+          <Table
+            columns={orderColumn}
+            dataSource={data}
+            pagination={false}
+            rowKey="id"
+            scroll={{ x: 400 }}
+          />
+        </>
+      )}
+    </Flex>
+  );
+};
+
+const Orderant = ({
   isLoggedIn,
   messageApi,
 }: {
-  refresh: boolean;
-  setRefresh: (data: any) => void;
   isLoggedIn: boolean;
   messageApi: any;
 }) => {
-  const [data, setData] = useState([]);
+  const [refresh, setRefresh] = useState(false);
   const [currentId, setCurrentId] = useState<number | null>(null);
   const [patchPopup, setPatchPopup] = useState(false);
-  const orderColumn: ColumnsType<OrderType> = [
+  const defaultColumns: ColumnsType<OrderType> = [
     {
       title: "ID",
       dataIndex: "id",
@@ -780,70 +891,62 @@ const GetAllOrders = ({
         );
       },
     },
-    {
-      title: "",
-      dataIndex: "actions",
-      key: "actions",
-      fixed: "right",
-      width: 200,
-      render: (text: any, record: OrderType, index: number) => {
-        return (
-          <Space>
-            <Button
-              icon={<AiOutlineEdit />}
-              onClick={() => {
-                setCurrentId(record.id);
-                setPatchPopup(true);
-              }}
-            >
-              Edit
-            </Button>
-            <Popconfirm
-              placement="topRight"
-              title="Delete Order"
-              description="Are you sure to delete this order?"
-              onConfirm={() =>
-                DeleteOrder(record.id, refresh, setRefresh, messageApi)
-              }
-              okText="Yes"
-              cancelText="No"
-            >
-              <Button icon={<AiOutlineDelete />} danger>
-                Delete
-              </Button>
-            </Popconfirm>
-          </Space>
-        );
-      },
-    },
   ];
-
+  const actionColumn: ColumnType<OrderType> = {
+    title: "",
+    dataIndex: "actions",
+    key: "actions",
+    fixed: "right",
+    width: 200,
+    render: (text: any, record: OrderType, index: number) => {
+      return (
+        <Space>
+          <Button
+            icon={<AiOutlineEdit />}
+            onClick={() => {
+              setCurrentId(record.id);
+              setPatchPopup(true);
+            }}
+          >
+            Edit
+          </Button>
+          <Popconfirm
+            placement="topRight"
+            title="Delete Order"
+            description="Are you sure to delete this order?"
+            onConfirm={() =>
+              DeleteOrder(record.id, refresh, setRefresh, messageApi)
+            }
+            okText="Yes"
+            cancelText="No"
+          >
+            <Button icon={<AiOutlineDelete />} danger>
+              Delete
+            </Button>
+          </Popconfirm>
+        </Space>
+      );
+    },
+  };
+  const [orderColumn, setOrderColumn] =
+    useState<ColumnsType<OrderType>>(defaultColumns);
   useEffect(() => {
-    let getData = async () => {
-      try {
-        const response = await axiosClient.get("/online-shop/orders");
-        setData(response.data);
-        setData((data) => [...data].reverse());
-      } catch (error) {
-        console.log(error);
-      }
-    };
-    getData();
-  }, [refresh]);
+    isLoggedIn
+      ? setOrderColumn([...defaultColumns, actionColumn])
+      : setOrderColumn(defaultColumns);
+  }, [isLoggedIn]);
 
   return (
-    <Flex vertical>
-      <Title level={3}>All Orders</Title>
-      {data.length == 0 ? (
-        "Loading"
-      ) : (
-        <Table
-          rowKey="id"
-          columns={orderColumn}
-          dataSource={data}
-          scroll={{ x: 400, y: 700 }}
+    <Flex vertical gap={15}>
+      <GetOrder refresh={refresh} orderColumn={orderColumn} />
+      {isLoggedIn && (
+        <AddOrder
+          messageApi={messageApi}
+          refresh={refresh}
+          setRefresh={setRefresh}
         />
       )}
+      <GetAllOrders refresh={refresh} orderColumn={orderColumn} />
       {isLoggedIn && (
         <>
           {currentId && (
@@ -859,247 +962,6 @@ const GetAllOrders = ({
           )}
         </>
       )}
-    </Flex>
-  );
-};
-
-interface getschemaInput {
-  orderid: number;
-}
-
-const GetOrder = ({
-  refresh,
-  setRefresh,
-  isLoggedIn,
-  messageApi,
-}: {
-  refresh: boolean;
-  setRefresh: (data: any) => void;
-  isLoggedIn: boolean;
-  messageApi: any;
-}) => {
-  const [data, setData] = useState<OrderType[] | null>(null);
-  const [loading, setLoading] = useState(false);
-  const [getorder] = Form.useForm();
-  const [currentId, setCurrentId] = useState<number | null>(null);
-  const [patchPopup, setPatchPopup] = useState(false);
-  const orderColumn: ColumnsType<OrderType> = [
-    {
-      title: "ID",
-      dataIndex: "id",
-      key: "id",
-      align: "right",
-      width: 80,
-    },
-    {
-      title: "Created Date",
-      dataIndex: "createdDate",
-      key: "createdDate",
-    },
-    {
-      title: "Shipped Date",
-      dataIndex: "shippedDate",
-      key: "shippedDate",
-    },
-    {
-      title: "Shipping Address",
-      dataIndex: "shippingAddress",
-      key: "shippingAddress",
-    },
-    {
-      title: "Shipping City",
-      dataIndex: "shippingCity",
-      key: "shippingCity",
-    },
-    {
-      title: "Payment Type",
-      dataIndex: "paymentType",
-      key: "paymentType",
-    },
-    {
-      title: "Status",
-      dataIndex: "status",
-      key: "status",
-    },
-    {
-      title: "Customer",
-      dataIndex: "customer",
-      key: "customer",
-      render: (text: any, record: OrderType, index: number) => {
-        return (
-          <>{record.customer.firstName + " " + record.customer.lastName}</>
-        );
-      },
-    },
-    {
-      title: "Employee",
-      dataIndex: "employee",
-      key: "employee",
-      render: (text: any, record: OrderType, index: number) => {
-        return (
-          <>{record.employee.firstName + " " + record.employee.lastName}</>
-        );
-      },
-    },
-    {
-      title: "Order",
-      dataIndex: "orderDetails",
-      key: "orderDetails",
-      render: (text: any, record: OrderType, index: number) => {
-        return (
-          <>
-            {record.orderDetails.map((item) => {
-              return item.quantity + " x " + item.product.name;
-            })}
-          </>
-        );
-      },
-    },
-    {
-      title: "",
-      dataIndex: "actions",
-      key: "actions",
-      fixed: "right",
-      width: 200,
-      render: (text: any, record: OrderType, index: number) => {
-        return (
-          <Space>
-            <Button
-              icon={<AiOutlineEdit />}
-              onClick={() => {
-                setCurrentId(record.id);
-                setPatchPopup(true);
-              }}
-            >
-              Edit
-            </Button>
-            <Popconfirm
-              placement="topRight"
-              title="Delete Order"
-              description="Are you sure to delete this order?"
-              onConfirm={() =>
-                DeleteOrder(record.id, refresh, setRefresh, messageApi)
-              }
-              okText="Yes"
-              cancelText="No"
-            >
-              <Button icon={<AiOutlineDelete />} danger>
-                Delete
-              </Button>
-            </Popconfirm>
-          </Space>
-        );
-      },
-    },
-  ];
-
-  const submitGetOrder = async (data: getschemaInput) => {
-    try {
-      setLoading(true);
-      const response = await axiosClient.get(
-        "/online-shop/orders/" + data.orderid
-      );
-      setData([response.data]);
-      setLoading(false);
-      getorder.resetFields();
-    } catch (error: any) {
-      setData(null);
-      setLoading(false);
-      message.error(error.response.data.message, 2);
-    }
-  };
-  useEffect(() => {
-    setData(null);
-  }, [refresh]);
-  return (
-    <Flex vertical>
-      <Title level={3}>Get Order by ID</Title>
-      <Form
-        form={getorder}
-        onFinish={submitGetOrder}
-        labelCol={{ span: 8 }}
-        wrapperCol={{ span: 16 }}
-      >
-        <Form.Item
-          name="orderid"
-          rules={[
-            { required: true, message: "ID must be required" },
-            { type: "number", message: "ID must be a number" },
-            { type: "integer", message: "ID must be interger" },
-          ]}
-        >
-          <InputNumber
-            type="number"
-            name="orderid"
-            min={1}
-            step={1}
-          ></InputNumber>
-        </Form.Item>
-        <Button loading={loading} onClick={() => getorder.submit()}>
-          Get this Order ID
-        </Button>
-      </Form>
-      {data && (
-        <>
-          <Table
-            columns={orderColumn}
-            dataSource={data}
-            pagination={false}
-            rowKey="id"
-            scroll={{ x: 400 }}
-          />
-
-          {isLoggedIn && (
-            <>
-              {currentId && (
-                <PatchOrder
-                  currentId={currentId}
-                  setCurrentId={setCurrentId}
-                  refresh={refresh}
-                  setRefresh={setRefresh}
-                  patchPopup={patchPopup}
-                  setPatchPopup={setPatchPopup}
-                  messageApi={messageApi}
-                />
-              )}
-            </>
-          )}
-        </>
-      )}
-    </Flex>
-  );
-};
-
-const Orderant = ({
-  isLoggedIn,
-  messageApi,
-}: {
-  isLoggedIn: boolean;
-  messageApi: any;
-}) => {
-  const [refresh, setRefresh] = useState(false);
-
-  return (
-    <Flex vertical gap={15}>
-      <GetOrder
-        refresh={refresh}
-        setRefresh={setRefresh}
-        isLoggedIn={isLoggedIn}
-        messageApi={messageApi}
-      />
-      {isLoggedIn && (
-        <AddOrder
-          messageApi={messageApi}
-          refresh={refresh}
-          setRefresh={setRefresh}
-        />
-      )}
-      <GetAllOrders
-        refresh={refresh}
-        setRefresh={setRefresh}
-        isLoggedIn={isLoggedIn}
-        messageApi={messageApi}
-      />
     </Flex>
   );
 };

@@ -13,6 +13,7 @@ import {
   Tabs,
   message,
   notification,
+  theme,
 } from "antd";
 import { Content, Header } from "antd/es/layout/layout";
 import Loginant from "./Login/Loginant";
@@ -34,6 +35,14 @@ import {
   BrowserRouter,
 } from "react-router-dom";
 import Sider from "antd/es/layout/Sider";
+import {
+  MdOutlineCategory,
+  MdOutlineInbox,
+  MdOutlineLocalShipping,
+  MdOutlinePeopleOutline,
+  MdOutlinePerson3,
+  MdOutlineShoppingCart,
+} from "react-icons/md";
 
 type Props = {
   isLoggedIn: boolean;
@@ -97,7 +106,9 @@ export default function Networking({
   setIsLoggedIn,
 }: Props) {
   const [collapseSidebar, setCollapseSidebar] = React.useState(false);
-
+  const {
+    token: { colorBgContainer },
+  } = theme.useToken();
   return (
     <ConfigProvider locale={locale}>
       <Layout>
@@ -114,7 +125,7 @@ export default function Networking({
             items={[
               {
                 key: "home",
-                label: "Trang chủ",
+                label: <Link to="/">Trang chủ</Link>,
               },
             ]}
           />
@@ -125,39 +136,53 @@ export default function Networking({
           />
         </Header>
         <Content>
-          <Layout>
-            <Sider>
+          <Layout
+          // style={{background: colorBgContainer}}
+          >
+            <Sider
+              // style={{ background: colorBgContainer }}
+              collapsible
+              theme="light"
+            >
               <Menu
                 // theme="dark"
                 items={[
                   {
                     key: "category",
                     label: <Link to="category">Category</Link>,
+                    icon: <MdOutlineCategory />,
                   },
                   {
                     key: "supplier",
                     label: <Link to={"supplier"}>Supplier</Link>,
+                    icon: <MdOutlineLocalShipping />,
                   },
                   {
                     key: "employee",
                     label: <Link to={"employee"}>Employee</Link>,
+                    icon: <MdOutlinePerson3 />,
                   },
                   {
                     key: "customer",
                     label: <Link to={"customer"}>Customer</Link>,
+                    icon: <MdOutlinePeopleOutline />,
                   },
                   {
                     key: "product",
                     label: <Link to={"product"}>Product</Link>,
+                    icon: <MdOutlineInbox />,
                   },
                   {
                     key: "order",
                     label: <Link to={"order"}>Order</Link>,
+                    icon: <MdOutlineShoppingCart />,
                   },
                 ]}
               />
             </Sider>
-            <Outlet />
+            <div style={{ padding: 10 }}>
+              <Outlet />
+            </div>
           </Layout>
         </Content>
       </Layout>

@@ -14,6 +14,7 @@ import Customerant from "./Customer";
 import Productant from "./Product";
 import Orderant from "./Order";
 import Networking from ".";
+import ErrorPage from "./ErrorPage";
 
 type Props = {};
 
@@ -35,6 +36,7 @@ export default function Router({}: Props) {
           setIsLoggedIn={setIsLoggedIn}
         />
       ),
+      errorElement: <ErrorPage />,
       children: [
         {
           path: "/category",

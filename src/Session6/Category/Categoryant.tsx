@@ -4,6 +4,7 @@ import axiosClient from "../config/axiosClient";
 import {
   Alert,
   Button,
+  Divider,
   Flex,
   Form,
   Input,
@@ -11,12 +12,17 @@ import {
   Modal,
   Popconfirm,
   Space,
+  Spin,
   Table,
   message,
 } from "antd";
 import Title from "antd/es/typography/Title";
-import type { ColumnsType } from "antd/es/table";
-import { AiOutlineDelete, AiOutlineEdit } from "react-icons/ai";
+import type { ColumnType, ColumnsType } from "antd/es/table";
+import {
+  AiOutlineDelete,
+  AiOutlineEdit,
+  AiOutlineLoading3Quarters,
+} from "react-icons/ai";
 import TextArea from "antd/es/input/TextArea";
 type Props = {};
 
@@ -267,74 +273,13 @@ interface CategoryType {
 
 const GetAllCategories = ({
   refresh,
-  setRefresh,
-  isLoggedIn,
-  messageApi,
+  categoryColumn,
 }: {
   refresh: boolean;
-  setRefresh: (data: any) => void;
-  isLoggedIn: boolean;
-  messageApi: any;
+
+  categoryColumn: ColumnsType<CategoryType>;
 }) => {
   const [data, setData] = useState([]);
-  const [currentId, setCurrentId] = useState<number | null>(null);
-  const [patchPopup, setPatchPopup] = useState(false);
-  const categoryColumn: ColumnsType<CategoryType> = [
-    {
-      title: "ID",
-      dataIndex: "id",
-      key: "id",
-      align: "right",
-      width: 80,
-    },
-    {
-      title: "Category Name",
-      dataIndex: "name",
-      key: "name",
-    },
-    {
-      title: "Description",
-      dataIndex: "description",
-      key: "description",
-    },
-    {
-      title: "",
-      dataIndex: "actions",
-      key: "actions",
-      fixed: "right",
-      width: 200,
-      render: (text: any, record: CategoryType, index: number) => {
-        return (
-          <Space>
-            <Button
-              icon={<AiOutlineEdit />}
-              onClick={() => {
-                setCurrentId(record.id);
-                setPatchPopup(true);
-              }}
-            >
-              Edit
-            </Button>
-            <Popconfirm
-              placement="topRight"
-              title="Delete Category"
-              description="Are you sure to delete this category?"
-              onConfirm={() =>
-                DeleteCategory(record.id, refresh, setRefresh, messageApi)
-              }
-              okText="Yes"
-              cancelText="No"
-            >
-              <Button icon={<AiOutlineDelete />} danger>
-                Delete
-              </Button>
-            </Popconfirm>
-          </Space>
-        );
-      },
-    },
-  ];
-
   useEffect(() => {
     let getData = async () => {
       try {
@@ -352,7 +297,7 @@ const GetAllCategories = ({
     <Flex vertical>
       <Title level={3}>All Categories</Title>
       {data.length == 0 ? (
-        "Loading"
+        <Spin />
       ) : (
         <Table
           rowKey="id"
@@ -360,21 +305,6 @@ const GetAllCategories = ({
           dataSource={data}
           scroll={{ x: 400, y: 700 }}
         />
-      )}
-      {isLoggedIn && (
-        <>
-          {currentId && (
-            <PatchCategory
-              currentId={currentId}
-              setCurrentId={setCurrentId}
-              refresh={refresh}
-              setRefresh={setRefresh}
-              patchPopup={patchPopup}
-              setPatchPopup={setPatchPopup}
-              messageApi={messageApi}
-            />
-          )}
-        </>
       )}
     </Flex>
   );
@@ -386,75 +316,14 @@ interface getschemaInput {
 
 const GetCategory = ({
   refresh,
-  setRefresh,
-  isLoggedIn,
-  messageApi,
+  categoryColumn,
 }: {
   refresh: boolean;
-  setRefresh: (data: any) => void;
-  isLoggedIn: boolean;
-  messageApi: any;
+  categoryColumn: ColumnsType<CategoryType>;
 }) => {
   const [data, setData] = useState<CategoryType[] | null>(null);
   const [loading, setLoading] = useState(false);
   const [getcategory] = Form.useForm();
-  const [currentId, setCurrentId] = useState<number | null>(null);
-  const [patchPopup, setPatchPopup] = useState(false);
-  const categoryColumn: ColumnsType<CategoryType> = [
-    {
-      title: "ID",
-      dataIndex: "id",
-      key: "id",
-      align: "right",
-      width: 80,
-    },
-    {
-      title: "Category Name",
-      dataIndex: "name",
-      key: "name",
-    },
-    {
-      title: "Description",
-      dataIndex: "description",
-      key: "description",
-    },
-    {
-      title: "",
-      dataIndex: "actions",
-      key: "actions",
-      fixed: "right",
-      width: 200,
-      render: (text: any, record: CategoryType, index: number) => {
-        return (
-          <Flex>
-            <Button
-              icon={<AiOutlineEdit />}
-              onClick={() => {
-                setCurrentId(record.id);
-                setPatchPopup(true);
-              }}
-            >
-              Edit
-            </Button>
-            <Popconfirm
-              placement="topRight"
-              title="Delete Category"
-              description="Are you sure to delete this category?"
-              onConfirm={() =>
-                DeleteCategory(record.id, refresh, setRefresh, messageApi)
-              }
-              okText="Yes"
-              cancelText="No"
-            >
-              <Button icon={<AiOutlineDelete />} danger>
-                Delete
-              </Button>
-            </Popconfirm>
-          </Flex>
-        );
-      },
-    },
-  ];
   const submitGetCategory = async (data: getschemaInput) => {
     try {
       setLoading(true);
@@ -501,6 +370,7 @@ const GetCategory = ({
           Get this Category ID
         </Button>
       </Form>
+      <Divider plain />
       {data && (
         <>
           <Table
@@ -510,22 +380,6 @@ const GetCategory = ({
             rowKey="id"
             scroll={{ x: 400 }}
           />
-
-          {isLoggedIn && (
-            <>
-              {currentId && (
-                <PatchCategory
-                  currentId={currentId}
-                  setCurrentId={setCurrentId}
-                  refresh={refresh}
-                  setRefresh={setRefresh}
-                  patchPopup={patchPopup}
-                  setPatchPopup={setPatchPopup}
-                  messageApi={messageApi}
-                />
-              )}
-            </>
-          )}
         </>
       )}
     </Flex>
@@ -540,15 +394,76 @@ const Categoryant = ({
   messageApi: any;
 }) => {
   const [refresh, setRefresh] = useState(false);
+  const [currentId, setCurrentId] = useState<number | null>(null);
+  const [patchPopup, setPatchPopup] = useState(false);
+  const defaultColumns: ColumnsType<CategoryType> = [
+    {
+      title: "ID",
+      dataIndex: "id",
+      key: "id",
+      align: "right",
+      defaultSortOrder: "descend",
+      sorter: (a, b) => a.id - b.id,
+      width: 80,
+    },
+    {
+      title: "Category Name",
+      dataIndex: "name",
+      key: "name",
+    },
+    {
+      title: "Description",
+      dataIndex: "description",
+      key: "description",
+    },
+  ];
+  const actionColumn: ColumnType<CategoryType> = {
+    title: "",
+    dataIndex: "actions",
+    key: "actions",
+    fixed: "right",
+    width: 200,
+    render: (text: any, record: CategoryType, index: number) => {
+      return (
+        <Space>
+          <Button
+            icon={<AiOutlineEdit />}
+            onClick={() => {
+              setCurrentId(record.id);
+              setPatchPopup(true);
+            }}
+          >
+            Edit
+          </Button>
+          <Popconfirm
+            placement="topRight"
+            title="Delete Category"
+            description="Are you sure to delete this category?"
+            onConfirm={() =>
+              DeleteCategory(record.id, refresh, setRefresh, messageApi)
+            }
+            okText="Yes"
+            cancelText="No"
+          >
+            <Button icon={<AiOutlineDelete />} danger>
+              Delete
+            </Button>
+          </Popconfirm>
+        </Space>
+      );
+    },
+  };
+  const [categoryColumn, setCategoryColumn] =
+    useState<ColumnsType<CategoryType>>(defaultColumns);
+  useEffect(() => {
+    isLoggedIn
+      ? setCategoryColumn([...defaultColumns, actionColumn])
+      : setCategoryColumn(defaultColumns);
+  }, [isLoggedIn]);
 
   return (
     <Flex vertical gap={15}>
-      <GetCategory
-        refresh={refresh}
-        setRefresh={setRefresh}
-        isLoggedIn={isLoggedIn}
-        messageApi={messageApi}
-      />
+      <GetCategory refresh={refresh} categoryColumn={categoryColumn} />
       {isLoggedIn && (
         <AddCategory
           messageApi={messageApi}
@@ -556,12 +471,22 @@ const Categoryant = ({
           setRefresh={setRefresh}
         />
       )}
-      <GetAllCategories
-        refresh={refresh}
-        setRefresh={setRefresh}
-        isLoggedIn={isLoggedIn}
-        messageApi={messageApi}
-      />
+      <GetAllCategories refresh={refresh} categoryColumn={categoryColumn} />
+      {isLoggedIn && (
+        <>
+          {currentId && (
+            <PatchCategory
+              currentId={currentId}
+              setCurrentId={setCurrentId}
+              refresh={refresh}
+              setRefresh={setRefresh}
+              patchPopup={patchPopup}
+              setPatchPopup={setPatchPopup}
+              messageApi={messageApi}
+            />
+          )}
+        </>
+      )}
     </Flex>
   );
 };

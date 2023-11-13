@@ -12,6 +12,7 @@ import {
   Modal,
   Popconfirm,
   Space,
+  Spin,
   Table,
   message,
 } from "antd";
@@ -19,7 +20,7 @@ import dayjs from "dayjs";
 import utc from "dayjs/plugin/utc";
 import customParseFormat from "dayjs/plugin/customParseFormat";
 import Title from "antd/es/typography/Title";
-import type { ColumnsType } from "antd/es/table";
+import type { ColumnType, ColumnsType } from "antd/es/table";
 import { AiOutlineDelete, AiOutlineEdit } from "react-icons/ai";
 import TextArea from "antd/es/input/TextArea";
 type Props = {};
@@ -323,98 +324,12 @@ interface CustomerType extends addschemaInput {
 
 const GetAllCustomers = ({
   refresh,
-  setRefresh,
-  isLoggedIn,
-  messageApi,
+  customerColumn,
 }: {
   refresh: boolean;
-  setRefresh: (data: any) => void;
-  isLoggedIn: boolean;
-  messageApi: any;
+  customerColumn: ColumnsType<CustomerType>;
 }) => {
   const [data, setData] = useState([]);
-  const [currentId, setCurrentId] = useState<number | null>(null);
-  const [patchPopup, setPatchPopup] = useState(false);
-  const customerColumn: ColumnsType<CustomerType> = [
-    {
-      title: "ID",
-      dataIndex: "id",
-      key: "id",
-      align: "right",
-      width: 80,
-    },
-    {
-      title: "Customer First Name",
-      dataIndex: "firstName",
-      key: "firstName",
-    },
-    {
-      title: "Customer Last Name",
-      dataIndex: "lastName",
-      key: "lastName",
-    },
-    {
-      title: "Email",
-      dataIndex: "email",
-      key: "email",
-    },
-    {
-      title: "Phone Number",
-      dataIndex: "phoneNumber",
-      key: "phoneNumber",
-    },
-    {
-      title: "Address",
-      dataIndex: "address",
-      key: "address",
-    },
-    {
-      title: "Birthday",
-      dataIndex: "birthday",
-      key: "birthday",
-      render: (text: any, record: CustomerType, index: number) => {
-        return (
-          <>{record.birthday && dayjs(record.birthday).format(dateFormat)}</>
-        );
-      },
-    },
-    {
-      title: "",
-      dataIndex: "actions",
-      key: "actions",
-      fixed: "right",
-      width: 200,
-      render: (text: any, record: CustomerType, index: number) => {
-        return (
-          <Space>
-            <Button
-              icon={<AiOutlineEdit />}
-              onClick={() => {
-                setCurrentId(record.id);
-                setPatchPopup(true);
-              }}
-            >
-              Edit
-            </Button>
-            <Popconfirm
-              placement="topRight"
-              title="Delete Customer"
-              description="Are you sure to delete this customer?"
-              onConfirm={() =>
-                DeleteCustomer(record.id, refresh, setRefresh, messageApi)
-              }
-              okText="Yes"
-              cancelText="No"
-            >
-              <Button icon={<AiOutlineDelete />} danger>
-                Delete
-              </Button>
-            </Popconfirm>
-          </Space>
-        );
-      },
-    },
-  ];
 
   useEffect(() => {
     let getData = async () => {
@@ -433,7 +348,7 @@ const GetAllCustomers = ({
     <Flex vertical>
       <Title level={3}>All Customers</Title>
       {data.length == 0 ? (
-        "Loading"
+        <Spin />
       ) : (
         <Table
           rowKey="id"
@@ -441,21 +356,6 @@ const GetAllCustomers = ({
           dataSource={data}
           scroll={{ x: 400, y: 800 }}
         />
-      )}
-      {isLoggedIn && (
-        <>
-          {currentId && (
-            <PatchCustomer
-              currentId={currentId}
-              setCurrentId={setCurrentId}
-              refresh={refresh}
-              setRefresh={setRefresh}
-              patchPopup={patchPopup}
-              setPatchPopup={setPatchPopup}
-              messageApi={messageApi}
-            />
-          )}
-        </>
       )}
     </Flex>
   );
@@ -467,100 +367,15 @@ interface getschemaInput {
 
 const GetCustomer = ({
   refresh,
-  setRefresh,
-  isLoggedIn,
-  messageApi,
+  customerColumn,
 }: {
   refresh: boolean;
-  setRefresh: (data: any) => void;
-  isLoggedIn: boolean;
-  messageApi: any;
+  customerColumn: ColumnsType<CustomerType>;
 }) => {
   const [data, setData] = useState<CustomerType[] | null>(null);
   const [loading, setLoading] = useState(false);
   const [getcustomer] = Form.useForm();
-  const [currentId, setCurrentId] = useState<number | null>(null);
-  const [patchPopup, setPatchPopup] = useState(false);
-  const customerColumn: ColumnsType<CustomerType> = [
-    {
-      title: "ID",
-      dataIndex: "id",
-      key: "id",
-      align: "right",
-      width: 80,
-    },
-    {
-      title: "Customer First Name",
-      dataIndex: "firstName",
-      key: "firstName",
-    },
-    {
-      title: "Customer Last Name",
-      dataIndex: "lastName",
-      key: "lastName",
-    },
-    {
-      title: "Email",
-      dataIndex: "email",
-      key: "email",
-    },
-    {
-      title: "Phone Number",
-      dataIndex: "phoneNumber",
-      key: "phoneNumber",
-    },
-    {
-      title: "Address",
-      dataIndex: "address",
-      key: "address",
-    },
-    {
-      title: "Birthday",
-      dataIndex: "birthday",
-      key: "birthday",
-      render: (text: any, record: CustomerType, index: number) => {
-        return (
-          <>{record.birthday && dayjs(record.birthday).format(dateFormat)}</>
-        );
-      },
-    },
-    {
-      title: "",
-      dataIndex: "actions",
-      key: "actions",
-      fixed: "right",
-      width: 220,
-      render: (text: any, record: CustomerType, index: number) => {
-        return (
-          <Flex>
-            <Button
-              icon={<AiOutlineEdit />}
-              onClick={() => {
-                setCurrentId(record.id);
-                setPatchPopup(true);
-              }}
-            >
-              Edit
-            </Button>
-            <Popconfirm
-              placement="topRight"
-              title="Delete Customer"
-              description="Are you sure to delete this customer?"
-              onConfirm={() =>
-                DeleteCustomer(record.id, refresh, setRefresh, messageApi)
-              }
-              okText="Yes"
-              cancelText="No"
-            >
-              <Button icon={<AiOutlineDelete />} danger>
-                Delete
-              </Button>
-            </Popconfirm>
-          </Flex>
-        );
-      },
-    },
-  ];
+
   const submitGetCustomer = async (data: getschemaInput) => {
     try {
       setLoading(true);
@@ -616,22 +431,6 @@ const GetCustomer = ({
             rowKey="id"
             scroll={{ x: 400 }}
           />
-
-          {isLoggedIn && (
-            <>
-              {currentId && (
-                <PatchCustomer
-                  currentId={currentId}
-                  setCurrentId={setCurrentId}
-                  refresh={refresh}
-                  setRefresh={setRefresh}
-                  patchPopup={patchPopup}
-                  setPatchPopup={setPatchPopup}
-                  messageApi={messageApi}
-                />
-              )}
-            </>
-          )}
         </>
       )}
     </Flex>
@@ -646,15 +445,102 @@ const Customerant = ({
   messageApi: any;
 }) => {
   const [refresh, setRefresh] = useState(false);
+  const [currentId, setCurrentId] = useState<number | null>(null);
+  const [patchPopup, setPatchPopup] = useState(false);
+  const defaultColumns: ColumnsType<CustomerType> = [
+    {
+      title: "ID",
+      dataIndex: "id",
+      key: "id",
+      align: "right",
+      defaultSortOrder: "descend",
+      sorter: (a, b) => a.id - b.id,
+      width: 80,
+    },
+    {
+      title: "Customer First Name",
+      dataIndex: "firstName",
+      key: "firstName",
+    },
+    {
+      title: "Customer Last Name",
+      dataIndex: "lastName",
+      key: "lastName",
+    },
+    {
+      title: "Email",
+      dataIndex: "email",
+      key: "email",
+    },
+    {
+      title: "Phone Number",
+      dataIndex: "phoneNumber",
+      key: "phoneNumber",
+    },
+    {
+      title: "Address",
+      dataIndex: "address",
+      key: "address",
+    },
+    {
+      title: "Birthday",
+      dataIndex: "birthday",
+      key: "birthday",
+      render: (text: any, record: CustomerType, index: number) => {
+        return (
+          <>{record.birthday && dayjs(record.birthday).format(dateFormat)}</>
+        );
+      },
+    },
+  ];
+  const actionColumn: ColumnType<CustomerType> = {
+    title: "",
+    dataIndex: "actions",
+    key: "actions",
+    fixed: "right",
+    width: 200,
+    render: (text: any, record: CustomerType, index: number) => {
+      return (
+        <Space>
+          <Button
+            icon={<AiOutlineEdit />}
+            onClick={() => {
+              setCurrentId(record.id);
+              setPatchPopup(true);
+            }}
+          >
+            Edit
+          </Button>
+          <Popconfirm
+            placement="topRight"
+            title="Delete Customer"
+            description="Are you sure to delete this customer?"
+            onConfirm={() =>
+              DeleteCustomer(record.id, refresh, setRefresh, messageApi)
+            }
+            okText="Yes"
+            cancelText="No"
+          >
+            <Button icon={<AiOutlineDelete />} danger>
+              Delete
+            </Button>
+          </Popconfirm>
+        </Space>
+      );
+    },
+  };
+
+  const [customerColumn, setCustomerColumn] =
+    useState<ColumnsType<CustomerType>>(defaultColumns);
+  useEffect(() => {
+    isLoggedIn
+      ? setCustomerColumn([...defaultColumns, actionColumn])
+      : setCustomerColumn(defaultColumns);
+  }, [isLoggedIn]);
 
   return (
     <Flex vertical gap={15}>
-      <GetCustomer
-        refresh={refresh}
-        setRefresh={setRefresh}
-        isLoggedIn={isLoggedIn}
-        messageApi={messageApi}
-      />
+      <GetCustomer refresh={refresh} customerColumn={customerColumn} />
       {isLoggedIn && (
         <AddCustomer
           messageApi={messageApi}
@@ -662,12 +548,22 @@ const Customerant = ({
           setRefresh={setRefresh}
         />
       )}
-      <GetAllCustomers
-        refresh={refresh}
-        setRefresh={setRefresh}
-        isLoggedIn={isLoggedIn}
-        messageApi={messageApi}
-      />
+      <GetAllCustomers refresh={refresh} customerColumn={customerColumn} />
+      {isLoggedIn && (
+        <>
+          {currentId && (
+            <PatchCustomer
+              currentId={currentId}
+              setCurrentId={setCurrentId}
+              refresh={refresh}
+              setRefresh={setRefresh}
+              patchPopup={patchPopup}
+              setPatchPopup={setPatchPopup}
+              messageApi={messageApi}
+            />
+          )}
+        </>
+      )}
     </Flex>
   );
 };
