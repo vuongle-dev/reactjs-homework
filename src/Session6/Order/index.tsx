@@ -618,6 +618,10 @@ const PatchOrder = ({
     <Modal
       title="Modify Order"
       open={patchPopup}
+      onCancel={() => {
+        setPatchPopup(false);
+        setCurrentId(null);
+      }}
       width="70vw"
       footer=<Row>
         <Col span={6} />

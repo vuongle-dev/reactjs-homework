@@ -262,6 +262,10 @@ const PatchEmployee = ({
     <Modal
       title="Modify Employee"
       open={patchPopup}
+      onCancel={() => {
+        setPatchPopup(false);
+        setCurrentId(null);
+      }}
       width="70vw"
       footer=<Row>
         <Col span={6} />

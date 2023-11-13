@@ -262,6 +262,10 @@ const PatchCustomer = ({
     <Modal
       title="Modify Customer"
       open={patchPopup}
+      onCancel={() => {
+        setPatchPopup(false);
+        setCurrentId(null);
+      }}
       width="70vw"
       footer=<Row>
         <Col span={6} />
