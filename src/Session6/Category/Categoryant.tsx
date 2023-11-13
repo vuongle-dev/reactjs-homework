@@ -4,6 +4,7 @@ import axiosClient from "../config/axiosClient";
 import {
   Alert,
   Button,
+  Col,
   Divider,
   Flex,
   Form,
@@ -11,6 +12,7 @@ import {
   InputNumber,
   Modal,
   Popconfirm,
+  Row,
   Space,
   Spin,
   Table,
@@ -207,12 +209,25 @@ const PatchCategory = ({
     <Modal
       title="Modify Category"
       open={patchPopup}
-      onCancel={() => {
-        setPatchPopup(false);
-        setCurrentId(null);
-      }}
-      onOk={() => patchcategory.submit()}
-      okText="Change this Category"
+      width="70vw"
+      footer=<Row>
+        <Col span={6} />
+        <Col>
+          <Space>
+            <Button type="primary" onClick={() => patchcategory.submit()}>
+              Change this Category
+            </Button>
+            <Button
+              onClick={() => {
+                setPatchPopup(false);
+                setCurrentId(null);
+              }}
+            >
+              Cancel
+            </Button>
+          </Space>
+        </Col>
+      </Row>
     >
       {initialData && (
         <CategoryForm

@@ -4,6 +4,7 @@ import axiosClient from "../config/axiosClient";
 import {
   Alert,
   Button,
+  Col,
   DatePicker,
   Flex,
   Form,
@@ -11,6 +12,7 @@ import {
   InputNumber,
   Modal,
   Popconfirm,
+  Row,
   Space,
   Spin,
   Table,
@@ -260,12 +262,25 @@ const PatchEmployee = ({
     <Modal
       title="Modify Employee"
       open={patchPopup}
-      onCancel={() => {
-        setPatchPopup(false);
-        setCurrentId(null);
-      }}
-      onOk={() => patchemployee.submit()}
-      okText="Change this Employee"
+      width="70vw"
+      footer=<Row>
+        <Col span={6} />
+        <Col>
+          <Space>
+            <Button type="primary" onClick={() => patchemployee.submit()}>
+              Change this Category
+            </Button>
+            <Button
+              onClick={() => {
+                setPatchPopup(false);
+                setCurrentId(null);
+              }}
+            >
+              Cancel
+            </Button>
+          </Space>
+        </Col>
+      </Row>
     >
       {initialData && (
         <EmployeeForm

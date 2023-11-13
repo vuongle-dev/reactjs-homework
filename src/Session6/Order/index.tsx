@@ -4,6 +4,7 @@ import axiosClient from "../config/axiosClient";
 import {
   Alert,
   Button,
+  Col,
   DatePicker,
   Flex,
   Form,
@@ -12,6 +13,7 @@ import {
   Modal,
   Popconfirm,
   Radio,
+  Row,
   Select,
   Space,
   Spin,
@@ -616,12 +618,25 @@ const PatchOrder = ({
     <Modal
       title="Modify Order"
       open={patchPopup}
-      onCancel={() => {
-        setPatchPopup(false);
-        setCurrentId(null);
-      }}
-      onOk={() => patchorder.submit()}
-      okText="Change this Order"
+      width="70vw"
+      footer=<Row>
+        <Col span={6} />
+        <Col>
+          <Space>
+            <Button type="primary" onClick={() => patchorder.submit()}>
+              Change this Category
+            </Button>
+            <Button
+              onClick={() => {
+                setPatchPopup(false);
+                setCurrentId(null);
+              }}
+            >
+              Cancel
+            </Button>
+          </Space>
+        </Col>
+      </Row>
     >
       {initialData && (
         <OrderForm

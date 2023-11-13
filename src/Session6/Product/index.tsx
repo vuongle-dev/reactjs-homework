@@ -4,12 +4,14 @@ import axiosClient from "../config/axiosClient";
 import {
   Alert,
   Button,
+  Col,
   Flex,
   Form,
   Input,
   InputNumber,
   Modal,
   Popconfirm,
+  Row,
   Select,
   Space,
   Spin,
@@ -296,12 +298,25 @@ const PatchProduct = ({
     <Modal
       title="Modify Product"
       open={patchPopup}
-      onCancel={() => {
-        setPatchPopup(false);
-        setCurrentId(null);
-      }}
-      onOk={() => patchproduct.submit()}
-      okText="Change this Product"
+      width="70vw"
+      footer=<Row>
+        <Col span={6} />
+        <Col>
+          <Space>
+            <Button type="primary" onClick={() => patchproduct.submit()}>
+              Change this Category
+            </Button>
+            <Button
+              onClick={() => {
+                setPatchPopup(false);
+                setCurrentId(null);
+              }}
+            >
+              Cancel
+            </Button>
+          </Space>
+        </Col>
+      </Row>
     >
       {initialData && (
         <ProductForm
