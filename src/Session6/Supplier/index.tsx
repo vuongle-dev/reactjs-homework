@@ -1,26 +1,10 @@
 import React, { useEffect, useState } from "react";
 import styles from "./Supplier.module.css";
-import axiosClient from "../config/axiosClient";
-import {
-  Alert,
-  Button,
-  Col,
-  Flex,
-  Form,
-  Input,
-  InputNumber,
-  Modal,
-  Popconfirm,
-  Row,
-  Space,
-  Spin,
-  Table,
-  message,
-} from "antd";
-import Title from "antd/es/typography/Title";
-import type { ColumnType, ColumnsType } from "antd/es/table";
-import { AiOutlineDelete, AiOutlineEdit } from "react-icons/ai";
+
+import { Form, Input } from "antd";
+import type { ColumnsType } from "antd/es/table";
 import TextArea from "antd/es/input/TextArea";
+import SubjectTemplate from "../Components/SubjectTemplate";
 type Props = {};
 
 interface addschemaInput {
@@ -35,8 +19,8 @@ const SupplierForm = ({
   onFinish,
   initialValues,
 }: {
-  form: any;
-  onFinish: (data: any) => void;
+  form?: any;
+  onFinish?: (data: any) => void;
   initialValues?: addschemaInput;
 }) => {
   return (
@@ -94,212 +78,6 @@ const SupplierForm = ({
     </Form>
   );
 };
-
-const AddSupplier = ({
-  refresh,
-  setRefresh,
-  messageApi,
-}: {
-  refresh: boolean;
-  setRefresh: (data: any) => void;
-  messageApi: any;
-}) => {
-  const [addsupplier] = Form.useForm();
-
-  const submitAddSupplier = async (data: addschemaInput) => {
-    try {
-      messageApi.open({
-        key: "addsupplier",
-        type: "loading",
-        content: "Loading",
-      });
-      const response = await axiosClient.post("/online-shop/suppliers/", data, {
-        headers: {
-          Authorization: "Bearer " + localStorage.getItem("access_token"),
-        },
-      });
-      addsupplier.resetFields();
-      messageApi.open({
-        key: "addsupplier",
-        type: "success",
-        content:
-          "Add " +
-          response.data.name +
-          " supplier with ID: " +
-          response.data.id,
-        duration: 2,
-      });
-      setRefresh(!refresh);
-    } catch (error: any) {
-      messageApi.open({
-        key: "addsupplier",
-        type: "error",
-        content:
-          error.response.data.message + ", try another email / phone number",
-        duration: 2,
-      });
-    }
-  };
-  return (
-    <Flex vertical>
-      <Title level={3}>Add Supplier</Title>
-      <SupplierForm form={addsupplier} onFinish={submitAddSupplier} />
-
-      <Form.Item wrapperCol={{ offset: 6 }}>
-        <Space>
-          <Button type="primary" onClick={() => addsupplier.submit()}>
-            Add this Supplier
-          </Button>
-          <Button onClick={() => addsupplier.resetFields()}>Reset</Button>
-        </Space>
-      </Form.Item>
-    </Flex>
-  );
-};
-
-const PatchSupplier = ({
-  currentId,
-  setCurrentId,
-  refresh,
-  setRefresh,
-  patchPopup,
-  setPatchPopup,
-  messageApi,
-}: {
-  currentId: number;
-  setCurrentId: (data: any) => void;
-  refresh: boolean;
-  setRefresh: (data: any) => void;
-  patchPopup: boolean;
-  setPatchPopup: (data: any) => void;
-  messageApi: any;
-}) => {
-  const [error, setError] = useState<string | null>(null);
-  const [patchsupplier] = Form.useForm();
-  const [initialData, setInitialData] = useState<addschemaInput | null>();
-  useEffect(() => {
-    const GetSupplier = async () => {
-      try {
-        const response = await axiosClient.get(
-          "/online-shop/suppliers/" + currentId
-        );
-        setInitialData(response.data);
-        console.log(initialData);
-      } catch (error: any) {
-        message.error(error.response.data.message, 2);
-        setRefresh(!refresh);
-        setPatchPopup(false);
-      }
-    };
-    currentId && GetSupplier();
-  }, [currentId]);
-  const submitPatchSupplier = async (data: addschemaInput) => {
-    try {
-      messageApi.open({
-        key: "addsupplier",
-        type: "loading",
-        content: "Loading",
-      });
-      const response = await axiosClient.patch(
-        "/online-shop/suppliers/" + currentId,
-        data,
-        {
-          headers: {
-            Authorization: "Bearer " + localStorage.getItem("access_token"),
-          },
-        }
-      );
-      messageApi.open({
-        key: "addsupplier",
-        type: "success",
-        content: "Supplier modified successfully",
-      });
-      setError(null);
-      setRefresh(!refresh);
-      setPatchPopup(false);
-    } catch (error: any) {
-      setError(error.response.data.message);
-      messageApi.destroy("addsupplier");
-    }
-  };
-  return (
-    <Modal
-      title="Modify Supplier"
-      open={patchPopup}
-      onCancel={() => {
-        setPatchPopup(false);
-        setCurrentId(null);
-      }}
-      width="70vw"
-      footer=<Row>
-        <Col span={6} />
-        <Col>
-          <Space>
-            <Button type="primary" onClick={() => patchsupplier.submit()}>
-              Change this Category
-            </Button>
-            <Button
-              onClick={() => {
-                setPatchPopup(false);
-                setCurrentId(null);
-              }}
-            >
-              Cancel
-            </Button>
-          </Space>
-        </Col>
-      </Row>
-    >
-      {initialData && (
-        <SupplierForm
-          form={patchsupplier}
-          onFinish={submitPatchSupplier}
-          initialValues={initialData}
-        />
-      )}
-      {error && <Alert message={error} type="error" showIcon closable />}
-    </Modal>
-  );
-};
-
-const DeleteSupplier = (
-  id: number,
-  refresh: boolean,
-  setRefresh: (data: any) => void,
-  messageApi: any
-) => {
-  const ConfirmDeleteSupplier = async () => {
-    try {
-      messageApi.open({
-        key: "deletesupplier",
-        type: "loading",
-        content: "Loading",
-      });
-      const response = await axiosClient.delete(
-        "/online-shop/suppliers/" + id,
-        {
-          headers: {
-            Authorization: "Bearer " + localStorage.getItem("access_token"),
-          },
-        }
-      );
-      messageApi.open({
-        key: "deletesupplier",
-        type: "success",
-        content: "Supplier deleted",
-      });
-      setRefresh(!refresh);
-    } catch (error: any) {
-      messageApi.open({
-        key: "deletesupplier",
-        type: "error",
-        content: error.response.data.message,
-      });
-    }
-  };
-  ConfirmDeleteSupplier();
-};
-
 interface SupplierType {
   key: React.Key;
   id: number;
@@ -307,128 +85,7 @@ interface SupplierType {
   description: string;
 }
 
-const GetAllSuppliers = ({
-  refresh,
-  supplierColumn,
-}: {
-  refresh: boolean;
-  supplierColumn: ColumnsType<SupplierType>;
-}) => {
-  const [data, setData] = useState([]);
-
-  useEffect(() => {
-    let getData = async () => {
-      try {
-        const response = await axiosClient.get("/online-shop/suppliers");
-        setData(response.data);
-        setData((data) => [...data].reverse());
-      } catch (error) {
-        console.log(error);
-      }
-    };
-    getData();
-  }, [refresh]);
-
-  return (
-    <Flex vertical>
-      <Title level={3}>All Suppliers</Title>
-      {data.length == 0 ? (
-        <Spin />
-      ) : (
-        <Table
-          rowKey="id"
-          columns={supplierColumn}
-          dataSource={data}
-          scroll={{ x: 400, y: 700 }}
-        />
-      )}
-    </Flex>
-  );
-};
-
-interface getschemaInput {
-  supplierid: number;
-}
-
-const GetSupplier = ({
-  refresh,
-  supplierColumn,
-}: {
-  refresh: boolean;
-  supplierColumn: ColumnsType<SupplierType>;
-}) => {
-  const [data, setData] = useState<SupplierType[] | null>(null);
-  const [loading, setLoading] = useState(false);
-  const [getsupplier] = Form.useForm();
-
-  const submitGetSupplier = async (data: getschemaInput) => {
-    try {
-      setLoading(true);
-      const response = await axiosClient.get(
-        "/online-shop/suppliers/" + data.supplierid
-      );
-      setData([response.data]);
-      setLoading(false);
-      getsupplier.resetFields();
-    } catch (error: any) {
-      setData(null);
-      setLoading(false);
-      message.error(error.response.data.message, 2);
-    }
-  };
-  useEffect(() => {
-    setData(null);
-  }, [refresh]);
-  return (
-    <Flex vertical>
-      <Title level={3}>Get Supplier by ID</Title>
-      <Form
-        form={getsupplier}
-        onFinish={submitGetSupplier}
-        labelCol={{ span: 8 }}
-        wrapperCol={{ span: 16 }}
-      >
-        <Form.Item
-          name="supplierid"
-          rules={[
-            { required: true, message: "ID must be required" },
-            { type: "number", message: "ID must be a number" },
-            { type: "integer", message: "ID must be interger" },
-          ]}
-        >
-          <InputNumber
-            type="number"
-            name="supplierid"
-            min={1}
-            step={1}
-          ></InputNumber>
-        </Form.Item>
-        <Button loading={loading} onClick={() => getsupplier.submit()}>
-          Get this Supplier ID
-        </Button>
-      </Form>
-      {data && (
-        <>
-          <Table
-            columns={supplierColumn}
-            dataSource={data}
-            pagination={false}
-            rowKey="id"
-            scroll={{ x: 400 }}
-          />
-        </>
-      )}
-    </Flex>
-  );
-};
-
-const Supplierant = ({
-  isLoggedIn,
-  messageApi,
-}: {
-  isLoggedIn: boolean;
-  messageApi: any;
-}) => {
+const Supplierant = () => {
   const [refresh, setRefresh] = useState(false);
   const [currentId, setCurrentId] = useState<number | null>(null);
   const [patchPopup, setPatchPopup] = useState(false);
@@ -463,77 +120,13 @@ const Supplierant = ({
       key: "address",
     },
   ];
-  const actionColumn: ColumnType<SupplierType> = {
-    title: "",
-    dataIndex: "actions",
-    key: "actions",
-    fixed: "right",
-    width: 200,
-    render: (text: any, record: SupplierType, index: number) => {
-      return (
-        <Space>
-          <Button
-            icon={<AiOutlineEdit />}
-            onClick={() => {
-              setCurrentId(record.id);
-              setPatchPopup(true);
-            }}
-          >
-            Edit
-          </Button>
-          <Popconfirm
-            placement="topRight"
-            title="Delete Supplier"
-            description="Are you sure to delete this supplier?"
-            onConfirm={() =>
-              DeleteSupplier(record.id, refresh, setRefresh, messageApi)
-            }
-            okText="Yes"
-            cancelText="No"
-          >
-            <Button icon={<AiOutlineDelete />} danger>
-              Delete
-            </Button>
-          </Popconfirm>
-        </Space>
-      );
-    },
-  };
-  const [supplierColumn, setSupplierColumn] =
-    useState<ColumnsType<SupplierType>>(defaultColumns);
-  useEffect(() => {
-    isLoggedIn
-      ? setSupplierColumn([...defaultColumns, actionColumn])
-      : setSupplierColumn(defaultColumns);
-  }, [isLoggedIn]);
-
   return (
-    <Flex vertical gap={15}>
-      <GetSupplier refresh={refresh} supplierColumn={supplierColumn} />
-      {isLoggedIn && (
-        <AddSupplier
-          messageApi={messageApi}
-          refresh={refresh}
-          setRefresh={setRefresh}
-        />
-      )}
-      <GetAllSuppliers refresh={refresh} supplierColumn={supplierColumn} />
-      {isLoggedIn && (
-        <>
-          {currentId && (
-            <PatchSupplier
-              currentId={currentId}
-              setCurrentId={setCurrentId}
-              refresh={refresh}
-              setRefresh={setRefresh}
-              patchPopup={patchPopup}
-              setPatchPopup={setPatchPopup}
-              messageApi={messageApi}
-            />
-          )}
-        </>
-      )}
-    </Flex>
+    <SubjectTemplate
+      subject="order"
+      subjects="orders"
+      currentform={<SupplierForm />}
+      defaultColumns={defaultColumns}
+    />
   );
 };
 export default Supplierant;

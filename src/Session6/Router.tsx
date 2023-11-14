@@ -38,29 +38,23 @@ export default function Router({}: Props) {
         },
         {
           path: "/supplier",
-          element: (
-            <Supplierant isLoggedIn={isLoggedIn} messageApi={messageApi} />
-          ),
+          element: <Supplierant />,
         },
         {
           path: "/employee",
-          element: (
-            <Employeeant isLoggedIn={isLoggedIn} messageApi={messageApi} />
-          ),
+          element: <Employeeant />,
         },
         {
           path: "/customer",
-          element: <Customerant isLoggedIn={isLoggedIn} />,
+          element: <Customerant />,
         },
         {
           path: "/product",
-          element: (
-            <Productant isLoggedIn={isLoggedIn} messageApi={messageApi} />
-          ),
+          element: <Productant />,
         },
         {
           path: "/order",
-          element: <Orderant isLoggedIn={isLoggedIn} messageApi={messageApi} />,
+          element: <Orderant />,
         },
       ],
     },

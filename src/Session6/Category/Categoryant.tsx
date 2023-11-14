@@ -2,9 +2,7 @@ import React from "react";
 import { Form, Input } from "antd";
 import type { ColumnsType } from "antd/es/table";
 import TextArea from "antd/es/input/TextArea";
-import { useCurrentId, usePatchPopup } from "../hooks/usePatch";
 import useTableColumn from "../hooks/useTableColumns";
-import useAuth from "../hooks/useAuth";
 import SubjectTemplate from "../Components/SubjectTemplate";
 type Props = {};
 
@@ -56,16 +54,12 @@ const CategoryForm = ({
   );
 };
 
-interface CategoryType {
+interface CategoryType extends addschemaInput {
   key: React.Key;
   id: number;
-  name: string;
-  description: string;
 }
 
 const Categoryant = () => {
-  const loggedInUser = useAuth((state) => state.loggedInUser);
-  const currentId = useCurrentId((state) => state.currentId);
   const defaultColumns: ColumnsType<CategoryType> = [
     {
       title: "ID",
@@ -91,6 +85,8 @@ const Categoryant = () => {
 
   return (
     <SubjectTemplate
+      subject="category"
+      subjects="categories"
       defaultColumns={defaultColumns}
       currentform={<CategoryForm />}
     />

@@ -10,11 +10,15 @@ import GetSubjects from "./GetSubjects";
 import PatchSubject from "./PatchSubject";
 
 type Props = {
+  subjects: string;
+  subject: string;
   defaultColumns: ColumnsType<any>;
   currentform: React.ReactElement;
 };
 
 export default function SubjectTemplate({
+  subjects,
+  subject,
   defaultColumns,
   currentform,
 }: Props) {
@@ -25,29 +29,29 @@ export default function SubjectTemplate({
   return (
     <Flex vertical gap={15}>
       <GetSubject
-        subject="categories"
+        subject={subjects}
         subjectColumn={categoryColumn}
-        title="Get Category by ID"
+        title={"Get " + subject + " by ID"}
       />
       {loggedInUser && (
         <AddSubject
           currentform={currentform}
-          subject="categories"
-          title="Add Category"
+          subject={subject}
+          title={"Add " + subject}
         />
       )}
       <GetSubjects
-        subject="categories"
+        subject={subjects}
         subjectColumn={categoryColumn}
-        title="All Categories"
+        title={"All " + subjects}
       />
       {loggedInUser && (
         <>
           {currentId && (
             <PatchSubject
               currentform={currentform}
-              subject="categories"
-              title="Patch Category"
+              subject={subjects}
+              title={"Patch " + subject}
             />
           )}
         </>
