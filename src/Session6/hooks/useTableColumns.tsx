@@ -31,7 +31,7 @@ const useTableColumn = (subject: string, column: ColumnsType<any>) => {
           <DeleteSubject
             id={record.id}
             subject={subject}
-            title={"Are you sure to delete this " + { subject } + "?"}
+            title={"Are you sure to delete this?"}
           />
         </Space>
       );

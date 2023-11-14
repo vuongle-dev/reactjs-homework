@@ -31,25 +31,22 @@ export const usePatchPopup = create<patchPopupInterface>()(
 );
 
 const usePatch = (subject: string, data: any, id: number | null) => {
-  const [error, setError] = React.useState(null);
+  const [error, setError] = React.useState<null | string>(null);
   const setRefresh = useRefresh((state) => state.setRefresh);
   const access_token = useAuth((state) => state.access_token);
   React.useEffect(() => {
-    const addData = async (data: any) => {
+    const addData = async () => {
       try {
         message.loading({
           key: "patchsubject",
           content: "Loading",
         });
-        const response = await axiosClient.patch(
-          "/online-shop/" + subject + "/" + id,
-          data,
-          {
-            headers: {
-              Authorization: "Bearer " + access_token,
-            },
-          }
-        );
+        const url = "/online-shop/" + subject + "/" + id;
+        const response = await axiosClient.patch(url, data, {
+          headers: {
+            Authorization: "Bearer " + access_token,
+          },
+        });
         message.success({
           key: "patchsubject",
           type: "success",
@@ -62,7 +59,7 @@ const usePatch = (subject: string, data: any, id: number | null) => {
         message.destroy("patchsubject");
       }
     };
-    data && id && addData(data);
+    data && id && addData();
   }, [data]);
   return [error];
 };

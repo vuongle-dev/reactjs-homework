@@ -20,7 +20,6 @@ export default function AddSubject({ subject, currentform, title }: Props) {
   return (
     <Flex vertical>
       <Title level={3}>{title}</Title>
-      {/* <CategoryForm form={AddSubject} onFinish={submitAddSubject} /> */}
       {React.cloneElement(currentform, {
         form: addSubject,
         onFinish: submitAddSubject,

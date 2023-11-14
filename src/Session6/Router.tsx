@@ -34,7 +34,7 @@ export default function Router({}: Props) {
       children: [
         {
           path: "/category",
-          element: <Categoryant isLoggedIn={isLoggedIn} />,
+          element: <Categoryant />,
         },
         {
           path: "/supplier",

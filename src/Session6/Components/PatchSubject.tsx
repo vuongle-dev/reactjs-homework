@@ -17,7 +17,7 @@ export default function PatchSubject({ subject, currentform, title }: Props) {
   const [data, setData] = React.useState(null);
   const currentId = useCurrentId((state) => state.currentId);
   const setCurrentId = useCurrentId((state) => state.setCurrentId);
-  const [error] = usePatch(subject, currentId, data);
+  const [error] = usePatch(subject, data, currentId);
   const [initialData] = useGetSubject(subject, currentId);
   const refresh = () => {
     patchSubject.resetFields();
