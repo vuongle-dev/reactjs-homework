@@ -104,7 +104,6 @@ const ProductForm = ({
     let selectedProduct = products.find((item) => {
       return item.id === productid;
     });
-    console.log(selectedProduct);
     productForm.setFieldsValue({
       price: selectedProduct?.price,
       discount: selectedProduct?.discount,
@@ -236,7 +235,6 @@ const OrderForm = ({
   }, []);
   useEffect(() => {
     form.setFieldValue("orderDetails", orderDetails);
-    console.log(form.getFieldsValue());
   }, [orderDetails]);
   const deleteProduct = (index: number) => {
     let newOrderDetails = orderDetails.slice();
@@ -306,188 +304,180 @@ const OrderForm = ({
     },
   ];
   return (
-    <Form
-      form={form}
-      onFinish={onFinish}
-      labelCol={{ span: 6 }}
-      wrapperCol={{ span: 8 }}
-      initialValues={
-        initialValues && {
-          ...initialValues,
-          shippedDate:
-            initialValues.shippedDate && dayjs(initialValues.shippedDate).utc(),
-          createdDate:
-            initialValues.createdDate && dayjs(initialValues.createdDate).utc(),
+    <Flex vertical gap={10}>
+      <Form
+        form={form}
+        onFinish={onFinish}
+        labelCol={{ span: 6 }}
+        wrapperCol={{ span: 8 }}
+        initialValues={
+          initialValues && {
+            ...initialValues,
+            shippedDate:
+              initialValues.shippedDate &&
+              dayjs(initialValues.shippedDate).utc(),
+            createdDate:
+              initialValues.createdDate &&
+              dayjs(initialValues.createdDate).utc(),
+          }
         }
-      }
-    >
-      <Form.Item
-        name="createdDate"
-        label="Created Date"
-        rules={[
-          { type: "date", message: "Created Date is not valid" },
-          // { required: true, message: "Created Date is required" },
-        ]}
       >
-        <DatePicker
-          showTime={{ format: timeFormat }}
-          format={dateFormat}
+        <Form.Item
           name="createdDate"
-        />
-      </Form.Item>
-      <Form.Item
-        name="shippedDate"
-        label="Created Date"
-        rules={[
-          { type: "date", message: "Shipped Date is not valid" },
-          // { required: true, message: "Shipped Date is required" },
-        ]}
-      >
-        <DatePicker
-          showTime={{ format: timeFormat }}
-          format={dateFormat}
+          label="Created Date"
+          rules={[
+            { type: "date", message: "Created Date is not valid" },
+            // { required: true, message: "Created Date is required" },
+          ]}
+        >
+          <DatePicker
+            showTime={{ format: timeFormat }}
+            format={dateFormat}
+            name="createdDate"
+          />
+        </Form.Item>
+        <Form.Item
           name="shippedDate"
-        />
-      </Form.Item>
-      <Form.Item
-        name="shippingAddress"
-        label="Shipping Address"
-        rules={[
-          { type: "string" },
-          // { required: true, message: "Shipping Address is required" },
-        ]}
-      >
-        <TextArea name="shippingAddress" autoSize></TextArea>
-      </Form.Item>
-      <Form.Item
-        name="shippingCity"
-        label="Shipping City"
-        rules={[
-          { type: "string" },
-          // { required: true, message: "Shipping City is required" },
-        ]}
-      >
-        <Input name="shippingCity" type="text"></Input>
-      </Form.Item>
-      <Form.Item
-        name="paymentType"
-        label="Payment Type"
-        rules={[
-          {
-            type: "enum",
-            enum: ["CASH", "CREDIT CARD"],
-            message: "Payment type is not valid",
-          },
-          // { required: true, message: "Payment Type is required" },
-        ]}
-      >
-        <Radio.Group
-          optionType="button"
-          options={[
-            { value: "CASH", label: "Cash" },
-            { value: "CREDIT CARD", label: "Credit Card" },
+          label="Created Date"
+          rules={[
+            { type: "date", message: "Shipped Date is not valid" },
+            // { required: true, message: "Shipped Date is required" },
           ]}
-        />
-      </Form.Item>
-      <Form.Item
-        name="status"
-        label="Status"
-        rules={[
-          {
-            type: "enum",
-            enum: ["WAITING", "COMPLETED", "CANCELED"],
-            message: "Status is not valid",
-          },
+        >
+          <DatePicker
+            showTime={{ format: timeFormat }}
+            format={dateFormat}
+            name="shippedDate"
+          />
+        </Form.Item>
+        <Form.Item
+          name="shippingAddress"
+          label="Shipping Address"
+          rules={[
+            { type: "string" },
+            // { required: true, message: "Shipping Address is required" },
+          ]}
+        >
+          <TextArea name="shippingAddress" autoSize></TextArea>
+        </Form.Item>
+        <Form.Item
+          name="shippingCity"
+          label="Shipping City"
+          rules={[
+            { type: "string" },
+            // { required: true, message: "Shipping City is required" },
+          ]}
+        >
+          <Input name="shippingCity" type="text"></Input>
+        </Form.Item>
+        <Form.Item
+          name="paymentType"
+          label="Payment Type"
+          rules={[
+            {
+              type: "enum",
+              enum: ["CASH", "CREDIT CARD"],
+              message: "Payment type is not valid",
+            },
+            // { required: true, message: "Payment Type is required" },
+          ]}
+        >
+          <Radio.Group
+            optionType="button"
+            options={[
+              { value: "CASH", label: "Cash" },
+              { value: "CREDIT CARD", label: "Credit Card" },
+            ]}
+          />
+        </Form.Item>
+        <Form.Item
+          name="status"
+          label="Status"
+          rules={[
+            {
+              type: "enum",
+              enum: ["WAITING", "COMPLETED", "CANCELED"],
+              message: "Status is not valid",
+            },
 
-          // { required: true, message: "Status is required" },
-        ]}
-      >
-        <Radio.Group
-          optionType="button"
-          options={[
-            { value: "WAITING", label: "Waiting" },
-            { value: "COMPLETED", label: "Completed" },
-            { value: "CANCELED", label: "Canceled", style: { color: "red" } },
+            // { required: true, message: "Status is required" },
           ]}
-        />
-      </Form.Item>
-      <Form.Item
-        name="customerId"
-        label="Customer"
-        rules={[
-          { type: "number" },
-          { required: true, message: "Customer is required" },
-        ]}
-      >
-        <Select
-          options={customers.map((item) => {
-            return {
-              value: item.id,
-              label: item.firstName + " " + item.lastName,
-            };
-          })}
-        ></Select>
-      </Form.Item>
-      <Form.Item
-        name="employeeId"
-        label="Employee"
-        rules={[
-          { type: "number" },
-          { required: true, message: "Employee is required" },
-        ]}
-      >
-        <Select
-          options={employees.map((item) => {
-            return {
-              value: item.id,
-              label: item.firstName + " " + item.lastName,
-            };
-          })}
-        ></Select>
-      </Form.Item>
-      <Title level={4}>Order Detail</Title>
-      <Form.Item style={{ display: "none" }} name="orderDetails"></Form.Item>
-      <Flex vertical gap={10}>
+        >
+          <Radio.Group
+            optionType="button"
+            options={[
+              { value: "WAITING", label: "Waiting" },
+              { value: "COMPLETED", label: "Completed" },
+              { value: "CANCELED", label: "Canceled", style: { color: "red" } },
+            ]}
+          />
+        </Form.Item>
+        <Form.Item
+          name="customerId"
+          label="Customer"
+          rules={[
+            { type: "number" },
+            { required: true, message: "Customer is required" },
+          ]}
+        >
+          <Select
+            options={customers.map((item) => {
+              return {
+                value: item.id,
+                label: item.firstName + " " + item.lastName,
+              };
+            })}
+          ></Select>
+        </Form.Item>
+        <Form.Item
+          name="employeeId"
+          label="Employee"
+          rules={[
+            { type: "number" },
+            { required: true, message: "Employee is required" },
+          ]}
+        >
+          <Select
+            options={employees.map((item) => {
+              return {
+                value: item.id,
+                label: item.firstName + " " + item.lastName,
+              };
+            })}
+          ></Select>
+        </Form.Item>
+        <Form.Item
+          name="description"
+          label="Description"
+          rules={[
+            { type: "string" },
+            // { required: true, message: "Description is required" },
+            { max: 300, message: "Description should not be too long" },
+          ]}
+        >
+          <TextArea name="description" autoSize></TextArea>
+        </Form.Item>
+        <Form.Item name="orderDetails">
+          <Flex justify="center">
+            <Title level={4}>Order Detail</Title>
+          </Flex>
+        </Form.Item>
         {orderDetails.length > 0 && (
-          // orderDetails.map((item: order, index: number) => {
-          //   return (
-          //     <ul key={index}>
-          //       <li>
-          //         {item.quantity +
-          //           " x " +
-          //           products.find((product) => {
-          //             return product.id === item.productId;
-          //           })?.name}
-          //       </li>
-          //     </ul>
-          //   );
-          // })
           <Table
+            rowKey="productId"
             columns={productColumn}
             dataSource={orderDetails}
             pagination={false}
           />
         )}
-        <ProductForm
-          form={form}
-          products={products}
-          orderDetails={orderDetails}
-          setOrderDetails={setOrderDetails}
-        />
-      </Flex>
-
-      <Form.Item
-        name="description"
-        label="Description"
-        rules={[
-          { type: "string" },
-          // { required: true, message: "Description is required" },
-          { max: 300, message: "Description should not be too long" },
-        ]}
-      >
-        <TextArea name="description" autoSize></TextArea>
-      </Form.Item>
-    </Form>
+      </Form>
+      <ProductForm
+        form={form}
+        products={products}
+        orderDetails={orderDetails}
+        setOrderDetails={setOrderDetails}
+      />
+    </Flex>
   );
 };
 

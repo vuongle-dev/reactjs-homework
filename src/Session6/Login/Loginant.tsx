@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import styles from "./Login.module.css";
 import axiosClient from "../config/axiosClient";
 import { Button, Form, Input, Modal, message } from "antd";
+import useAuth from "../hooks/useAuth";
 
 type Props = { setIsLoggedIn: (data: any) => void; messageApi: any };
 
@@ -10,42 +11,10 @@ interface loginFormInput {
   password: string;
 }
 
-export default function Loginant({ setIsLoggedIn, messageApi }: Props) {
-  const onSubmit = async (data: loginFormInput) => {
-    console.log(data);
-    try {
-      messageApi.open({ key: "login", type: "loading", content: "Loading" });
-      const response = await axiosClient.post("/auth/login", data);
-      if (response.data.loggedInUser) {
-        localStorage.setItem("access_token", response.data.access_token);
-        localStorage.setItem("email", response.data.loggedInUser.email);
-        localStorage.setItem("role", response.data.loggedInUser.roles[0].name);
-        messageApi.open({
-          key: "login",
-          type: "success",
-          content: "Login success",
-          duration: 2,
-        });
-        setIsLoggedIn(true);
-      } else
-        messageApi.open({
-          key: "login",
-          type: "error",
-          content: response.data.message,
-          duration: 2,
-        });
-    } catch (error: any) {
-      messageApi.open({
-        key: "login",
-        type: "error",
-        content: error.response.data.message,
-        duration: 2,
-      });
-    }
-  };
+export default function Loginant() {
+  const login = useAuth((state) => state.login);
   const [loginPopup, setLoginPopup] = useState(false);
   const [loginform] = Form.useForm();
-
   return (
     <>
       <Button type="primary" onClick={() => setLoginPopup(true)}>
@@ -58,7 +27,7 @@ export default function Loginant({ setIsLoggedIn, messageApi }: Props) {
         okText="Login"
         title="Login"
       >
-        <Form onFinish={onSubmit} form={loginform}>
+        <Form onFinish={login} form={loginform}>
           <Form.Item
             name="username"
             label="Username"

@@ -134,19 +134,16 @@ const CustomerForm = ({
 const AddCustomer = ({
   refresh,
   setRefresh,
-  messageApi,
 }: {
   refresh: boolean;
   setRefresh: (data: any) => void;
-  messageApi: any;
 }) => {
   const [addcustomer] = Form.useForm();
 
   const submitAddCustomer = async (data: addschemaInput) => {
     try {
-      messageApi.open({
+      message.loading({
         key: "addcustomer",
-        type: "loading",
         content: "Loading",
       });
       const response = await axiosClient.post("/online-shop/customers/", data, {
@@ -155,9 +152,8 @@ const AddCustomer = ({
         },
       });
       addcustomer.resetFields();
-      messageApi.open({
+      message.success({
         key: "addcustomer",
-        type: "success",
         content:
           "Add " +
           response.data.name +
@@ -167,9 +163,8 @@ const AddCustomer = ({
       });
       setRefresh(!refresh);
     } catch (error: any) {
-      messageApi.open({
+      message.error({
         key: "addcustomer",
-        type: "error",
         content:
           error.response.data.message + ", try another email / phone number",
         duration: 2,
@@ -200,7 +195,6 @@ const PatchCustomer = ({
   setRefresh,
   patchPopup,
   setPatchPopup,
-  messageApi,
 }: {
   currentId: number;
   setCurrentId: (data: any) => void;
@@ -208,7 +202,6 @@ const PatchCustomer = ({
   setRefresh: (data: any) => void;
   patchPopup: boolean;
   setPatchPopup: (data: any) => void;
-  messageApi: any;
 }) => {
   const [error, setError] = useState<string | null>(null);
   const [patchcustomer] = Form.useForm();
@@ -231,9 +224,8 @@ const PatchCustomer = ({
   }, [currentId]);
   const submitPatchCustomer = async (data: addschemaInput) => {
     try {
-      messageApi.open({
+      message.loading({
         key: "addcustomer",
-        type: "loading",
         content: "Loading",
       });
       const response = await axiosClient.patch(
@@ -245,9 +237,8 @@ const PatchCustomer = ({
           },
         }
       );
-      messageApi.open({
+      message.success({
         key: "addcustomer",
-        type: "success",
         content: "Customer modified successfully",
       });
       setError(null);
@@ -255,7 +246,7 @@ const PatchCustomer = ({
       setPatchPopup(false);
     } catch (error: any) {
       setError(error.response.data.message);
-      messageApi.destroy("addcustomer");
+      message.destroy("addcustomer");
     }
   };
   return (
@@ -301,14 +292,12 @@ const PatchCustomer = ({
 const DeleteCustomer = (
   id: number,
   refresh: boolean,
-  setRefresh: (data: any) => void,
-  messageApi: any
+  setRefresh: (data: any) => void
 ) => {
   const ConfirmDeleteCustomer = async () => {
     try {
-      messageApi.open({
+      message.loading({
         key: "deletecustomer",
-        type: "loading",
         content: "Loading",
       });
       const response = await axiosClient.delete(
@@ -319,16 +308,14 @@ const DeleteCustomer = (
           },
         }
       );
-      messageApi.open({
+      message.success({
         key: "deletecustomer",
-        type: "success",
         content: "Customer deleted",
       });
       setRefresh(!refresh);
     } catch (error: any) {
-      messageApi.open({
+      message.error({
         key: "deletecustomer",
-        type: "error",
         content: error.response.data.message,
       });
     }
@@ -456,13 +443,7 @@ const GetCustomer = ({
   );
 };
 
-const Customerant = ({
-  isLoggedIn,
-  messageApi,
-}: {
-  isLoggedIn: boolean;
-  messageApi: any;
-}) => {
+const Customerant = ({ isLoggedIn }: { isLoggedIn: boolean }) => {
   const [refresh, setRefresh] = useState(false);
   const [currentId, setCurrentId] = useState<number | null>(null);
   const [patchPopup, setPatchPopup] = useState(false);
@@ -534,9 +515,7 @@ const Customerant = ({
             placement="topRight"
             title="Delete Customer"
             description="Are you sure to delete this customer?"
-            onConfirm={() =>
-              DeleteCustomer(record.id, refresh, setRefresh, messageApi)
-            }
+            onConfirm={() => DeleteCustomer(record.id, refresh, setRefresh)}
             okText="Yes"
             cancelText="No"
           >
@@ -560,13 +539,7 @@ const Customerant = ({
   return (
     <Flex vertical gap={15}>
       <GetCustomer refresh={refresh} customerColumn={customerColumn} />
-      {isLoggedIn && (
-        <AddCustomer
-          messageApi={messageApi}
-          refresh={refresh}
-          setRefresh={setRefresh}
-        />
-      )}
+      {isLoggedIn && <AddCustomer refresh={refresh} setRefresh={setRefresh} />}
       <GetAllCustomers refresh={refresh} customerColumn={customerColumn} />
       {isLoggedIn && (
         <>
@@ -578,7 +551,6 @@ const Customerant = ({
               setRefresh={setRefresh}
               patchPopup={patchPopup}
               setPatchPopup={setPatchPopup}
-              messageApi={messageApi}
             />
           )}
         </>

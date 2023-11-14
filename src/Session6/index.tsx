@@ -1,39 +1,15 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import styles from "./Networking.module.css";
 // import Login, { Button } from "./Login";
 // import Category from "./Category";
 // import ButtonTabs from "../Session3/Tabs/ButtonTabs";
-import {
-  Button,
-  ConfigProvider,
-  Flex,
-  Layout,
-  Menu,
-  Space,
-  Tabs,
-  message,
-  notification,
-  theme,
-} from "antd";
+import { ConfigProvider, Layout, Menu, theme } from "antd";
 import { Content, Header } from "antd/es/layout/layout";
 import Loginant from "./Login/Loginant";
-import Categoryant from "./Category/Categoryant";
-import Supplierant from "./Supplier";
-import Employeeant from "./Employee";
 import locale from "antd/locale/vi_VN";
-
 import "dayjs/locale/vi";
-import Customerant from "./Customer";
-import Productant from "./Product";
-import Orderant from "./Order";
 
-import {
-  createBrowserRouter,
-  RouterProvider,
-  Outlet,
-  Link,
-  BrowserRouter,
-} from "react-router-dom";
+import { Outlet, Link } from "react-router-dom";
 import Sider from "antd/es/layout/Sider";
 import {
   MdOutlineCategory,
@@ -43,69 +19,19 @@ import {
   MdOutlinePerson3,
   MdOutlineShoppingCart,
 } from "react-icons/md";
+import Logout from "./Login/Logout";
+import useAuth from "./hooks/useAuth";
 
-type Props = {
-  isLoggedIn: boolean;
-  messageApi: any;
-  setIsLoggedIn: (data: any) => void;
-};
-
-const Logout = ({
-  setIsLoggedIn,
-  messageApi,
-}: {
-  setIsLoggedIn: (data: any) => void;
-  messageApi: any;
-}) => {
-  let email = localStorage.getItem("email");
-  let role = localStorage.getItem("role");
-
-  const logoutHandle = () => {
-    localStorage.removeItem("email");
-    localStorage.removeItem("role");
-    localStorage.removeItem("access_token");
-    setIsLoggedIn(false);
-    messageApi.open({
-      type: "success",
-      content: "Successfully Logged Out",
-      duration: 2,
-    });
-  };
-  return (
-    <Space size={20} style={{ height: "100%" }}>
-      <Flex vertical style={{ lineHeight: "initial", color: "#fff" }}>
-        <strong style={{ fontWeight: 600 }}>{email}</strong> <span>{role}</span>
-      </Flex>
-      <Button onClick={() => logoutHandle()}>Logout</Button>
-    </Space>
-  );
-};
-
-const HeaderContent = ({ ...props }) => {
-  const [loginPopup, setLoginPopup] = useState(false);
+const HeaderContent = () => {
+  const loggedInUser = useAuth((state) => state.loggedInUser);
   return (
     <div style={{ marginLeft: "auto" }}>
-      {props.isLoggedIn === false ? (
-        <Loginant
-          setIsLoggedIn={props.setIsLoggedIn}
-          messageApi={props.messageApi}
-        />
-      ) : (
-        <Logout
-          setIsLoggedIn={props.setIsLoggedIn}
-          messageApi={props.messageApi}
-        />
-      )}
+      {!loggedInUser ? <Loginant /> : <Logout />}
     </div>
   );
 };
 
-export default function Networking({
-  isLoggedIn,
-  messageApi,
-  setIsLoggedIn,
-}: Props) {
-  const [collapseSidebar, setCollapseSidebar] = React.useState(false);
+export default function Networking() {
   const {
     token: { colorBgContainer },
   } = theme.useToken();
@@ -129,11 +55,7 @@ export default function Networking({
               },
             ]}
           />
-          <HeaderContent
-            isLoggedIn={isLoggedIn}
-            setIsLoggedIn={setIsLoggedIn}
-            messageApi={messageApi}
-          />
+          <HeaderContent />
         </Header>
         <Content>
           <Layout

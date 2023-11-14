@@ -15,34 +15,26 @@ import Productant from "./Product";
 import Orderant from "./Order";
 import Networking from ".";
 import ErrorPage from "./ErrorPage";
+import useAuth from "./hooks/useAuth";
 
 type Props = {};
 
 export default function Router({}: Props) {
   const [isLoggedIn, setIsLoggedIn] = React.useState(false);
   const [messageApi, contextHolder] = message.useMessage();
+  const loggedInUser = useAuth((state) => state.loggedInUser);
   React.useEffect(() => {
-    localStorage.getItem("access_token")
-      ? setIsLoggedIn(true)
-      : setIsLoggedIn(false);
-  }, []);
+    loggedInUser ? setIsLoggedIn(true) : setIsLoggedIn(false);
+  }, [loggedInUser]);
   const router = createBrowserRouter([
     {
       path: "/",
-      element: (
-        <Networking
-          isLoggedIn={isLoggedIn}
-          messageApi={messageApi}
-          setIsLoggedIn={setIsLoggedIn}
-        />
-      ),
+      element: <Networking />,
       errorElement: <ErrorPage />,
       children: [
         {
           path: "/category",
-          element: (
-            <Categoryant isLoggedIn={isLoggedIn} messageApi={messageApi} />
-          ),
+          element: <Categoryant isLoggedIn={isLoggedIn} />,
         },
         {
           path: "/supplier",
@@ -58,9 +50,7 @@ export default function Router({}: Props) {
         },
         {
           path: "/customer",
-          element: (
-            <Customerant isLoggedIn={isLoggedIn} messageApi={messageApi} />
-          ),
+          element: <Customerant isLoggedIn={isLoggedIn} />,
         },
         {
           path: "/product",
