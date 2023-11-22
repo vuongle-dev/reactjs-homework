@@ -1,7 +1,11 @@
 import { Alert, Button, Col, Form, Modal, Row, Space } from "antd";
 import React from "react";
-import usePatch, { useCurrentId, usePatchPopup } from "../hooks/usePatch";
+import usePatchSubject, {
+  useCurrentId,
+  usePatchPopup,
+} from "../hooks/usePatch";
 import { useGetSubject, useRefresh } from "../hooks/useGet";
+import { useQueryClient } from "react-query";
 
 type Props = {
   subject: string;
@@ -10,23 +14,15 @@ type Props = {
 };
 
 export default function PatchSubject({ subject, currentform, title }: Props) {
-  const setRefresh = useRefresh((state) => state.setRefresh);
   const setPatchPopup = usePatchPopup((state) => state.setPatchPopup);
   const patchPopup = usePatchPopup((state) => state.patchPopup);
   const [patchSubject] = Form.useForm();
-  const [data, setData] = React.useState(null);
   const currentId = useCurrentId((state) => state.currentId);
   const setCurrentId = useCurrentId((state) => state.setCurrentId);
-  const [error] = usePatch(subject, data, currentId);
-  const [initialData] = useGetSubject(subject, currentId);
-  const refresh = () => {
-    patchSubject.resetFields();
-    setRefresh();
-    setPatchPopup(false);
-  };
+  const query = usePatchSubject(subject, currentId);
+  const queryClient = useQueryClient();
   const submitPatchSubject = (data: any) => {
-    setData(data);
-    !error && refresh();
+    query.mutate(data);
   };
   return (
     <Modal
@@ -58,14 +54,28 @@ export default function PatchSubject({ subject, currentform, title }: Props) {
         </Col>
       </Row>
     >
-      {initialData &&
-        React.cloneElement(currentform, {
-          form: patchSubject,
-          onFinish: submitPatchSubject,
-          initialValues: initialData,
-        })}
+      {React.cloneElement(currentform, {
+        form: patchSubject,
+        onFinish: submitPatchSubject,
+        initialValues: queryClient
+          .getQueryData<any[]>([subject])
+          ?.find((subject: any) => {
+            return subject.id === currentId;
+          }),
+      })}
 
-      {error && <Alert message={error} type="error" showIcon closable />}
+      {query.isLoading && <Alert message="Submitting" type="info" />}
+      {query.isError &&
+        (query.error.response ? (
+          <Alert
+            message={query.error.response.data.message}
+            type="error"
+            showIcon
+            closable
+          />
+        ) : (
+          <Alert message="Lost Connection" type="error" showIcon />
+        ))}
     </Modal>
   );
 }

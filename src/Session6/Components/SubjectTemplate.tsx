@@ -36,7 +36,7 @@ export default function SubjectTemplate({
       {loggedInUser && (
         <AddSubject
           currentform={currentform}
-          subject={subject}
+          subject={subjects}
           title={"Add " + subject}
         />
       )}

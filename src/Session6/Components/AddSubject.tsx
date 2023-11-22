@@ -11,12 +11,14 @@ type Props = {
 
 export default function AddSubject({ subject, currentform, title }: Props) {
   const [addSubject] = Form.useForm();
-  const [data, setData] = React.useState(null);
-  const [success] = useAdd(subject, data);
+  // const [data, setData] = React.useState(null);
+  const query = useAdd(subject);
   const submitAddSubject = (data: any) => {
-    setData(data);
-    success && addSubject.resetFields();
+    query.mutate(data);
   };
+  React.useEffect(() => {
+    query.isSuccess && addSubject.resetFields();
+  }, [query]);
   return (
     <Flex vertical>
       <Title level={3}>{title}</Title>

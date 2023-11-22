@@ -29,7 +29,6 @@ import Galleries from "./Session3/Galleries";
 import LoveButton from "./Session3/LoveButton";
 import FigmaApp from "./Session3/FigmaApp";
 import Quiz from "./Session4";
-import And from "./And";
 import DragToReorderList from "./Session4/ArrangeAnswers";
 import Networking from "./Session6";
 import Router from "./Session6/Router";
@@ -339,7 +338,6 @@ function App() {
       {/* <FigmaApp /> */}
       {/* <Quiz /> */}
       <Router />
-      {/* <And /> */}
     </div>
   );
 }

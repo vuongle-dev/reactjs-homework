@@ -71,7 +71,7 @@ const ProductForm = ({
   setOrderDetails,
 }: {
   form: any;
-  products: product[];
+  products: product[] | undefined;
   orderDetails: order[];
   setOrderDetails: (data: any) => void;
 }) => {
@@ -86,7 +86,7 @@ const ProductForm = ({
             productId: data.productId,
             product: {
               id: data.productId,
-              name: products.find((product) => {
+              name: products?.find((product) => {
                 return product.id === data.productId;
               })?.name,
             },
@@ -104,7 +104,7 @@ const ProductForm = ({
         );
   };
   const selectProduct = (productid: number) => {
-    let selectedProduct = products.find((item) => {
+    let selectedProduct = products?.find((item) => {
       return item.id === productid;
     });
     productForm.setFieldsValue({
@@ -129,7 +129,7 @@ const ProductForm = ({
         ]}
       >
         <Select
-          options={products.map((item) => {
+          options={products?.map((item) => {
             return { value: item.id, label: item.name };
           })}
           onSelect={(value) => selectProduct(value)}
@@ -189,9 +189,9 @@ const OrderForm = ({
   onFinish?: (data: any) => void;
   initialValues?: addschemaInput;
 }) => {
-  const [customers] = useGetSubjects("customers");
-  const [employees] = useGetSubjects("employees");
-  const [products] = useGetSubjects("products");
+  const customers = useGetSubjects("customers");
+  const employees = useGetSubjects("employees");
+  const products = useGetSubjects("products");
   const [orderDetails, setOrderDetails] = useState<order[]>([]);
   useEffect(() => {
     initialValues
@@ -389,7 +389,7 @@ const OrderForm = ({
           ]}
         >
           <Select
-            options={customers.map((item) => {
+            options={customers.data?.map((item) => {
               return {
                 value: item.id,
                 label: item.firstName + " " + item.lastName,
@@ -406,7 +406,7 @@ const OrderForm = ({
           ]}
         >
           <Select
-            options={employees.map((item) => {
+            options={employees.data?.map((item) => {
               return {
                 value: item.id,
                 label: item.firstName + " " + item.lastName,
@@ -441,7 +441,7 @@ const OrderForm = ({
       </Form>
       <ProductForm
         form={form}
-        products={products}
+        products={products.data}
         orderDetails={orderDetails}
         setOrderDetails={setOrderDetails}
       />

@@ -1,47 +1,50 @@
 import { message } from "antd";
 import axiosClient from "../config/axiosClient";
 import React from "react";
-import { useRefresh } from "./useGet";
+import { Error, useRefresh } from "./useGet";
 import useAuth from "./useAuth";
 import { useCurrentId } from "./usePatch";
+import { useMutation, useQueryClient } from "react-query";
 
-const useDelete = (subject: string, id: number | null) => {
-  const [error, setError] = React.useState(null);
-  const setRefresh = useRefresh((state) => state.setRefresh);
-  const setCurrentId = useCurrentId((state) => state.setCurrentId);
+const useDelete = (subject: string) => {
   const access_token = useAuth((state) => state.access_token);
-  React.useEffect(() => {
-    const deleteId = async () => {
-      try {
-        message.loading({
-          key: "deletesubject",
-          content: "Loading",
+  const queryClient = useQueryClient();
+
+  const Delete = async (ids: any) => {
+    const url = "/online-shop/" + subject + "/" + ids;
+    const response = await axiosClient.delete(url, {
+      headers: {
+        Authorization: "Bearer " + access_token,
+      },
+    });
+    return response.data;
+  };
+  const result = useMutation<any, Error>(Delete, {
+    onSuccess: (data, variable) => {
+      queryClient.setQueryData([subject], (olddata: any) => {
+        return olddata.filter((item: any) => {
+          return item.id !== variable;
         });
-        const response = await axiosClient.delete(
-          "/online-shop/" + subject + "/" + id,
-          {
-            headers: {
-              Authorization: "Bearer " + access_token,
-            },
-          }
-        );
-        message.success({
-          key: "deletesubject",
-          content: "Successfully deleted",
-        });
-        setRefresh();
-        setCurrentId(null);
-      } catch (error: any) {
-        setError(error.response.data.message);
-        message.error({
-          key: "deletesubject",
-          content: error.response.data.message,
-        });
-      }
-    };
-    id && deleteId();
-  }, [id]);
-  return [error];
+      });
+      message.success({
+        key: "deletesubject",
+        content: "Deleted",
+      });
+    },
+    onError: (error) => {
+      message.error({
+        key: "deletesubject",
+        content: error.response.data.message,
+      });
+    },
+  });
+  // result.isLoading &&
+  //   message.loading({
+  //     key: "deletesubject",
+  //     content: "Loading",
+  //   });
+
+  return result;
 };
 
 export default useDelete;

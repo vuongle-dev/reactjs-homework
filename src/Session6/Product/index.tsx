@@ -31,8 +31,8 @@ const ProductForm = ({
   onFinish?: (data: any) => void;
   initialValues?: addschemaInput;
 }) => {
-  const [categories] = useGetSubjects("categories");
-  const [suppliers] = useGetSubjects("suppliers");
+  const categories = useGetSubjects("categories");
+  const suppliers = useGetSubjects("suppliers");
 
   return (
     <Form
@@ -62,7 +62,7 @@ const ProductForm = ({
         ]}
       >
         <Select
-          options={categories.map((item) => {
+          options={categories.data?.map((item) => {
             return { value: item.id, label: item.name };
           })}
         ></Select>
@@ -76,7 +76,7 @@ const ProductForm = ({
         ]}
       >
         <Select
-          options={suppliers.map((item) => {
+          options={suppliers.data?.map((item) => {
             return { value: item.id, label: item.name };
           })}
         ></Select>
