@@ -122,8 +122,8 @@ const Supplierant = () => {
   ];
   return (
     <SubjectTemplate
-      subject="order"
-      subjects="orders"
+      subject="supplier"
+      subjects="suppliers"
       currentform={<SupplierForm />}
       defaultColumns={defaultColumns}
     />
