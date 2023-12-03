@@ -24,13 +24,13 @@ export default function SubjectTemplate({
 }: Props) {
   const loggedInUser = useAuth((state) => state.loggedInUser);
   const currentId = useCurrentId((state) => state.currentId);
-  const [categoryColumn] = useTableColumn("categories", defaultColumns);
+  const [subjectColumn] = useTableColumn(subjects, defaultColumns);
 
   return (
     <Flex vertical gap={15}>
       <GetSubject
         subject={subjects}
-        subjectColumn={categoryColumn}
+        subjectColumn={subjectColumn}
         title={"Get " + subject + " by ID"}
       />
       {loggedInUser && (
@@ -42,7 +42,7 @@ export default function SubjectTemplate({
       )}
       <GetSubjects
         subject={subjects}
-        subjectColumn={categoryColumn}
+        subjectColumn={subjectColumn}
         title={"All " + subjects}
       />
       {loggedInUser && (

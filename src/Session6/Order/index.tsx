@@ -5,8 +5,10 @@ import {
   DatePicker,
   Flex,
   Form,
+  FormInstance,
   Input,
   InputNumber,
+  InputRef,
   Popconfirm,
   Radio,
   Select,
@@ -63,6 +65,8 @@ interface addschemaInput {
   employee: getpeople;
   orderDetails: order[];
 }
+type EditableTableProps = Parameters<typeof Table>[0];
+type ColumnTypes = Exclude<EditableTableProps["columns"], undefined>;
 
 const ProductForm = ({
   form,
@@ -98,7 +102,12 @@ const ProductForm = ({
       : setOrderDetails(
           orderDetails.map((item) => {
             return item.productId == data.productId
-              ? { ...item, quantity: item.quantity + data.quantity }
+              ? {
+                  ...item,
+                  quantity: item.quantity + data.quantity,
+                  price: data.price,
+                  discount: data.discount,
+                }
               : item;
           })
         );
@@ -179,7 +188,18 @@ const ProductForm = ({
     </Form>
   );
 };
-
+type EditableCellProps = {
+  title: React.ReactNode;
+  editable: boolean;
+  children: React.ReactNode;
+  dataIndex: keyof order;
+  record: order;
+  handleSave: (record: order) => void;
+};
+type EditableRowProps = {
+  index: number;
+};
+const EditableContext = React.createContext<FormInstance<any> | null>(null);
 const OrderForm = ({
   form,
   onFinish,
@@ -209,19 +229,100 @@ const OrderForm = ({
     newOrderDetails.splice(index, 1);
     setOrderDetails(newOrderDetails);
   };
-  const productColumn: ColumnsType<order> = [
+
+  const EditableRow = ({ index, ...props }: EditableRowProps) => {
+    const [form] = Form.useForm();
+    return (
+      <Form form={form} component={false}>
+        <EditableContext.Provider value={form}>
+          <tr {...props} />
+        </EditableContext.Provider>
+      </Form>
+    );
+  };
+  const EditableCell = ({
+    title,
+    editable,
+    children,
+    dataIndex,
+    record,
+    handleSave,
+    ...restProps
+  }: EditableCellProps) => {
+    const [editing, setEditing] = useState(false);
+    const inputRef = React.useRef<InputRef>(null);
+    const form = React.useContext(EditableContext)!;
+
+    // useEffect(() => {
+    //   if (editing) {
+    //     inputRef.current!.focus();
+    //   }
+    // }, [editing]);
+
+    const toggleEdit = () => {
+      setEditing(!editing);
+      form.setFieldsValue({ [dataIndex]: record[dataIndex] });
+    };
+
+    const save = async () => {
+      try {
+        const values = await form.validateFields();
+
+        toggleEdit();
+        handleSave({ ...record, ...values });
+      } catch (errInfo) {
+        console.log("Save failed:", errInfo);
+      }
+    };
+
+    let childNode = children;
+
+    if (editable) {
+      childNode = editing ? (
+        <Form.Item
+          name={dataIndex}
+          rules={[
+            {
+              required: true,
+              message: `${title} is required.`,
+            },
+          ]}
+        >
+          <InputNumber
+            style={{ width: 60 }}
+            autoFocus
+            // ref={inputRef}
+            onPressEnter={save}
+            onBlur={save}
+          />
+        </Form.Item>
+      ) : (
+        <div className={styles.editableCell} onClick={toggleEdit}>
+          {children}
+        </div>
+      );
+    }
+
+    return <td {...restProps}>{childNode}</td>;
+  };
+
+  const productColumn: (ColumnTypes[number] & {
+    editable?: boolean;
+    dataIndex: string;
+  })[] = [
     {
       title: "Quantity",
       dataIndex: "quantity",
       key: "quantity",
       align: "right",
       width: 50,
+      editable: true,
     },
     {
       title: "Product Name",
       dataIndex: "product.name",
       key: "product.name",
-      render: (text: any, record: order, index: number) => {
+      render: (_: any, record: any) => {
         return <>{record.product.name}</>;
       },
     },
@@ -230,7 +331,7 @@ const OrderForm = ({
       dataIndex: "price",
       key: "price",
       align: "right",
-      render: (text: any, record: order, index: number) => {
+      render: (_: any, record: any) => {
         return <>${record.price}</>;
       },
     },
@@ -239,7 +340,7 @@ const OrderForm = ({
       dataIndex: "discount",
       key: "discount",
       align: "right",
-      render: (text: any, record: order, index: number) => {
+      render: (_: any, record: any) => {
         return <>{record.discount}%</>;
       },
     },
@@ -249,7 +350,7 @@ const OrderForm = ({
       key: "actions",
       fixed: "right",
       width: 80,
-      render: (text: any, record: order, index: number) => {
+      render: (_: any, record: any, index: number) => {
         return (
           <Space>
             <Popconfirm
@@ -271,6 +372,37 @@ const OrderForm = ({
       },
     },
   ];
+  const handleSave = (row: order) => {
+    const newData = [...orderDetails];
+    const index = newData.findIndex((item) => row.productId === item.productId);
+    const item = newData[index];
+    newData.splice(index, 1, {
+      ...item,
+      ...row,
+    });
+    setOrderDetails(newData);
+  };
+  const components = {
+    body: {
+      row: EditableRow,
+      cell: EditableCell,
+    },
+  };
+  const columns = productColumn.map((col) => {
+    if (!col.editable) {
+      return col;
+    }
+    return {
+      ...col,
+      onCell: (record: order) => ({
+        record,
+        editable: col.editable,
+        dataIndex: col.dataIndex,
+        title: col.title,
+        handleSave,
+      }),
+    };
+  });
   return (
     <Flex vertical gap={10}>
       <Form
@@ -432,8 +564,10 @@ const OrderForm = ({
         </Form.Item>
         {orderDetails.length > 0 && (
           <Table
+            components={components}
+            rowClassName={styles.editableRow}
             rowKey="productId"
-            columns={productColumn}
+            columns={columns as ColumnTypes}
             dataSource={orderDetails}
             pagination={false}
           />
@@ -535,15 +669,13 @@ const Orderant = () => {
       key: "orderDetails",
       render: (text: any, record: OrderType, index: number) => {
         return (
-          <>
+          <ul className={styles.orderDetails}>
             {record.orderDetails.map((item, index) => {
               return (
-                <ul key={index}>
-                  <li>{item.quantity + " x " + item.product.name}</li>
-                </ul>
+                <li key={index}>{item.quantity + " x " + item.product.name}</li>
               );
             })}
-          </>
+          </ul>
         );
       },
     },

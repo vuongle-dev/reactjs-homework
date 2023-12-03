@@ -4,7 +4,6 @@ import usePatchSubject, {
   useCurrentId,
   usePatchPopup,
 } from "../hooks/usePatch";
-import { useGetSubject, useRefresh } from "../hooks/useGet";
 import { useQueryClient } from "react-query";
 
 type Props = {
@@ -39,7 +38,7 @@ export default function PatchSubject({ subject, currentform, title }: Props) {
         <Col>
           <Space>
             <Button type="primary" onClick={() => patchSubject.submit()}>
-              Change this Category
+              Change this {subject}
             </Button>
             <Button
               onClick={() => {

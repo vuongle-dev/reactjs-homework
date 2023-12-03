@@ -7,7 +7,7 @@ import Employeeant from "./Employee";
 import Customerant from "./Customer";
 import Productant from "./Product";
 import Orderant from "./Order";
-import Networking from ".";
+import OnlineShop from ".";
 import ErrorPage from "./ErrorPage";
 import { QueryClientProvider, QueryClient } from "react-query";
 
@@ -17,7 +17,7 @@ export default function Router({}: Props) {
   const router = createBrowserRouter([
     {
       path: "/",
-      element: <Networking />,
+      element: <OnlineShop />,
       errorElement: <ErrorPage />,
       children: [
         {

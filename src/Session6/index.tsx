@@ -31,7 +31,7 @@ const HeaderContent = () => {
   );
 };
 
-export default function Networking() {
+export default function OnlineShop() {
   const {
     token: { colorBgContainer },
   } = theme.useToken();
