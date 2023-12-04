@@ -4,7 +4,6 @@ import React from "react";
 import { Error, useRefresh } from "./useGet";
 import useAuth from "./useAuth";
 import { onlineManager, useMutation, useQueryClient } from "react-query";
-import { error } from "console";
 
 const useAdd = (subject: string) => {
   // const [success, setSuccess] = React.useState(false);
@@ -21,7 +20,35 @@ const useAdd = (subject: string) => {
   const queryClient = useQueryClient();
   const result = useMutation<any, Error>(add, {
     onSuccess: (data) => {
-      queryClient.setQueryData([subject], (olddata: any) => [...olddata, data]);
+      // queryClient.setQueryData([subject], (olddata: any) => [...olddata, data]);
+      //api lại sai :/ trả thiếu category,supplier, mất công fetch lại :/)
+      const newitemcat = queryClient
+        .getQueryData<any[]>(["categories"])
+        ?.find((value) => {
+          return value.id == data.categoryId;
+        });
+      const newitemsup = queryClient
+        .getQueryData<any[]>(["suppliers"])
+        ?.find((value) => {
+          return value.id == data.supplierId;
+        });
+      newitemcat
+        ? queryClient.setQueryData([subject], (olddata: any) => [
+            ...olddata,
+            { ...data, category: newitemcat, supplier: newitemsup },
+          ])
+        : queryClient.invalidateQueries([subject]);
+      console.log(queryClient.getQueryData([subject]));
+      subject == "orders"
+        ? message.success({
+            key: "addsubject",
+            content: "Added order with ID: " + data.id,
+          })
+        : message.success({
+            key: "addsubject",
+            content: "Added " + data.name + " with ID: " + data.id,
+          });
+      result.reset();
     },
     onError: (error) => {
       message.error({
@@ -46,11 +73,6 @@ const useAdd = (subject: string) => {
             content: "Lost Connection",
             duration: 0,
           }));
-    result.isSuccess &&
-      message.success({
-        key: "addsubject",
-        content: "Added " + result.data.name + " with ID: " + result.data.id,
-      });
   }, [result]);
   // React.useEffect(() => {
   //   const addData = async (data: any) => {

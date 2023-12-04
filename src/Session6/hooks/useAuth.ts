@@ -22,12 +22,13 @@ interface authInterface {
   refresh_token: string | null;
   login: (data: loginForm) => void;
   logout: () => void;
+  refresh: () => void;
 }
 
 const useAuth = create<authInterface>()(
   devtools(
     persist(
-      (set) => ({
+      (set, get) => ({
         loggedInUser: null,
         access_token: null,
         refresh_token: null,
@@ -56,12 +57,28 @@ const useAuth = create<authInterface>()(
           }
         },
         logout: () => {
-          set((state) => ({
+          set(() => ({
             loggedInUser: null,
             access_token: null,
             refresh_token: null,
           }));
           message.success({ content: "Successfully Logged Out" });
+        },
+        refresh: async () => {
+          try {
+            const response = await axiosClient.post("/auth/refresh-token", {
+              refresh_token: get().refresh_token,
+            });
+            //chú ý bên login là loggedInUser :|
+            if (response.data.loggedInuser) {
+              set((state) => ({ access_token: response.data.access_token }));
+              set((state) => ({ loggedInUser: response.data.loggedInuser }));
+              set((state) => ({ refresh_token: response.data.refresh_token }));
+              console.log("refreshed token");
+            }
+          } catch (error: any) {
+            message.error(error.response.data.message);
+          }
         },
       }),
       { name: "auth" }

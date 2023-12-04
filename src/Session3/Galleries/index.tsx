@@ -4,9 +4,7 @@ import StandardSlider from "./StandardSlider";
 import SliderThumbnail from "./SliderThumbnail";
 import LightboxGrid from "./LightboxGrid";
 
-type Props = {};
-
-export default function Galleries({}: Props) {
+export default function Galleries() {
   return (
     <div className={styles.container}>
       <div className={styles.containerItem}>
@@ -17,10 +15,10 @@ export default function Galleries({}: Props) {
         </span>
         <StandardSlider
           images={[
-            "Day03/Galleries/1.jpg",
-            "Day03/Galleries/2.jpg",
-            "Day03/Galleries/3.jpg",
-            "Day03/Galleries/4.jpg",
+            `${process.env.PUBLIC_URL}/Day03/Galleries/1.jpg`,
+            `${process.env.PUBLIC_URL}/Day03/Galleries/2.jpg`,
+            `${process.env.PUBLIC_URL}/Day03/Galleries/3.jpg`,
+            `${process.env.PUBLIC_URL}/Day03/Galleries/4.jpg`,
           ]}
         />
         <h3 className={styles.title}>Slider Thumbnail Controls</h3>
@@ -30,10 +28,10 @@ export default function Galleries({}: Props) {
         </span>
         <SliderThumbnail
           images={[
-            "Day03/Galleries/1.jpg",
-            "Day03/Galleries/2.jpg",
-            "Day03/Galleries/3.jpg",
-            "Day03/Galleries/4.jpg",
+            `${process.env.PUBLIC_URL}/Day03/Galleries/1.jpg`,
+            `${process.env.PUBLIC_URL}/Day03/Galleries/2.jpg`,
+            `${process.env.PUBLIC_URL}/Day03/Galleries/3.jpg`,
+            `${process.env.PUBLIC_URL}/Day03/Galleries/4.jpg`,
           ]}
         />
         <h3 className={styles.title}>Lightbox Grid Gallery</h3>
@@ -42,14 +40,14 @@ export default function Galleries({}: Props) {
         </span>
         <LightboxGrid
           images={[
-            "Day03/Galleries/1.jpg",
-            "Day03/Galleries/2.jpg",
-            "Day03/Galleries/3.jpg",
-            "Day03/Galleries/4.jpg",
-            "Day03/Galleries/5.jpg",
-            "Day03/Galleries/6.jpg",
-            "Day03/Galleries/7.jpg",
-            "Day03/Galleries/8.jpg",
+            `${process.env.PUBLIC_URL}/Day03/Galleries/1.jpg`,
+            `${process.env.PUBLIC_URL}/Day03/Galleries/2.jpg`,
+            `${process.env.PUBLIC_URL}/Day03/Galleries/3.jpg`,
+            `${process.env.PUBLIC_URL}/Day03/Galleries/4.jpg`,
+            `${process.env.PUBLIC_URL}/Day03/Galleries/5.jpg`,
+            `${process.env.PUBLIC_URL}/Day03/Galleries/6.jpg`,
+            `${process.env.PUBLIC_URL}/Day03/Galleries/7.jpg`,
+            `${process.env.PUBLIC_URL}/Day03/Galleries/8.jpg`,
           ]}
         />
       </div>
