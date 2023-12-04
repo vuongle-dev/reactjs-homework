@@ -502,11 +502,7 @@ export default function Router() {
   const queryClient = new QueryClient();
   const auth = useAuth();
   React.useEffect(() => {
-<<<<<<< HEAD
     auth.loggedInUser && auth.refresh();
-=======
-    auth.refresh();
->>>>>>> 77c325b05716067b2306681f50f308309570858b
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
   return (
     <React.Suspense fallback={<Spin />}>

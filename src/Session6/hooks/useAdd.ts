@@ -25,20 +25,12 @@ const useAdd = (subject: string, silent?: boolean) => {
       const newitemcat = queryClient
         .getQueryData<any[]>(["categories"])
         ?.find((value) => {
-<<<<<<< HEAD
           return value.id === data.categoryId;
-=======
-          return value.id == data.categoryId;
->>>>>>> 77c325b05716067b2306681f50f308309570858b
         });
       const newitemsup = queryClient
         .getQueryData<any[]>(["suppliers"])
         ?.find((value) => {
-<<<<<<< HEAD
           return value.id === data.supplierId;
-=======
-          return value.id == data.supplierId;
->>>>>>> 77c325b05716067b2306681f50f308309570858b
         });
       newitemcat
         ? queryClient.setQueryData([subject], (olddata: any) => [
@@ -47,7 +39,6 @@ const useAdd = (subject: string, silent?: boolean) => {
           ])
         : queryClient.invalidateQueries([subject]);
       console.log(queryClient.getQueryData([subject]));
-<<<<<<< HEAD
       subject === "orders"
         ? !silent &&
           message.success({
@@ -56,14 +47,6 @@ const useAdd = (subject: string, silent?: boolean) => {
           })
         : !silent &&
           message.success({
-=======
-      subject == "orders"
-        ? message.success({
-            key: "addsubject",
-            content: "Added order with ID: " + data.id,
-          })
-        : message.success({
->>>>>>> 77c325b05716067b2306681f50f308309570858b
             key: "addsubject",
             content: "Added " + data.name + " with ID: " + data.id,
           });
@@ -94,11 +77,7 @@ const useAdd = (subject: string, silent?: boolean) => {
             key: "addsubject",
             content: "Lost Connection",
             duration: 0,
-<<<<<<< HEAD
           })); // eslint-disable-next-line
-=======
-          }));
->>>>>>> 77c325b05716067b2306681f50f308309570858b
   }, [result]);
   // React.useEffect(() => {
   //   const addData = async (data: any) => {
