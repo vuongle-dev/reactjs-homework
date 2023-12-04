@@ -1,8 +1,8 @@
 import { message } from "antd";
 import { create } from "zustand";
-import { devtools, persist } from "zustand/middleware";
+import { devtools } from "zustand/middleware";
 import axiosClient from "../config/axiosClient";
-import React from "react";
+// import React from "react";
 import useAuth from "./useAuth";
 import { useMutation, useQueryClient } from "react-query";
 import { Error } from "./useGet";
@@ -31,7 +31,11 @@ export const usePatchPopup = create<patchPopupInterface>()(
   }))
 );
 
-const usePatchSubject = (subject: string, id: number | null) => {
+const usePatchSubject = (
+  subject: string,
+  id: number | null,
+  silent?: boolean
+) => {
   const access_token = useAuth((state) => state.access_token);
   const setPatchPopup = usePatchPopup((state) => state.setPatchPopup);
   const setCurrentId = useCurrentId((state) => state.setCurrentId);
@@ -47,14 +51,15 @@ const usePatchSubject = (subject: string, id: number | null) => {
   const queryClient = useQueryClient();
   const result = useMutation<any, Error>(patch, {
     onSuccess: (data) => {
-      message.success({
-        key: "patchsubject",
-        type: "success",
-        content: "Modified successfully",
-      });
+      !silent &&
+        message.success({
+          key: "patchsubject",
+          type: "success",
+          content: "Modified successfully",
+        });
       queryClient.setQueryData([subject], (olddata: any) =>
         olddata.map((item: any) => {
-          return item.id == data.id ? data : item;
+          return item.id === data.id ? data : item;
         })
       );
       queryClient.setQueryData([subject, id], data);

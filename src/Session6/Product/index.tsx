@@ -1,11 +1,12 @@
-import React, { useEffect, useState } from "react";
-import styles from "./Product.module.css";
-import { Form, Input, InputNumber, Select, Statistic } from "antd";
+import React from "react";
+// import styles from "./Product.module.css";
+import { Form, Input, InputNumber, Select, Spin, Statistic } from "antd";
 import type { ColumnsType } from "antd/es/table";
 import TextArea from "antd/es/input/TextArea";
 import SubjectTemplate from "../Components/SubjectTemplate";
 import useGetSubjects from "../hooks/useGet";
-type Props = {};
+import { uniqBy } from "../hooks/usefulHooks";
+// type Props = {};
 
 interface getoption {
   id: number;
@@ -137,6 +138,22 @@ interface ProductType extends addschemaInput {
 }
 
 const Productant = () => {
+  const data = useGetSubjects("products");
+  const categoriesFilter = data.isSuccess
+    ? uniqBy(
+        data.data.map((value: any) => {
+          return { text: value.category.name, value: value.category.id };
+        })
+      )
+    : undefined;
+  const suppliersFilter = data.isSuccess
+    ? uniqBy(
+        data.data.map((value: any) => {
+          return { text: value.supplier.name, value: value.supplier.id };
+        })
+      )
+    : undefined;
+
   const defaultColumns: ColumnsType<ProductType> = [
     {
       title: "ID",
@@ -157,6 +174,7 @@ const Productant = () => {
       dataIndex: "price",
       key: "price",
       align: "right",
+      sorter: (a, b) => a.price - b.price,
       render: (text: any, record: ProductType, index: number) => {
         return (
           <Statistic
@@ -172,6 +190,7 @@ const Productant = () => {
       dataIndex: "discount",
       key: "discount",
       align: "right",
+      sorter: (a, b) => a.discount - b.discount,
       render: (text: any, record: ProductType, index: number) => {
         return <>{record.discount}%</>;
       },
@@ -181,11 +200,15 @@ const Productant = () => {
       dataIndex: "stock",
       key: "stock",
       align: "right",
+      sorter: (a, b) => a.stock - b.stock,
     },
     {
       title: "Category",
       dataIndex: "category",
       key: "category",
+      filterSearch: true,
+      filters: categoriesFilter,
+      onFilter: (value, record) => record.category.id === value,
       render: (text: any, record: ProductType, index: number) => {
         return <>{record.category.name}</>;
       },
@@ -194,19 +217,24 @@ const Productant = () => {
       title: "Supplier",
       dataIndex: "supplier",
       key: "supplier",
+      filterSearch: true,
+      filters: suppliersFilter,
+      onFilter: (value, record) => record.supplier.id === value,
       render: (text: any, record: ProductType, index: number) => {
         return <>{record.supplier.name}</>;
       },
     },
   ];
 
-  return (
+  return data.isSuccess ? (
     <SubjectTemplate
       subject="product"
       subjects="products"
       currentform={<ProductForm />}
       defaultColumns={defaultColumns}
     />
+  ) : (
+    <Spin />
   );
 };
 export default Productant;

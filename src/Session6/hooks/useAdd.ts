@@ -1,11 +1,11 @@
 import { message } from "antd";
 import axiosClient from "../config/axiosClient";
 import React from "react";
-import { Error, useRefresh } from "./useGet";
+import { Error } from "./useGet";
 import useAuth from "./useAuth";
 import { onlineManager, useMutation, useQueryClient } from "react-query";
 
-const useAdd = (subject: string) => {
+const useAdd = (subject: string, silent?: boolean) => {
   // const [success, setSuccess] = React.useState(false);
   // const setRefresh = useRefresh((state) => state.setRefresh);
   const access_token = useAuth((state) => state.access_token);
@@ -25,12 +25,12 @@ const useAdd = (subject: string) => {
       const newitemcat = queryClient
         .getQueryData<any[]>(["categories"])
         ?.find((value) => {
-          return value.id == data.categoryId;
+          return value.id === data.categoryId;
         });
       const newitemsup = queryClient
         .getQueryData<any[]>(["suppliers"])
         ?.find((value) => {
-          return value.id == data.supplierId;
+          return value.id === data.supplierId;
         });
       newitemcat
         ? queryClient.setQueryData([subject], (olddata: any) => [
@@ -39,22 +39,25 @@ const useAdd = (subject: string) => {
           ])
         : queryClient.invalidateQueries([subject]);
       console.log(queryClient.getQueryData([subject]));
-      subject == "orders"
-        ? message.success({
+      subject === "orders"
+        ? !silent &&
+          message.success({
             key: "addsubject",
             content: "Added order with ID: " + data.id,
           })
-        : message.success({
+        : !silent &&
+          message.success({
             key: "addsubject",
             content: "Added " + data.name + " with ID: " + data.id,
           });
       result.reset();
     },
     onError: (error) => {
-      message.error({
-        key: "addsubject",
-        content: error.response.data.message,
-      });
+      !silent &&
+        message.error({
+          key: "addsubject",
+          content: error.response.data.message,
+        });
     },
     retry: (failureCount, error) => {
       return Boolean(!error.response);
@@ -63,16 +66,18 @@ const useAdd = (subject: string) => {
   React.useEffect(() => {
     result.isLoading &&
       (onlineManager.isOnline()
-        ? message.loading({
+        ? !silent &&
+          message.loading({
             key: "addsubject",
             content: "Submitting",
             duration: 0,
           })
-        : message.loading({
+        : !silent &&
+          message.loading({
             key: "addsubject",
             content: "Lost Connection",
             duration: 0,
-          }));
+          })); // eslint-disable-next-line
   }, [result]);
   // React.useEffect(() => {
   //   const addData = async (data: any) => {

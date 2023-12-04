@@ -1,12 +1,12 @@
 import { message } from "antd";
 import axiosClient from "../config/axiosClient";
-import React from "react";
-import { Error, useRefresh } from "./useGet";
+// import React from "react";
+import { Error } from "./useGet";
 import useAuth from "./useAuth";
-import { useCurrentId } from "./usePatch";
+// import { useCurrentId } from "./usePatch";
 import { useMutation, useQueryClient } from "react-query";
 
-const useDelete = (subject: string) => {
+const useDelete = (subject: string, silent?: boolean) => {
   const access_token = useAuth((state) => state.access_token);
   const queryClient = useQueryClient();
 
@@ -26,16 +26,18 @@ const useDelete = (subject: string) => {
           return item.id !== variable;
         });
       });
-      message.success({
-        key: "deletesubject",
-        content: "Deleted",
-      });
+      !silent &&
+        message.success({
+          key: "deletesubject",
+          content: "Deleted",
+        });
     },
     onError: (error) => {
-      message.error({
-        key: "deletesubject",
-        content: error.response.data.message,
-      });
+      !silent &&
+        message.error({
+          key: "deletesubject",
+          content: error.response.data.message,
+        });
     },
   });
   // result.isLoading &&

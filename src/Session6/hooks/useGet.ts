@@ -1,6 +1,6 @@
 import { message } from "antd";
 import { create } from "zustand";
-import { devtools, persist } from "zustand/middleware";
+import { devtools } from "zustand/middleware";
 import axiosClient from "../config/axiosClient";
 import React from "react";
 import { useQuery, useQueryClient } from "react-query";
@@ -61,7 +61,11 @@ export const useRefresh = create<refreshInterface>()(
 //   return [data];
 // };
 
-export const useGetSubject = (subject: string, id: number | null) => {
+export const useGetSubject = (
+  subject: string,
+  id: number | null,
+  silent?: boolean
+) => {
   const queryClient = useQueryClient();
   const url = "/online-shop/" + subject + "/" + id;
   const getSubject = async (subject: string, id: number | null) => {
@@ -77,7 +81,7 @@ export const useGetSubject = (subject: string, id: number | null) => {
       onSuccess: (data) => {
         queryClient.setQueryData([subject], (olddata: any) =>
           olddata.map((item: any) => {
-            return item.id == data.id ? data : item;
+            return item.id === data.id ? data : item;
           })
         );
       },
@@ -85,12 +89,14 @@ export const useGetSubject = (subject: string, id: number | null) => {
   );
   React.useEffect(() => {
     result.isLoading &&
+      !silent &&
       message.loading({
         key: "geterror",
         content: "Connecting",
         duration: 0,
       });
     result.isLoading &&
+      !silent &&
       message.loading({
         key: "geterror",
         content: "Connecting",
@@ -99,15 +105,17 @@ export const useGetSubject = (subject: string, id: number | null) => {
     result.isSuccess && message.destroy("geterror");
     result.isError &&
       (result.error.response
-        ? message.error({
+        ? !silent &&
+          message.error({
             key: "geterror",
             content: result.error.response.data.message,
           })
-        : message.loading({
+        : !silent &&
+          message.loading({
             key: "geterror",
             content: "Lost Connection",
             duration: 0,
-          }));
+          })); // eslint-disable-next-line
   }, [result]);
   return result;
 };

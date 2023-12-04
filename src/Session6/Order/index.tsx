@@ -8,23 +8,24 @@ import {
   FormInstance,
   Input,
   InputNumber,
-  InputRef,
   Popconfirm,
   Radio,
   Select,
   Space,
+  Spin,
   Table,
 } from "antd";
 import Title from "antd/es/typography/Title";
 import type { ColumnsType } from "antd/es/table";
-import { AiOutlineDelete, AiOutlineEdit } from "react-icons/ai";
+import { AiOutlineDelete } from "react-icons/ai";
 import TextArea from "antd/es/input/TextArea";
 import dayjs from "dayjs";
 import utc from "dayjs/plugin/utc";
 import customParseFormat from "dayjs/plugin/customParseFormat";
 import SubjectTemplate from "../Components/SubjectTemplate";
 import useGetSubjects from "../hooks/useGet";
-type Props = {};
+import { uniqBy } from "../hooks/usefulHooks";
+// type Props = {};
 
 dayjs.extend(customParseFormat);
 dayjs.extend(utc);
@@ -82,7 +83,7 @@ const ProductForm = ({
   const [productForm] = Form.useForm();
   const addProduct = (data: order) => {
     !orderDetails.some((value, index, array) => {
-      return value.productId == data.productId;
+      return value.productId === data.productId;
     })
       ? setOrderDetails([
           ...orderDetails,
@@ -101,7 +102,7 @@ const ProductForm = ({
         ])
       : setOrderDetails(
           orderDetails.map((item) => {
-            return item.productId == data.productId
+            return item.productId === data.productId
               ? {
                   ...item,
                   quantity: item.quantity + data.quantity,
@@ -219,10 +220,10 @@ const OrderForm = ({
       : setOrderDetails([]);
     setOrderDetails((orderDetails) =>
       orderDetails.map((item) => ({ ...item, productId: item.product.id }))
-    );
+    ); // eslint-disable-next-line
   }, []);
   useEffect(() => {
-    form.setFieldValue("orderDetails", orderDetails);
+    form.setFieldValue("orderDetails", orderDetails); // eslint-disable-next-line
   }, [orderDetails]);
   const deleteProduct = (index: number) => {
     let newOrderDetails = orderDetails.slice();
@@ -250,7 +251,6 @@ const OrderForm = ({
     ...restProps
   }: EditableCellProps) => {
     const [editing, setEditing] = useState(false);
-    const inputRef = React.useRef<InputRef>(null);
     const form = React.useContext(EditableContext)!;
 
     // useEffect(() => {
@@ -589,6 +589,61 @@ interface OrderType extends addschemaInput {
 }
 
 const Orderant = () => {
+  const data = useGetSubjects("orders");
+  const custormersFilter = data.isSuccess
+    ? uniqBy(
+        data.data.map((value: any) => {
+          return {
+            text: value.customer.firstName + " " + value.customer.lastName,
+            value: value.customer.id,
+          };
+        })
+      )
+    : undefined;
+  const employeesFilter = data.isSuccess
+    ? uniqBy(
+        data.data.map((value: any) => {
+          return {
+            text: value.employee.firstName + " " + value.employee.lastName,
+            value: value.employee.id,
+          };
+        })
+      )
+    : undefined;
+  const shippingCityFilter = data.isSuccess
+    ? uniqBy(
+        data.data.map((value: any) => {
+          return {
+            text: value.shippingCity,
+            value: value.shippingCity,
+          };
+        })
+      )
+    : undefined;
+  const paymentTypeFilter = [
+    {
+      text: "Cash",
+      value: "CASH",
+    },
+    {
+      text: "Credit Card",
+      value: "CREDIT CARD",
+    },
+  ];
+  const statusFilter = [
+    {
+      text: "Waiting",
+      value: "WAITING",
+    },
+    {
+      text: "Completed",
+      value: "COMPLETED",
+    },
+    {
+      text: "Canceled",
+      value: "CANCELED ",
+    },
+  ];
   const defaultColumns: ColumnsType<OrderType> = [
     {
       title: "ID",
@@ -632,21 +687,31 @@ const Orderant = () => {
       title: "Shipping City",
       dataIndex: "shippingCity",
       key: "shippingCity",
+      filterSearch: true,
+      filters: shippingCityFilter,
+      onFilter: (value, record) => record.shippingCity === value,
     },
     {
       title: "Payment Type",
       dataIndex: "paymentType",
       key: "paymentType",
+      filters: paymentTypeFilter,
+      onFilter: (value, record) => record.paymentType === value,
     },
     {
       title: "Status",
       dataIndex: "status",
       key: "status",
+      filters: statusFilter,
+      onFilter: (value, record) => record.status === value,
     },
     {
       title: "Customer",
       dataIndex: "customer",
       key: "customer",
+      filterSearch: true,
+      filters: custormersFilter,
+      onFilter: (value, record) => record.customer.id === value,
       render: (text: any, record: OrderType, index: number) => {
         return (
           <>{record.customer.firstName + " " + record.customer.lastName}</>
@@ -657,6 +722,9 @@ const Orderant = () => {
       title: "Employee",
       dataIndex: "employee",
       key: "employee",
+      filterSearch: true,
+      filters: employeesFilter,
+      onFilter: (value, record) => record.employee.id === value,
       render: (text: any, record: OrderType, index: number) => {
         return (
           <>{record.employee.firstName + " " + record.employee.lastName}</>
@@ -681,13 +749,15 @@ const Orderant = () => {
     },
   ];
 
-  return (
+  return data.isSuccess ? (
     <SubjectTemplate
       subject="order"
       subjects="orders"
       currentform={<OrderForm />}
       defaultColumns={defaultColumns}
     />
+  ) : (
+    <Spin />
   );
 };
 export default Orderant;

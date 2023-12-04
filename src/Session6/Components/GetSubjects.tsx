@@ -1,8 +1,8 @@
 import Table, { ColumnsType } from "antd/es/table";
-import React from "react";
-import { Alert, Flex, Spin, message } from "antd";
+// import React from "react";
+import { Alert, Flex, Spin } from "antd";
 import Title from "antd/es/typography/Title";
-import useGetSubjects, { useRefresh } from "../hooks/useGet";
+import useGetSubjects from "../hooks/useGet";
 
 type Props = {
   subject: string;
@@ -11,7 +11,7 @@ type Props = {
 };
 
 export default function GetSubjects({ subject, title, subjectColumn }: Props) {
-  const refresh = useRefresh((state) => state.refresh);
+  // const refresh = useRefresh((state) => state.refresh);
   const query = useGetSubjects(subject);
 
   return (
