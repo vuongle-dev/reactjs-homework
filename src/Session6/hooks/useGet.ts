@@ -129,12 +129,11 @@ export const useGetSubject = (subject: string, id: number | null) => {
 //   return [data];
 // };
 
-const getSubjects = async (subject: string) => {
-  const response = await axiosClient.get("/online-shop/" + subject);
-  return response.data;
-};
-
 const useGetSubjects = (subject: string) => {
+  const getSubjects = async (subject: string) => {
+    const response = await axiosClient.get("/online-shop/" + subject);
+    return response.data;
+  };
   return useQuery<any[], Error>([subject], () => getSubjects(subject));
 };
 
