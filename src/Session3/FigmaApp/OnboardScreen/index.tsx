@@ -1,6 +1,5 @@
-import React, { ReactElement, ReactNode, useState } from "react";
+import React, { ReactElement, useState } from "react";
 import styles from "./OnboardScreen.module.css";
-import { type } from "os";
 import SignUp from "../SignUp";
 
 type Props = {
@@ -21,7 +20,7 @@ type SlideProps = {
 
 const SlideItem = ({
   images,
-  backgroundmage = "Day03/FigmaApp/background1.svg",
+  backgroundmage = `${process.env.PUBLIC_URL}/Day03/FigmaApp/background1.svg`,
   title,
   description,
 }: SlideProps) => {
@@ -56,7 +55,7 @@ const SlideNavigation = ({
         <div
           key={index}
           className={`${styles.normalNavigation} ${
-            index == currentSlide ? styles.currentNavigation : ""
+            index === currentSlide ? styles.currentNavigation : ""
           }`}
           onClick={() => setCurrentSlide(index)}
         ></div>
@@ -73,7 +72,7 @@ export const Button = (props: any) => {
   );
 };
 export default function OnboardScreen({
-  logo = "Day03/FigmaApp/logo.svg",
+  logo = `${process.env.PUBLIC_URL}/Day03/FigmaApp/logo.svg`,
   slide,
   setNextPage,
 }: Props) {
@@ -102,14 +101,14 @@ export default function OnboardScreen({
         <div className={styles.buttonsContainer}>
           <div
             id={styles.skipButton}
-            className={currentSlide == slide.length - 1 ? styles.hide : ""}
+            className={currentSlide === slide.length - 1 ? styles.hide : ""}
             onClick={() =>
               setNextPage({
                 change: "next",
                 effect: "vertical",
                 component: (
                   <SignUp
-                    logo="Day03/FigmaApp/logo.svg"
+                    logo={`${process.env.PUBLIC_URL}/Day03/FigmaApp/logo.svg`}
                     title="Getting Started"
                     description="Create an account to continue!"
                     setNextPage={setNextPage}
@@ -122,7 +121,7 @@ export default function OnboardScreen({
           </div>
           <Button
             id={styles.nextButton}
-            style={currentSlide == slide.length - 1 ? { width: "100%" } : {}}
+            style={currentSlide === slide.length - 1 ? { width: "100%" } : {}}
             onClick={() => {
               currentSlide < slide.length - 1
                 ? setCurrentSlide((currentSlide) => currentSlide + 1)
@@ -131,7 +130,7 @@ export default function OnboardScreen({
                     effect: "vertical",
                     component: (
                       <SignUp
-                        logo="Day03/FigmaApp/logo.svg"
+                        logo={`${process.env.PUBLIC_URL}/Day03/FigmaApp/logo.svg`}
                         title="Getting Started"
                         description="Create an account to continue!"
                         setNextPage={setNextPage}
@@ -140,7 +139,7 @@ export default function OnboardScreen({
                   });
             }}
           >
-            {currentSlide == slide.length - 1 ? "Let's Get Started" : "Next"}
+            {currentSlide === slide.length - 1 ? "Let's Get Started" : "Next"}
           </Button>
         </div>
       </div>

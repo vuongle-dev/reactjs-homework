@@ -1,9 +1,4 @@
-import React, {
-  ReactElement,
-  StyleHTMLAttributes,
-  useEffect,
-  useState,
-} from "react";
+import React, { ReactElement, useState } from "react";
 import styles from "./MyCards.module.css";
 import RiderReview, { NormalPageTemplate } from "../RiderReview";
 import { GoogleColorfulIcon, MastercardColorfulIcon } from "../../../icon";
@@ -32,18 +27,18 @@ const CardPick = ({
 }) => {
   const [pick, setPick] = useState(0);
   return (
-    <div className={styles.CardPick} style={style}>
+    <form className={styles.CardPick} style={style}>
       {title}
       <div className={styles.cardList}>
         {cardlist &&
           cardlist.map((card, index) => (
             <div key={index} className={styles.card}>
               <label
-                htmlFor={index.toString()}
+                htmlFor={"card-" + index}
                 className={`${styles.cardlabel} ${
                   index === pick ? styles.active : styles.inactive
                 }`}
-                onClick={() => {
+                onClick={(e) => {
                   setPick(index);
                 }}
               >
@@ -52,19 +47,19 @@ const CardPick = ({
               </label>
               <input
                 type="radio"
-                name={"cardpick-" + title}
+                name={"cardpick"}
                 value={card.card}
-                id={index.toString()}
+                id={"card-" + index}
               />
             </div>
           ))}
       </div>
-    </div>
+    </form>
   );
 };
 
 export default function MyCards({ setNextPage }: Props) {
-  const [currentSlide, setCurrentSlide] = useState(0);
+  // const [currentSlide, setCurrentSlide] = useState(0);
   return (
     <NormalPageTemplate
       title="My Cards"
@@ -73,7 +68,7 @@ export default function MyCards({ setNextPage }: Props) {
         <RiderReview
           riderinfo={{
             name: "William Adams",
-            avatar: "Day03/FigmaApp/avatar.png",
+            avatar: `${process.env.PUBLIC_URL}/Day03/FigmaApp/avatar.png`,
             career: "Delivery Man",
             delivered: true,
           }}

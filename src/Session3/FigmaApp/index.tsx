@@ -1,11 +1,10 @@
 import React from "react";
 import styles from "./FigmaApp.module.css";
 import OnboardScreen from "./OnboardScreen";
-import SignUp from "./SignUp";
-import RiderReview from "./RiderReview";
-type Props = {};
+// import SignUp from "./SignUp";
+// import RiderReview from "./RiderReview";
 
-export default function FigmaApp({}: Props) {
+export default function FigmaApp() {
   const [currentPage, setCurrentPage] = React.useState(<></>);
   const [nextPage, setNextPage] = React.useState({
     change: "no",
@@ -48,8 +47,8 @@ export default function FigmaApp({}: Props) {
   }, []);
 
   React.useEffect(() => {
-    nextPage.change != "no" && setBeginNavigate(nextPage);
-    nextPage.change != "no" &&
+    nextPage.change !== "no" && setBeginNavigate(nextPage);
+    nextPage.change !== "no" &&
       setTimeout(() => {
         setCurrentPage(nextPage.component);
         console.log("Set CurrentPage to NextPage");
@@ -61,16 +60,16 @@ export default function FigmaApp({}: Props) {
       }, 500);
   }, [nextPage]);
   let navigatestyle =
-    beginNavigate.change == "back"
-      ? beginNavigate.effect == "vertical"
+    beginNavigate.change === "back"
+      ? beginNavigate.effect === "vertical"
         ? styles.backvertical
-        : beginNavigate.effect == "horizontal"
+        : beginNavigate.effect === "horizontal"
         ? styles.backhorizontal
         : ""
-      : beginNavigate.change == "next"
-      ? beginNavigate.effect == "vertical"
+      : beginNavigate.change === "next"
+      ? beginNavigate.effect === "vertical"
         ? styles.nextvertical
-        : beginNavigate.effect == "horizontal"
+        : beginNavigate.effect === "horizontal"
         ? styles.nexthorizontal
         : ""
       : "";
@@ -79,7 +78,7 @@ export default function FigmaApp({}: Props) {
       <div className={styles.mobileFrame}>
         <div
           className={`${styles.navigationContainer} ${
-            beginNavigate.change == "back" ? navigatestyle : ""
+            beginNavigate.change === "back" ? navigatestyle : ""
           }`}
         >
           {nextPage.component}
@@ -87,7 +86,7 @@ export default function FigmaApp({}: Props) {
 
         <div
           className={`${styles.navigationContainer} ${
-            beginNavigate.change == "next" ? navigatestyle : ""
+            beginNavigate.change === "next" ? navigatestyle : ""
           }`}
         >
           {currentPage}

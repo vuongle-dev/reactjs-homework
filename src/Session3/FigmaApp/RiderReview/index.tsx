@@ -1,4 +1,4 @@
-import React, { ReactElement, StyleHTMLAttributes, useState } from "react";
+import React, { ReactElement, useState } from "react";
 import styles from "./RiderReview.module.css";
 import { MdKeyboardArrowLeft } from "react-icons/md";
 import { Button } from "../OnboardScreen";
@@ -191,14 +191,14 @@ const ButtonPick = ({
 };
 
 export default function RiderReview({ riderinfo, setNextPage }: Props) {
-  const [currentSlide, setCurrentSlide] = useState(0);
+  // const [currentSlide, setCurrentSlide] = useState(0);
   return (
     <NormalPageTemplate
       title="Rider Review"
       submitbutton="Submit Review"
       backPage={
         <SignUp
-          logo="Day03/FigmaApp/logo.svg"
+          logo={`${process.env.PUBLIC_URL}/Day03/FigmaApp/logo.svg`}
           title="Getting Started"
           description="Create an account to continue!"
           setNextPage={setNextPage}
