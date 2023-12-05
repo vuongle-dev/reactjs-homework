@@ -415,10 +415,10 @@ const OrderForm = ({
             ...initialValues,
             shippedDate:
               initialValues.shippedDate &&
-              dayjs(initialValues.shippedDate).utc(),
+              dayjs(initialValues.shippedDate).local(),
             createdDate:
               initialValues.createdDate &&
-              dayjs(initialValues.createdDate).utc(),
+              dayjs(initialValues.createdDate).local(),
           }
         }
       >

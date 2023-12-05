@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from "react";
-import styles from "./Customer.module.css";
+import React from "react";
+// import styles from "./Customer.module.css";
 import { DatePicker, Form, Input } from "antd";
 import dayjs from "dayjs";
 import utc from "dayjs/plugin/utc";
@@ -8,7 +8,7 @@ import type { ColumnsType } from "antd/es/table";
 
 import TextArea from "antd/es/input/TextArea";
 import SubjectTemplate from "../Components/SubjectTemplate";
-type Props = {};
+// type Props = {};
 
 dayjs.extend(customParseFormat);
 dayjs.extend(utc);
@@ -106,7 +106,7 @@ const CustomerForm = ({
           { type: "date", message: "Birthday is not valid" },
           // { required: true, message: "Birthday is required" },
         ]}
-        initialValue={initialValues && dayjs(initialValues.birthday).utc()}
+        initialValue={initialValues && dayjs(initialValues.birthday).local()}
       >
         <DatePicker format={dateFormat} name="birthday" />
       </Form.Item>

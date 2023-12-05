@@ -1,10 +1,10 @@
-import { Alert, Button, Col, Form, Modal, Row, Space } from "antd";
+import { Alert, Button, Col, Form, Modal, Row, Space, Spin } from "antd";
 import React from "react";
 import usePatchSubject, {
   useCurrentId,
   usePatchPopup,
 } from "../hooks/usePatch";
-import { useQueryClient } from "react-query";
+import useGetSubjects from "../hooks/useGet";
 
 type Props = {
   subject: string;
@@ -18,10 +18,11 @@ export default function PatchSubject({ subject, currentform, title }: Props) {
   const [patchSubject] = Form.useForm();
   const currentId = useCurrentId((state) => state.currentId);
   const setCurrentId = useCurrentId((state) => state.setCurrentId);
-  const query = usePatchSubject(subject, currentId);
-  const queryClient = useQueryClient();
+  const query = usePatchSubject(subject);
+  const getSubjects = useGetSubjects(subject);
   const submitPatchSubject = (data: any) => {
-    query.mutate(data);
+    const passdata: any = { data: data, id: currentId };
+    query.mutate(passdata);
   };
   return (
     <Modal
@@ -53,15 +54,17 @@ export default function PatchSubject({ subject, currentform, title }: Props) {
         </Col>
       </Row>
     >
-      {React.cloneElement(currentform, {
-        form: patchSubject,
-        onFinish: submitPatchSubject,
-        initialValues: queryClient
-          .getQueryData<any[]>([subject])
-          ?.find((subject: any) => {
+      {getSubjects.isSuccess ? (
+        React.cloneElement(currentform, {
+          form: patchSubject,
+          onFinish: submitPatchSubject,
+          initialValues: getSubjects.data?.find((subject: any) => {
             return subject.id === currentId;
           }),
-      })}
+        })
+      ) : (
+        <Spin />
+      )}
 
       {query.isLoading && <Alert message="Submitting" type="info" />}
       {query.isError &&

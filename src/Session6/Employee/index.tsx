@@ -1,32 +1,13 @@
-import React, { useEffect, useState } from "react";
-import styles from "./Employee.module.css";
-import axiosClient from "../config/axiosClient";
-import {
-  Alert,
-  Button,
-  Col,
-  DatePicker,
-  Flex,
-  Form,
-  Input,
-  InputNumber,
-  Modal,
-  Popconfirm,
-  Row,
-  Space,
-  Spin,
-  Table,
-  message,
-} from "antd";
+import React from "react";
+// import styles from "./Employee.module.css";
+import { DatePicker, Form, Input } from "antd";
 import dayjs from "dayjs";
 import utc from "dayjs/plugin/utc";
 import customParseFormat from "dayjs/plugin/customParseFormat";
-import Title from "antd/es/typography/Title";
-import type { ColumnType, ColumnsType } from "antd/es/table";
-import { AiOutlineDelete, AiOutlineEdit } from "react-icons/ai";
+import type { ColumnsType } from "antd/es/table";
 import TextArea from "antd/es/input/TextArea";
 import SubjectTemplate from "../Components/SubjectTemplate";
-type Props = {};
+// type Props = {};
 
 dayjs.extend(customParseFormat);
 dayjs.extend(utc);
@@ -124,7 +105,7 @@ const EmployeeForm = ({
           { type: "date", message: "Birthday is not valid" },
           // { required: true, message: "Birthday is required" },
         ]}
-        initialValue={initialValues && dayjs(initialValues.birthday).utc()}
+        initialValue={initialValues && dayjs(initialValues.birthday).local()}
       >
         <DatePicker format={dateFormat} name="birthday" />
       </Form.Item>

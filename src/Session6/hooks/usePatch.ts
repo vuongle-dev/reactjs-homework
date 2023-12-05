@@ -33,14 +33,15 @@ export const usePatchPopup = create<patchPopupInterface>()(
 
 const usePatchSubject = (
   subject: string,
-  id: number | null,
+  // id: number | null,
   silent?: boolean
 ) => {
   const access_token = useAuth((state) => state.access_token);
   const setPatchPopup = usePatchPopup((state) => state.setPatchPopup);
   const setCurrentId = useCurrentId((state) => state.setCurrentId);
-  const url = "/online-shop/" + subject + "/" + id;
-  const patch = async (data: any) => {
+
+  const patch = async ({ data, id }: any) => {
+    const url = "/online-shop/" + subject + "/" + id;
     const response = await axiosClient.patch(url, data, {
       headers: {
         Authorization: "Bearer " + access_token,
@@ -50,7 +51,7 @@ const usePatchSubject = (
   };
   const queryClient = useQueryClient();
   const result = useMutation<any, Error>(patch, {
-    onSuccess: (data) => {
+    onSuccess: (data, variables: any) => {
       !silent &&
         message.success({
           key: "patchsubject",
@@ -62,7 +63,7 @@ const usePatchSubject = (
           return item.id === data.id ? data : item;
         })
       );
-      queryClient.setQueryData([subject, id], data);
+      queryClient.setQueryData([subject, variables.id], data);
       setPatchPopup(false);
       setCurrentId(null);
     },

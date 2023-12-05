@@ -11,10 +11,11 @@ export default function DeleteSubject({ id, subject, title }: Props) {
   const confirmDelete = useDelete(subject);
   // const deleteOrder = useDelete("orders");
   // const orders = useGetSubjects("orders");
-  const patch = usePatchSubject("orders", id, true);
+  const patch = usePatchSubject("orders", true);
   const EmptyOrderDetail = async (data: any, id: any) => {
+    const passdata: any = { data: data, id: id };
     try {
-      await patch.mutateAsync(data);
+      await patch.mutateAsync(passdata);
     } catch (error) {
       console.log(error);
     } finally {
