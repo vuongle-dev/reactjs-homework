@@ -4,9 +4,9 @@ import { Button, ConfigProvider, Layout, Menu, MenuProps, Result } from "antd";
 import { Content, Header } from "antd/es/layout/layout";
 import locale from "antd/locale/vi_VN";
 import { Outlet, Link } from "react-router-dom";
-import Loginant from "./Session6/Login/Loginant";
+import Loginant from "./OnlineShop/Login/Loginant";
 import useAuth from "./OnlineShop/hooks/useAuth";
-import Logout from "./Session6/Login/Logout";
+import Logout from "./OnlineShop/Login/Logout";
 import { GiDoctorFace } from "react-icons/gi";
 
 const HeaderContent = () => {
