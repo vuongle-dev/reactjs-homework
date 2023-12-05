@@ -18,7 +18,7 @@ const TextAccordions = ({ tablist }: AccordionListProps) => {
         <li
           key={index}
           className={`${styles.Accordion} ${
-            index == currentAccordion
+            index === currentAccordion
               ? styles.currentAccordion
               : styles.inactiveAccordion
           }`}
@@ -27,12 +27,12 @@ const TextAccordions = ({ tablist }: AccordionListProps) => {
             className={styles.AccordionName}
             onClick={() => SetCurrentAccordion(index)}
           >
-            {index == currentAccordion ? <TfiPlus /> : <TfiMinus />}
+            {index === currentAccordion ? <TfiPlus /> : <TfiMinus />}
             {item.name}
           </div>
 
           <div className={styles.content}>
-            {index == currentAccordion && <p>{item.content}</p>}
+            {index === currentAccordion && <p>{item.content}</p>}
           </div>
         </li>
       ))}

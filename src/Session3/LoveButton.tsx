@@ -10,12 +10,12 @@ type Props = {
 const AnimateButton = ({ icon, activeicon = icon, text }: Props) => {
   const [active, setActive] = useState("inactive");
   const Click = () => {
-    active == "active" ? setActive("inactive") : setActive("active");
+    active === "active" ? setActive("inactive") : setActive("active");
   };
   return (
     <div
       id={styles.Button}
-      className={`${active == "active" ? styles.inactive : styles.active}`}
+      className={`${active === "active" ? styles.inactive : styles.active}`}
       onClick={Click}
     >
       <div

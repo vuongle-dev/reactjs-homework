@@ -1,6 +1,6 @@
-import React, { useCallback, useMemo } from "react";
+import React from "react";
 import { useGetSubject } from "../hooks/useGet";
-import { Button, Divider, Flex, Form, InputNumber, Table, message } from "antd";
+import { Button, Divider, Flex, Form, InputNumber, Table } from "antd";
 import { ColumnsType } from "antd/es/table";
 import Title from "antd/es/typography/Title";
 

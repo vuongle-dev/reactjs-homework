@@ -17,7 +17,7 @@ const ButtonAccordions = ({ tablist }: AccordionListProps) => {
         <li
           key={index}
           className={`${styles.Accordion} ${
-            index == currentAccordion
+            index === currentAccordion
               ? styles.currentAccordion
               : styles.inactiveAccordion
           }`}
@@ -30,7 +30,7 @@ const ButtonAccordions = ({ tablist }: AccordionListProps) => {
           </div>
 
           <div className={styles.content}>
-            {index == currentAccordion && <p>{item.content}</p>}
+            {index === currentAccordion && <p>{item.content}</p>}
           </div>
         </li>
       ))}

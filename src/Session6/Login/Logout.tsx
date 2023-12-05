@@ -1,10 +1,10 @@
-import React from "react";
+// import React from "react";
 import useAuth from "../hooks/useAuth";
 import { Button, Flex, Space } from "antd";
 
-type Props = {};
+// type Props = {};
 
-export default function Logout({}: Props) {
+export default function Logout() {
   const email = useAuth((state) => state.loggedInUser?.email);
   const role = useAuth((state) => state.loggedInUser?.roles[0].name);
   const logout = useAuth((state) => state.logout);

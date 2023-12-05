@@ -8,7 +8,6 @@ import {
   FaPhoneAlt,
 } from "react-icons/fa";
 import { FaLocationDot } from "react-icons/fa6";
-import { info } from "console";
 
 type Props = {
   name?: string;

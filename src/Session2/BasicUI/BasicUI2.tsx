@@ -1,7 +1,5 @@
-import React, { ReactElement } from "react";
+// import React from "react";
 import styles from "./BasicUI2.module.css";
-import { AiFillStar } from "react-icons/ai";
-import { url } from "inspector";
 
 type Props = {
   title?: string;

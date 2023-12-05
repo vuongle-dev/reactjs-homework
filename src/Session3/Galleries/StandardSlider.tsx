@@ -7,9 +7,9 @@ type Props = {
 };
 
 const previousIndex = (index: number, length: number) =>
-  index == 0 ? length - 1 : index - 1;
+  index === 0 ? length - 1 : index - 1;
 const forwardIndex = (index: number, length: number) =>
-  index == length - 1 ? 0 : index + 1;
+  index === length - 1 ? 0 : index + 1;
 
 export default function StandardSlider({ images }: Props) {
   const [currentImage, setCurrentImage] = useState(0);
@@ -43,7 +43,7 @@ export default function StandardSlider({ images }: Props) {
             <div
               key={index}
               className={`${styles.navigation} ${
-                index == currentImage && styles.currentNavigation
+                index === currentImage && styles.currentNavigation
               }`}
               onClick={() => {
                 setCurrentImage(index);

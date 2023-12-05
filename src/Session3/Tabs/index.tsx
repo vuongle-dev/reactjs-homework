@@ -1,4 +1,4 @@
-import React from "react";
+// import React from "react";
 import styles from "./Tabs.module.css";
 import ButtonTabs from "./ButtonTabs";
 import {
@@ -11,7 +11,7 @@ import IconTabs from "./IconTabs";
 import TextTabs from "./TextTabs";
 import VerticalButtons from "./VerticalButtons";
 
-type Props = {};
+// type Props = {};
 const data = [
   {
     title: "LET'S TALK TABS",
@@ -43,7 +43,7 @@ const data = [
   },
 ];
 
-export default function TabModules({}: Props) {
+export default function TabModules() {
   return (
     <div className={styles.TabModules}>
       <div className={styles.TabModulesContainer}>

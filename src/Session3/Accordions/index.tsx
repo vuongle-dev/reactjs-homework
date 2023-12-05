@@ -1,4 +1,4 @@
-import React from "react";
+// import React from "react";
 import styles from "./Accordions.module.css";
 import ButtonAccordions, { ButtonAccordionsMultiple } from "./ButtonAccordions";
 import {
@@ -9,7 +9,7 @@ import {
 } from "react-icons/tfi";
 import TextAccordions, { TextAccordionsMultiple } from "./TextAccorditions";
 
-type Props = {};
+// type Props = {};
 const data = [
   {
     title: "LET'S TALK TABS",
@@ -41,7 +41,7 @@ const data = [
   },
 ];
 
-export default function AccordionModules({}: Props) {
+export default function AccordionModules() {
   return (
     <div className={styles.AccordionModules}>
       <div className={styles.AccordionModulesContainer}>

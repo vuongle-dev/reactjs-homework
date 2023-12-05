@@ -1,8 +1,6 @@
 import React, { ReactElement, useState } from "react";
-import ReactDomServer from "react-dom/server";
 import styles from "./RateButton.module.css";
 import { AiFillStar } from "react-icons/ai";
-import { url } from "inspector";
 
 type Props = {
   stars?: number;

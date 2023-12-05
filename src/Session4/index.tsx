@@ -8,7 +8,7 @@ import MultipleChoice from "./MultipleChoice";
 import FillInTheBlanks from "./FillInTheBlanks";
 import ArrangeAnswers from "./ArrangeAnswers";
 
-type Props = {};
+// type Props = {};
 
 const schema = yup
   .object({
@@ -60,13 +60,9 @@ const questionlist = [
     ],
   },
 ];
-export default function Quiz({}: Props) {
+export default function Quiz() {
   const [answerValidate, setAnswerValidate] = useState(<></>);
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm({
+  const { register, handleSubmit } = useForm({
     resolver: yupResolver(schema),
   });
   const onSubmit = (data: any) => {
@@ -95,7 +91,7 @@ export default function Quiz({}: Props) {
     <form className={styles.Quiz} onSubmit={handleSubmit(onSubmit)}>
       {questionlist.map((item, index) => {
         let question = <></>;
-        item.questiontype == "onechoice"
+        item.questiontype === "onechoice"
           ? (question = (
               <OneChoice
                 key={index}
@@ -105,7 +101,7 @@ export default function Quiz({}: Props) {
                 register={register}
               />
             ))
-          : item.questiontype == "multiplechoice"
+          : item.questiontype === "multiplechoice"
           ? (question = (
               <MultipleChoice
                 key={index}
@@ -115,7 +111,7 @@ export default function Quiz({}: Props) {
                 register={register}
               />
             ))
-          : item.questiontype == "fillintheblanks"
+          : item.questiontype === "fillintheblanks"
           ? (question = (
               <FillInTheBlanks
                 key={index}

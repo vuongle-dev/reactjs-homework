@@ -7,9 +7,9 @@ type Props = {
 };
 
 const previousIndex = (index: number, length: number) =>
-  index == 0 ? length - 1 : index - 1;
+  index === 0 ? length - 1 : index - 1;
 const forwardIndex = (index: number, length: number) =>
-  index == length - 1 ? 0 : index + 1;
+  index === length - 1 ? 0 : index + 1;
 
 export default function SliderThumbnail({ images }: Props) {
   const [currentImage, setCurrentImage] = useState(0);
@@ -31,7 +31,7 @@ export default function SliderThumbnail({ images }: Props) {
           <li
             key={index}
             className={`${styles.slideitem} ${
-              index == currentImage && styles.currentThumbnail
+              index === currentImage && styles.currentThumbnail
             }`}
           >
             <img alt={"img-" + index} src={item} />
@@ -59,7 +59,7 @@ export default function SliderThumbnail({ images }: Props) {
           <li
             key={index}
             className={`${styles.thumbnail} ${
-              index == currentImage && styles.currentThumbnail
+              index === currentImage && styles.currentThumbnail
             }`}
             onClick={() => {
               setCurrentImage(index);

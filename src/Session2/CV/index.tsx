@@ -10,9 +10,8 @@ import {
 } from "react-icons/md";
 import { FaFacebookF, FaGithub } from "react-icons/fa";
 import { FaPersonArrowUpFromLine } from "react-icons/fa6";
-import { type } from "os";
 
-type Props = {};
+// type Props = {};
 
 const RandomColor = () => {
   return (
@@ -68,11 +67,11 @@ const TabList = ({ tabs }: TabListProps) => {
           <div
             key={index}
             className={`${styles.tab} ${
-              index == currentTab && styles.currentTab
+              index === currentTab && styles.currentTab
             }`}
             onClick={() => setCurrentTab(index)}
           >
-            {index == currentTab && <div id={styles.currentTabBackground} />}
+            {index === currentTab && <div id={styles.currentTabBackground} />}
             <p>{item.name}</p>
           </div>
         ))}
@@ -154,14 +153,14 @@ const LeftSidebar = ({ avatar = "Day03/avatar.jpg" }: { avatar?: string }) => {
   );
 };
 
-const RightSidebar = ({}) => {
+const RightSidebar = () => {
   return (
     <div className={styles.RightSidebar}>
       <div style={{ width: "100%" }}>content</div>
     </div>
   );
 };
-export default function CV({}: Props) {
+export default function CV() {
   return (
     <div className={styles.CV}>
       <LeftSidebar />

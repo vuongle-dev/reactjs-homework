@@ -1,11 +1,11 @@
-import React, { useEffect, useState } from "react";
-import styles from "./Supplier.module.css";
+import React from "react";
+// import styles from "./Supplier.module.css";
 
 import { Form, Input } from "antd";
 import type { ColumnsType } from "antd/es/table";
 import TextArea from "antd/es/input/TextArea";
 import SubjectTemplate from "../Components/SubjectTemplate";
-type Props = {};
+// type Props = {};
 
 interface addschemaInput {
   name: string;
@@ -86,9 +86,9 @@ interface SupplierType {
 }
 
 const Supplierant = () => {
-  const [refresh, setRefresh] = useState(false);
-  const [currentId, setCurrentId] = useState<number | null>(null);
-  const [patchPopup, setPatchPopup] = useState(false);
+  // const [refresh, setRefresh] = useState(false);
+  // const [currentId, setCurrentId] = useState<number | null>(null);
+  // const [patchPopup, setPatchPopup] = useState(false);
   const defaultColumns: ColumnsType<SupplierType> = [
     {
       title: "ID",

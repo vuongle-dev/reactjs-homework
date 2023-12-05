@@ -1,7 +1,6 @@
 import React, { ReactElement } from "react";
 import styles from "./BlockUI6.module.css";
 import { FaShoppingCart } from "react-icons/fa";
-import { FaLocationDot } from "react-icons/fa6";
 
 type Props = {
   productname?: string;

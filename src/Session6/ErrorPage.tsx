@@ -1,11 +1,11 @@
 import { Button, Result } from "antd";
-import { relative } from "path";
-import React from "react";
+// import { relative } from "path";
+// import React from "react";
 import { useNavigate, useRouteError } from "react-router-dom";
 
-type Props = {};
+// type Props = {};
 
-export default function ErrorPage({}: Props) {
+export default function ErrorPage() {
   const error: any = useRouteError();
   const navigate = useNavigate();
   return (

@@ -1,8 +1,8 @@
-import React, { BaseSyntheticEvent, ReactEventHandler } from "react";
+import React, { BaseSyntheticEvent } from "react";
 import styles from "./ArrangeAnswers.module.css";
 import { AiOutlineMore } from "react-icons/ai";
 
-type Props = {};
+// type Props = {};
 
 type DnDState = {
   draggedFrom: number;

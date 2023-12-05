@@ -1,4 +1,4 @@
-import React, { ReactElement } from "react";
+// import React, { ReactElement } from "react";
 import styles from "./BlockUI7.module.css";
 import { Reviewstars } from "../BasicUI/BasicUI2";
 

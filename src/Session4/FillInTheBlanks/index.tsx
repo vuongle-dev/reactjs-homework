@@ -1,13 +1,13 @@
 import React from "react";
 import styles from "./FillInTheBlanks.module.css";
-import * as yup from "yup";
+// import * as yup from "yup";
 
-type Props = {};
+// type Props = {};
 
-type AnswerProps = {
-  answer: string;
-  icon?: React.ReactElement;
-};
+// type AnswerProps = {
+//   answer: string;
+//   icon?: React.ReactElement;
+// };
 
 const FillInTheBlanks = ({
   title,
@@ -22,7 +22,7 @@ const FillInTheBlanks = ({
   questionnumber: string;
   register: any;
 }) => {
-  const [pick, setPick] = React.useState<number[]>([]);
+  // const [pick, setPick] = React.useState<number[]>([]);
   const processedText = text?.split("___");
   return (
     <div className={styles.answerPick} style={style}>
@@ -33,7 +33,7 @@ const FillInTheBlanks = ({
             processedText.map((answer, index) => (
               <React.Fragment key={index}>
                 {answer}
-                {index != processedText.length - 1 && (
+                {index !== processedText.length - 1 && (
                   <input
                     type="text"
                     {...register(questionnumber + "[" + index + "]")}

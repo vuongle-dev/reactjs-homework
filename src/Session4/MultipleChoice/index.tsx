@@ -1,13 +1,13 @@
 import React from "react";
 import styles from "./MultipleChoice.module.css";
-import * as yup from "yup";
+// import * as yup from "yup";
 
-type Props = {};
+// type Props = {};
 
-type AnswerProps = {
-  answer: string;
-  icon?: React.ReactElement;
-};
+// type AnswerProps = {
+//   answer: string;
+//   icon?: React.ReactElement;
+// };
 
 const MultipleChoice = ({
   title,
@@ -38,7 +38,7 @@ const MultipleChoice = ({
                 }`}
                 onClick={() => {
                   pick.includes(index)
-                    ? setPick((pick) => pick.filter((i) => i != index))
+                    ? setPick((pick) => pick.filter((i) => i !== index))
                     : setPick((pick) => [...pick, index]);
                 }}
               >

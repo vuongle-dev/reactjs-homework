@@ -1,8 +1,7 @@
-import { Button, Flex, Form, Space, message } from "antd";
+import { Button, Flex, Form, Space } from "antd";
 import Title from "antd/es/typography/Title";
 import React from "react";
 import useAdd from "../hooks/useAdd";
-import { onlineManager } from "react-query";
 
 type Props = {
   subject: string;
@@ -18,7 +17,7 @@ export default function AddSubject({ subject, currentform, title }: Props) {
     query.mutate(data);
   };
   React.useEffect(() => {
-    query.isSuccess && addSubject.resetFields();
+    query.isSuccess && addSubject.resetFields(); // eslint-disable-next-line
   }, [query]);
   return (
     <Flex vertical>

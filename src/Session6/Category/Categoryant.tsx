@@ -2,9 +2,9 @@ import React from "react";
 import { Form, Input } from "antd";
 import type { ColumnsType } from "antd/es/table";
 import TextArea from "antd/es/input/TextArea";
-import useTableColumn from "../hooks/useTableColumns";
+// import useTableColumn from "../hooks/useTableColumns";
 import SubjectTemplate from "../Components/SubjectTemplate";
-type Props = {};
+// type Props = {};
 
 interface addschemaInput {
   name: string;
@@ -81,7 +81,7 @@ const Categoryant = () => {
       key: "description",
     },
   ];
-  const [categoryColumn] = useTableColumn("categories", defaultColumns);
+  // const [categoryColumn] = useTableColumn("categories", defaultColumns);
 
   return (
     <SubjectTemplate

@@ -10,7 +10,7 @@ type Props = {
 const AnimateButton = ({ icon, activeicon = icon, text }: Props) => {
   const [active, setActive] = useState<"active" | "inactive">("inactive");
   const Click = () => {
-    active == "active" ? setActive("inactive") : setActive("active");
+    active === "active" ? setActive("inactive") : setActive("active");
   };
   if (active === "inactive")
     return (

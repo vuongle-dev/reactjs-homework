@@ -1,15 +1,14 @@
 import React, { useState } from "react";
-import styles from "./Login.module.css";
-import axiosClient from "../config/axiosClient";
-import { Button, Form, Input, Modal, message } from "antd";
+// import styles from "./Login.module.css";
+import { Button, Form, Input, Modal } from "antd";
 import useAuth from "../hooks/useAuth";
 
-type Props = { setIsLoggedIn: (data: any) => void; messageApi: any };
+// type Props = { setIsLoggedIn: (data: any) => void; messageApi: any };
 
-interface loginFormInput {
-  username: string;
-  password: string;
-}
+// interface loginFormInput {
+//   username: string;
+//   password: string;
+// }
 
 export default function Loginant() {
   const login = useAuth((state) => state.login);

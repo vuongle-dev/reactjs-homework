@@ -30,7 +30,7 @@ export default function LightboxGrid({ images }: Props) {
       <div
         className={styles.popupOverlay}
         style={
-          isPopupOpen == false
+          isPopupOpen === false
             ? { visibility: "hidden", opacity: "0" }
             : { visibility: "visible", opacity: "1" }
         }

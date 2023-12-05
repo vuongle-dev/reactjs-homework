@@ -19,7 +19,7 @@ const VerticalButtons = ({ tablist }: TabListProps) => {
           <div
             key={index}
             className={`${styles.Tab} ${
-              index == currentTab ? styles.currentTab : styles.inactiveTab
+              index === currentTab ? styles.currentTab : styles.inactiveTab
             }`}
             onClick={() => SetCurrentTab(index)}
           >

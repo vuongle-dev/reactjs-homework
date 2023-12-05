@@ -1,9 +1,9 @@
-import React from "react";
-import styles from "./Networking.module.css";
+// import React from "react";
+// import styles from "./Networking.module.css";
 // import Login, { Button } from "./Login";
 // import Category from "./Category";
 // import ButtonTabs from "../Session3/Tabs/ButtonTabs";
-import { Layout, Menu, theme } from "antd";
+import { Alert, Layout, Menu, theme } from "antd";
 
 import { Link, Outlet } from "react-router-dom";
 import Sider from "antd/es/layout/Sider";
@@ -17,20 +17,33 @@ import {
 } from "react-icons/md";
 import { Content } from "antd/es/layout/layout";
 
+export const Notice = () => {
+  return (
+    <Alert
+      message="Informational Notes"
+      description={
+        <p>
+          You can't delete custormers, employees those are currently having
+          orders, or categories with products.
+          <br />
+          Try to delete existing relative orders / products by using "Filter"
+          and "Delete selected items" function first
+        </p>
+      }
+      type="info"
+      showIcon
+    />
+  );
+};
+
 export default function OnlineShop() {
   const {
     token: { colorBgContainer },
   } = theme.useToken();
 
   return (
-    <Layout
-    // style={{background: colorBgContainer}}
-    >
-      <Sider
-        // style={{ background: colorBgContainer }}
-        collapsible
-        theme="light"
-      >
+    <Layout style={{ background: colorBgContainer }}>
+      <Sider style={{ background: colorBgContainer }} collapsible theme="light">
         <Menu
           // theme="dark"
           mode="inline"

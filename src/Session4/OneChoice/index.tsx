@@ -1,12 +1,12 @@
 import React from "react";
 import styles from "./OneChoice.module.css";
 
-type Props = {};
+// type Props = {};
 
-type AnswerProps = {
-  answer: string;
-  icon?: React.ReactElement;
-};
+// type AnswerProps = {
+//   answer: string;
+//   icon?: React.ReactElement;
+// };
 
 const OneChoice = ({
   questionnumber,
@@ -46,7 +46,7 @@ const OneChoice = ({
                 type="radio"
                 value={answer}
                 id={questionnumber + "-" + index}
-                defaultChecked={index == pick}
+                defaultChecked={index === pick}
               />
             </div>
           ))}

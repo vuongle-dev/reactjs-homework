@@ -11,7 +11,7 @@ import {
   AiOutlineTwitter,
 } from "react-icons/ai";
 import { FaDrupal, FaFacebookF, FaPinterest } from "react-icons/fa";
-import OnlineShop from "./Session6";
+import OnlineShop, { Notice } from "./Session6";
 import ErrorPage from "./Session6/ErrorPage";
 import Categoryant from "./Session6/Category/Categoryant";
 import Supplierant from "./Session6/Supplier";
@@ -39,7 +39,7 @@ import Galleries from "./Session3/Galleries";
 import LoveButton from "./Session3/LoveButton";
 import FigmaApp from "./Session3/FigmaApp";
 import Quiz from "./Session4";
-import App from "./App";
+import App, { Welcome } from "./App";
 import useAuth from "./Session6/hooks/useAuth";
 
 export default function Router() {
@@ -50,9 +50,17 @@ export default function Router() {
       errorElement: <ErrorPage />,
       children: [
         {
+          path: "/",
+          element: <Welcome />,
+        },
+        {
           path: "onlineshop",
           element: <OnlineShop />,
           children: [
+            {
+              path: "/onlineshop",
+              element: <Notice />,
+            },
             {
               path: "category",
               element: <Categoryant />,

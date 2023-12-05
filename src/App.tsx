@@ -1,12 +1,13 @@
 import React from "react";
 import "./App.css";
-import { ConfigProvider, Layout, Menu, MenuProps, theme } from "antd";
+import { Button, ConfigProvider, Layout, Menu, MenuProps, Result } from "antd";
 import { Content, Header } from "antd/es/layout/layout";
 import locale from "antd/locale/vi_VN";
 import { Outlet, Link } from "react-router-dom";
 import Loginant from "./Session6/Login/Loginant";
 import useAuth from "./Session6/hooks/useAuth";
 import Logout from "./Session6/Login/Logout";
+import { GiDoctorFace } from "react-icons/gi";
 
 const HeaderContent = () => {
   const loggedInUser = useAuth((state) => state.loggedInUser);
@@ -17,10 +18,24 @@ const HeaderContent = () => {
   );
 };
 
+export const Welcome = () => {
+  return (
+    <Result
+      icon={<GiDoctorFace />}
+      title="Hi! Welcome to Le Minh Vuong's ReactJS Homework!"
+      extra={
+        <Button type="primary">
+          <Link to="/onlineshop">Go to Online Shop</Link>
+        </Button>
+      }
+    />
+  );
+};
+
 export default function App() {
-  const {
-    token: { colorBgContainer },
-  } = theme.useToken();
+  // const {
+  //   token: { colorBgContainer },
+  // } = theme.useToken();
   const [current, setCurrent] = React.useState("mail");
 
   const onClick: MenuProps["onClick"] = (e) => {
