@@ -11,14 +11,14 @@ import {
   AiOutlineTwitter,
 } from "react-icons/ai";
 import { FaDrupal, FaFacebookF, FaPinterest } from "react-icons/fa";
-import OnlineShop, { Notice } from "./Session6";
-import ErrorPage from "./Session6/ErrorPage";
-import Categoryant from "./Session6/Category/Categoryant";
-import Supplierant from "./Session6/Supplier";
-import Employeeant from "./Session6/Employee";
-import Customerant from "./Session6/Customer";
-import Productant from "./Session6/Product";
-import Orderant from "./Session6/Order";
+import OnlineShop, { Notice } from "./OnlineShop";
+import ErrorPage from "./OnlineShop/ErrorPage";
+import Categoryant from "./OnlineShop/Category/Categoryant";
+import Supplierant from "./OnlineShop/Supplier";
+import Employeeant from "./OnlineShop/Employee";
+import Customerant from "./OnlineShop/Customer";
+import Productant from "./OnlineShop/Product";
+import Orderant from "./OnlineShop/Order";
 import BasicUI1 from "./Session2/BasicUI/BasicUI1";
 import BasicUI2 from "./Session2/BasicUI/BasicUI2";
 import BasicUI3 from "./Session2/BasicUI/BasicUI3";
@@ -40,7 +40,7 @@ import LoveButton from "./Session3/LoveButton";
 import FigmaApp from "./Session3/FigmaApp";
 import Quiz from "./Session4";
 import App, { Welcome } from "./App";
-import useAuth from "./Session6/hooks/useAuth";
+import useAuth from "./OnlineShop/hooks/useAuth";
 
 export default function Router() {
   const router = createBrowserRouter([
