@@ -58,14 +58,16 @@ const usePatchSubject = (
           type: "success",
           content: "Modified successfully",
         });
-      queryClient.setQueryData([subject], (olddata: any) =>
-        olddata
-          ? olddata.map((item: any) => {
-              return item.id === data.id ? data : item;
-            })
-          : olddata
-      );
-      queryClient.setQueryData([subject, variables.id], data);
+      // queryClient.setQueryData([subject], (olddata: any) =>
+      //   olddata
+      //     ? olddata.map((item: any) => {
+      //         return item.id === data.id ? data : item;
+      //       })
+      //     : olddata
+      // );
+      queryClient.invalidateQueries([subject]);
+      queryClient.invalidateQueries([subject, variables.id]);
+      // queryClient.setQueryData([subject, variables.id], data);
       setPatchPopup(false);
       setCurrentId(null);
     },
