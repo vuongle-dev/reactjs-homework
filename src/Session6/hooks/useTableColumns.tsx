@@ -29,7 +29,7 @@ const useTableColumn = (subject: string, column: ColumnsType<any>) => {
             Edit
           </Button>
           <DeleteSubject
-            id={record.id}
+            deleteId={[record.id]}
             subject={subject}
             title={"Are you sure to delete this?"}
           />
@@ -42,7 +42,7 @@ const useTableColumn = (subject: string, column: ColumnsType<any>) => {
   React.useEffect(() => {
     loggedInUser
       ? setCategoryColumn([...column, actionColumn])
-      : setCategoryColumn(column);
+      : setCategoryColumn(column); // eslint-disable-next-line
   }, [loggedInUser]);
   return [categoryColumn];
 };

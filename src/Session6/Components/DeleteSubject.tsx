@@ -1,13 +1,22 @@
 import React from "react";
 import useDelete from "../hooks/useDelete";
-import { Button, Popconfirm, message } from "antd";
+import { Button, ButtonProps, Popconfirm, message } from "antd";
 import { AiOutlineDelete } from "react-icons/ai";
 import usePatchSubject from "../hooks/usePatch";
 // import useGetSubjects from "../hooks/useGet";
 
-type Props = { id: any; subject: string; title?: string };
+interface Props extends ButtonProps {
+  deleteId: any[];
+  subject: string;
+  title?: string;
+}
 
-export default function DeleteSubject({ id, subject, title }: Props) {
+export default function DeleteSubject({
+  deleteId,
+  subject,
+  title,
+  ...props
+}: Props) {
   const confirmDelete = useDelete(subject);
   // const deleteOrder = useDelete("orders");
   // const orders = useGetSubjects("orders");
@@ -21,6 +30,18 @@ export default function DeleteSubject({ id, subject, title }: Props) {
     } finally {
       confirmDelete.mutate(id);
     }
+  };
+  const DeleteHandle = () => {
+    deleteId.forEach((value) => {
+      subject === "orders"
+        ? EmptyOrderDetail({ orderDetails: [] }, value)
+        : confirmDelete.mutate(value);
+    });
+    confirmDelete.isLoading &&
+      message.loading({
+        key: "deletesubject",
+        content: "Loading",
+      });
   };
   // hàm delete product mà đang bug
   // const emptyOrder = async (id: any) => {
@@ -47,27 +68,27 @@ export default function DeleteSubject({ id, subject, title }: Props) {
   return (
     <Popconfirm
       placement="topRight"
-      title="Delete"
+      title={title}
       description={
-        subject === "orders"
-          ? "Are you sure to delete this? This will empty order detail first"
-          : "Are you sure to delete this?"
+        deleteId.length <= 1
+          ? subject === "orders"
+            ? "Are you sure to delete this? This will empty order detail first"
+            : "Are you sure to delete this?"
+          : subject === "orders"
+          ? "Are you sure to delete those? This will empty order detail first"
+          : "Are you sure to delete those?"
       }
-      onConfirm={() => {
-        subject === "orders"
-          ? EmptyOrderDetail({ orderDetails: [] }, id)
-          : confirmDelete.mutate(id);
-        confirmDelete.isLoading &&
-          message.loading({
-            key: "deletesubject",
-            content: "Loading",
-          });
-      }}
+      onConfirm={DeleteHandle}
       okText="Yes"
       cancelText="No"
     >
-      <Button icon={<AiOutlineDelete />} danger>
-        Delete
+      <Button
+        loading={confirmDelete.isLoading}
+        icon={<AiOutlineDelete />}
+        danger
+        {...props}
+      >
+        {deleteId.length === 1 ? "Delete" : "Delete selected items"}
       </Button>
     </Popconfirm>
   );
