@@ -21,7 +21,7 @@ const HeaderContent = () => {
 export const Welcome = () => {
   return (
     <Result
-      icon={<GiDoctorFace />}
+      icon={<GiDoctorFace style={{ fontSize: 50 }} />}
       title="Hi! Welcome to Le Minh Vuong's ReactJS Homework!"
       extra={
         <Button type="primary">
@@ -36,8 +36,7 @@ export default function App() {
   // const {
   //   token: { colorBgContainer },
   // } = theme.useToken();
-  const [current, setCurrent] = React.useState("mail");
-
+  const [current, setCurrent] = React.useState("home");
   const onClick: MenuProps["onClick"] = (e) => {
     setCurrent(e.key);
   };
@@ -61,6 +60,10 @@ export default function App() {
             items={[
               {
                 key: "home",
+                label: <Link to="/">Home</Link>,
+              },
+              {
+                key: "onlineshop",
                 label: <Link to="/onlineshop">Online Shop</Link>,
               },
               {
