@@ -122,38 +122,30 @@ interface CustomerType extends addschemaInput {
 const Customerant = () => {
   const defaultColumns: ColumnsType<CustomerType> = [
     {
-      title: "ID",
-      dataIndex: "id",
-      key: "id",
-      align: "right",
-      defaultSortOrder: "descend",
-      sorter: (a, b) => a.id - b.id,
-      width: 80,
-    },
-    {
-      title: "Customer First Name",
-      dataIndex: "firstName",
-      key: "firstName",
-    },
-    {
-      title: "Customer Last Name",
-      dataIndex: "lastName",
-      key: "lastName",
+      title: "Customer Name",
+      // dataIndex: "firstName",
+      key: "Name",
+      render: (value, record, index) => {
+        return record.firstName + " " + record.lastName;
+      },
     },
     {
       title: "Email",
       dataIndex: "email",
       key: "email",
+      responsive: ["lg"],
     },
     {
       title: "Phone Number",
       dataIndex: "phoneNumber",
       key: "phoneNumber",
+      responsive: ["sm"],
     },
     {
       title: "Address",
       dataIndex: "address",
       key: "address",
+      responsive: ["md"],
     },
     {
       title: "Birthday",
@@ -164,6 +156,7 @@ const Customerant = () => {
           <>{record.birthday && dayjs(record.birthday).format(dateFormat)}</>
         );
       },
+      responsive: ["xl"],
     },
   ];
 

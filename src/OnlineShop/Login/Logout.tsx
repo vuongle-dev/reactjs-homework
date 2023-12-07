@@ -1,6 +1,7 @@
 // import React from "react";
 import useAuth from "../hooks/useAuth";
-import { Button, Flex, Space } from "antd";
+import { Button, Flex } from "antd";
+import styles from "./Logout.module.css";
 
 // type Props = {};
 
@@ -9,11 +10,11 @@ export default function Logout() {
   const role = useAuth((state) => state.loggedInUser?.roles[0].name);
   const logout = useAuth((state) => state.logout);
   return (
-    <Space size={20} style={{ height: "100%" }}>
-      <Flex vertical style={{ lineHeight: "initial", color: "#fff" }}>
+    <Flex gap={20} style={{ height: "100%" }} align="center">
+      <Flex vertical className={styles.userinfo}>
         <strong style={{ fontWeight: 600 }}>{email}</strong> <span>{role}</span>
       </Flex>
       <Button onClick={() => logout()}>Logout</Button>
-    </Space>
+    </Flex>
   );
 }

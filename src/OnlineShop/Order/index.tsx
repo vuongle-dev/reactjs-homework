@@ -11,7 +11,6 @@ import {
   Popconfirm,
   Radio,
   Select,
-  Space,
   Spin,
   Table,
 } from "antd";
@@ -64,7 +63,7 @@ interface addschemaInput {
   paymentType: string;
   customer: getpeople;
   employee: getpeople;
-  orderDetails: order[];
+  orderDetails: any[];
 }
 type EditableTableProps = Parameters<typeof Table>[0];
 type ColumnTypes = Exclude<EditableTableProps["columns"], undefined>;
@@ -135,7 +134,7 @@ const ProductForm = ({
         label="Product"
         rules={[
           { type: "number" },
-          { required: true, message: "Employee is required" },
+          { required: true, message: "Product is required" },
         ]}
       >
         <Select
@@ -181,7 +180,10 @@ const ProductForm = ({
           max={90}
         ></InputNumber>
       </Form.Item>
-      <Form.Item wrapperCol={{ offset: 6 }}>
+      <Form.Item
+        wrapperCol={{ sm: { offset: 6 } }}
+        style={{ overflow: "hidden" }}
+      >
         <Button onClick={() => productForm.submit()}>
           Add Product to Order
         </Button>
@@ -308,14 +310,14 @@ const OrderForm = ({
 
   const productColumn: (ColumnTypes[number] & {
     editable?: boolean;
-    dataIndex: string;
+    dataIndex?: string;
   })[] = [
     {
       title: "Quantity",
       dataIndex: "quantity",
       key: "quantity",
       align: "right",
-      width: 50,
+      width: 20,
       editable: true,
     },
     {
@@ -334,6 +336,7 @@ const OrderForm = ({
       render: (_: any, record: any) => {
         return <>${record.price}</>;
       },
+      responsive: ["lg"],
     },
     {
       title: "Discount",
@@ -343,31 +346,37 @@ const OrderForm = ({
       render: (_: any, record: any) => {
         return <>{record.discount}%</>;
       },
+      responsive: ["lg"],
+    },
+    {
+      title: "Total Price",
+      key: "total",
+      align: "right",
+      render: (_: any, record: any) => {
+        return <>${record.price * (100 - record.discount) * record.quantity}</>;
+      },
+      responsive: ["md"],
     },
     {
       title: "",
       dataIndex: "actions",
       key: "actions",
       fixed: "right",
-      width: 80,
+      width: 40,
       render: (_: any, record: any, index: number) => {
         return (
-          <Space>
-            <Popconfirm
-              placement="topRight"
-              title="Delete Product"
-              description="Are you sure to delete this product?"
-              onConfirm={() => {
-                deleteProduct(index);
-              }}
-              okText="Yes"
-              cancelText="No"
-            >
-              <Button icon={<AiOutlineDelete />} danger>
-                Delete
-              </Button>
-            </Popconfirm>
-          </Space>
+          <Popconfirm
+            placement="topRight"
+            title="Delete Product"
+            description="Are you sure to delete this product?"
+            onConfirm={() => {
+              deleteProduct(index);
+            }}
+            okText="Yes"
+            cancelText="No"
+          >
+            <Button icon={<AiOutlineDelete />} danger />
+          </Popconfirm>
         );
       },
     },
@@ -570,6 +579,7 @@ const OrderForm = ({
             columns={columns as ColumnTypes}
             dataSource={orderDetails}
             pagination={false}
+            style={{ overflow: "hidden" }}
           />
         )}
       </Form>
@@ -646,15 +656,6 @@ const Orderant = () => {
   ];
   const defaultColumns: ColumnsType<OrderType> = [
     {
-      title: "ID",
-      dataIndex: "id",
-      key: "id",
-      align: "right",
-      width: 80,
-      defaultSortOrder: "descend",
-      sorter: (a, b) => a.id - b.id,
-    },
-    {
       title: "Created Date",
       dataIndex: "createdDate",
       key: "createdDate",
@@ -677,11 +678,13 @@ const Orderant = () => {
           </>
         );
       },
+      responsive: ["xxl"],
     },
     {
       title: "Shipping Address",
       dataIndex: "shippingAddress",
       key: "shippingAddress",
+      responsive: ["lg"],
     },
     {
       title: "Shipping City",
@@ -690,6 +693,7 @@ const Orderant = () => {
       filterSearch: true,
       filters: shippingCityFilter,
       onFilter: (value, record) => record.shippingCity === value,
+      responsive: ["lg"],
     },
     {
       title: "Payment Type",
@@ -697,6 +701,7 @@ const Orderant = () => {
       key: "paymentType",
       filters: paymentTypeFilter,
       onFilter: (value, record) => record.paymentType === value,
+      responsive: ["xl"],
     },
     {
       title: "Status",
@@ -704,6 +709,7 @@ const Orderant = () => {
       key: "status",
       filters: statusFilter,
       onFilter: (value, record) => record.status === value,
+      responsive: ["sm"],
     },
     {
       title: "Customer",
@@ -717,6 +723,7 @@ const Orderant = () => {
           <>{record.customer.firstName + " " + record.customer.lastName}</>
         );
       },
+      responsive: ["xl"],
     },
     {
       title: "Employee",
@@ -730,6 +737,7 @@ const Orderant = () => {
           <>{record.employee.firstName + " " + record.employee.lastName}</>
         );
       },
+      responsive: ["xl"],
     },
     {
       title: "Order",
@@ -746,6 +754,25 @@ const Orderant = () => {
           </ul>
         );
       },
+      responsive: ["md"],
+    },
+    {
+      title: "Total Order",
+      key: "totalOrder",
+      align: "right",
+      render: (text: any, record: OrderType, index: number) => {
+        return (
+          <>
+            $
+            {record.orderDetails.reduce((total, value) => {
+              return (
+                total + value.price * (100 - value.discount) * value.quantity
+              );
+            }, 0)}
+          </>
+        );
+      },
+      responsive: ["md"],
     },
   ];
 

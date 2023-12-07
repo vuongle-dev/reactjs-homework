@@ -11,11 +11,7 @@ import { GiDoctorFace } from "react-icons/gi";
 
 const HeaderContent = () => {
   const loggedInUser = useAuth((state) => state.loggedInUser);
-  return (
-    <div style={{ marginLeft: "auto" }}>
-      {!loggedInUser ? <Loginant /> : <Logout />}
-    </div>
-  );
+  return !loggedInUser ? <Loginant /> : <Logout />;
 };
 
 export const Welcome = () => {
@@ -53,7 +49,7 @@ export default function App() {
         >
           <Menu
             theme="dark"
-            style={{ width: "100%" }}
+            style={{ width: "90%" }}
             onClick={onClick}
             selectedKeys={[current]}
             mode="horizontal"

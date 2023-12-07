@@ -1,5 +1,5 @@
-// import React from "react";
-// import styles from "./Networking.module.css";
+import React from "react";
+import styles from "./OnlineShop.module.css";
 // import Login, { Button } from "./Login";
 // import Category from "./Category";
 // import ButtonTabs from "../Session3/Tabs/ButtonTabs";
@@ -40,11 +40,31 @@ export default function OnlineShop() {
   const {
     token: { colorBgContainer },
   } = theme.useToken();
+  const [sideCollapsed, setSideCollapsed] = React.useState(false);
 
   return (
     <Layout style={{ background: colorBgContainer }}>
-      <Sider style={{ background: colorBgContainer }} collapsible theme="light">
+      <Sider
+        style={{
+          background: "none",
+          overflow: "auto",
+          height: "100vh",
+          position: "fixed",
+          left: 0,
+          top: 0,
+          bottom: 0,
+        }}
+        collapsible
+        collapsed={sideCollapsed}
+        onCollapse={(collapsed) => setSideCollapsed(collapsed)}
+        theme="light"
+        width={170}
+        collapsedWidth={50}
+        // defaultCollapsed
+        breakpoint="lg"
+      >
         <Menu
+          style={{ marginTop: 64 }}
           // theme="dark"
           mode="inline"
           items={[
@@ -81,7 +101,10 @@ export default function OnlineShop() {
           ]}
         />
       </Sider>
-      <Content>
+      <Content
+        className={styles.content}
+        style={sideCollapsed ? { marginLeft: 50 } : { marginLeft: 170 }}
+      >
         <div style={{ padding: 10 }}>
           <Outlet />
         </div>

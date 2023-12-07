@@ -9,12 +9,14 @@ interface Props extends ButtonProps {
   deleteId: any[];
   subject: string;
   title?: string;
+  collapsed?: boolean;
 }
 
 export default function DeleteSubject({
   deleteId,
   subject,
   title,
+  collapsed,
   ...props
 }: Props) {
   const confirmDelete = useDelete(subject);
@@ -88,7 +90,11 @@ export default function DeleteSubject({
         danger
         {...props}
       >
-        {deleteId.length === 1 ? "Delete" : "Delete selected items"}
+        {collapsed
+          ? null
+          : deleteId.length === 1
+          ? "Delete"
+          : "Delete selected items"}
       </Button>
     </Popconfirm>
   );

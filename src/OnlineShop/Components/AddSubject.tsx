@@ -27,7 +27,7 @@ export default function AddSubject({ subject, currentform, title }: Props) {
         onFinish: submitAddSubject,
       })}
 
-      <Form.Item wrapperCol={{ offset: 6 }}>
+      <Form.Item wrapperCol={{ sm: { offset: 6 } }}>
         <Space>
           <Button type="primary" onClick={() => addSubject.submit()}>
             Add

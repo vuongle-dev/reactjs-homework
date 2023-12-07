@@ -156,15 +156,6 @@ const Productant = () => {
 
   const defaultColumns: ColumnsType<ProductType> = [
     {
-      title: "ID",
-      dataIndex: "id",
-      key: "id",
-      align: "right",
-      defaultSortOrder: "descend",
-      sorter: (a, b) => a.id - b.id,
-      width: 80,
-    },
-    {
       title: "Product Name",
       dataIndex: "name",
       key: "name",
@@ -184,6 +175,7 @@ const Productant = () => {
           />
         );
       },
+      responsive: ["md"],
     },
     {
       title: "Discount",
@@ -194,6 +186,7 @@ const Productant = () => {
       render: (text: any, record: ProductType, index: number) => {
         return <>{record.discount}%</>;
       },
+      responsive: ["lg"],
     },
     {
       title: "Stock",
@@ -201,6 +194,7 @@ const Productant = () => {
       key: "stock",
       align: "right",
       sorter: (a, b) => a.stock - b.stock,
+      responsive: ["sm"],
     },
     {
       title: "Category",
@@ -212,6 +206,7 @@ const Productant = () => {
       render: (text: any, record: ProductType, index: number) => {
         return <>{record.category.name}</>;
       },
+      responsive: ["xl"],
     },
     {
       title: "Supplier",
@@ -223,6 +218,7 @@ const Productant = () => {
       render: (text: any, record: ProductType, index: number) => {
         return <>{record.supplier.name}</>;
       },
+      responsive: ["xl"],
     },
   ];
 

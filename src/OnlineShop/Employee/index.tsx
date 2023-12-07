@@ -120,38 +120,30 @@ interface EmployeeType extends addschemaInput {
 const Employeeant = () => {
   const defaultColumns: ColumnsType<EmployeeType> = [
     {
-      title: "ID",
-      dataIndex: "id",
-      key: "id",
-      align: "right",
-      defaultSortOrder: "descend",
-      sorter: (a, b) => a.id - b.id,
-      width: 80,
-    },
-    {
-      title: "Employee First Name",
-      dataIndex: "firstName",
-      key: "firstName",
-    },
-    {
-      title: "Employee Last Name",
-      dataIndex: "lastName",
-      key: "lastName",
+      title: "Employee Name",
+      // dataIndex: "firstName",
+      key: "Name",
+      render: (value, record, index) => {
+        return record.firstName + " " + record.lastName;
+      },
     },
     {
       title: "Email",
       dataIndex: "email",
       key: "email",
+      responsive: ["lg"],
     },
     {
       title: "Phone Number",
       dataIndex: "phoneNumber",
       key: "phoneNumber",
+      responsive: ["sm"],
     },
     {
       title: "Address",
       dataIndex: "address",
       key: "address",
+      responsive: ["md"],
     },
     {
       title: "Birthday",
@@ -162,6 +154,7 @@ const Employeeant = () => {
           <>{record.birthday && dayjs(record.birthday).format(dateFormat)}</>
         );
       },
+      responsive: ["xl"],
     },
   ];
   return (

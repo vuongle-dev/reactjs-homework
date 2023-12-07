@@ -62,15 +62,6 @@ interface CategoryType extends addschemaInput {
 const Categoryant = () => {
   const defaultColumns: ColumnsType<CategoryType> = [
     {
-      title: "ID",
-      dataIndex: "id",
-      key: "id",
-      align: "right",
-      defaultSortOrder: "descend",
-      sorter: (a, b) => a.id - b.id,
-      width: 80,
-    },
-    {
       title: "Category Name",
       dataIndex: "name",
       key: "name",
@@ -79,10 +70,17 @@ const Categoryant = () => {
       title: "Description",
       dataIndex: "description",
       key: "description",
+      responsive: ["sm"],
+      render: (value, record, index) => {
+        return record.description
+          ? `${record.description.slice(100)}${
+              record.description.length > 100 && "..."
+            } `
+          : null;
+      },
     },
   ];
   // const [categoryColumn] = useTableColumn("categories", defaultColumns);
-
   return (
     <SubjectTemplate
       subject="category"

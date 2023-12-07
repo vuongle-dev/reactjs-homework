@@ -1,7 +1,7 @@
-:root {
+/* :root {
     --screenWidth: 375px;
     --screenHeight: 812px;
-}
+} */
 
 .container {
     padding: 40px;
@@ -9,8 +9,8 @@
 }
 
 .mobileFrame {
-    width: var(--screenWidth);
-    height: var(--screenHeight);
+    width: 375px;
+    height: 812px;
 
     border-radius: 20px;
     overflow-x: hidden;
@@ -20,8 +20,8 @@
 
 .navigationContainer {
     background-color: #fff;
-    width: var(--screenWidth);
-    height: var(--screenHeight);
+    width: 375px;
+    height: 812px;
     position: absolute;
     left: 0;
     right: 0;

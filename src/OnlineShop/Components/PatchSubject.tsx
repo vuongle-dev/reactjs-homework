@@ -33,7 +33,7 @@ export default function PatchSubject({ subject, currentform, title }: Props) {
         patchSubject.resetFields();
         setCurrentId(null);
       }}
-      width="70vw"
+      width={window.innerWidth <= 426 ? "90vw" : "70vw"}
       footer=<Row>
         <Col span={6} />
         <Col>

@@ -74,10 +74,13 @@ const useAuth = create<authInterface>()(
               set((state) => ({ access_token: response.data.access_token }));
               set((state) => ({ loggedInUser: response.data.loggedInuser }));
               set((state) => ({ refresh_token: response.data.refresh_token }));
-              console.log("refreshed token");
+              console.log("Refreshed tokens");
             }
           } catch (error: any) {
-            message.error(error.response.data.message);
+            console.log(
+              "Failed to refresh accessToken (Your account might be logged in somewhere): " +
+                error.response.data.message
+            );
           }
         },
       }),

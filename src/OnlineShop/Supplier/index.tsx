@@ -91,15 +91,6 @@ const Supplierant = () => {
   // const [patchPopup, setPatchPopup] = useState(false);
   const defaultColumns: ColumnsType<SupplierType> = [
     {
-      title: "ID",
-      dataIndex: "id",
-      key: "id",
-      align: "right",
-      defaultSortOrder: "descend",
-      sorter: (a, b) => a.id - b.id,
-      width: 80,
-    },
-    {
       title: "Supplier Name",
       dataIndex: "name",
       key: "name",
@@ -108,16 +99,19 @@ const Supplierant = () => {
       title: "Email",
       dataIndex: "email",
       key: "email",
+      responsive: ["lg"],
     },
     {
       title: "Phone Number",
       dataIndex: "phoneNumber",
       key: "phoneNumber",
+      responsive: ["sm"],
     },
     {
       title: "Address",
       dataIndex: "address",
       key: "address",
+      responsive: ["md"],
     },
   ];
   return (
