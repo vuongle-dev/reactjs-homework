@@ -78,11 +78,9 @@ const SupplierForm = ({
     </Form>
   );
 };
-interface SupplierType {
+interface SupplierType extends addschemaInput {
   key: React.Key;
   id: number;
-  name: string;
-  description: string;
 }
 
 const Supplierant = () => {
@@ -112,6 +110,13 @@ const Supplierant = () => {
       dataIndex: "address",
       key: "address",
       responsive: ["md"],
+      render: (value, record, index) => {
+        return record.address
+          ? `${record.address.slice(0, 50)}${
+              record.address.length > 50 ? "..." : ""
+            } `
+          : null;
+      },
     },
   ];
   return (

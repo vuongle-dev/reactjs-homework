@@ -145,6 +145,13 @@ const Customerant = () => {
       title: "Address",
       dataIndex: "address",
       key: "address",
+      render: (value, record, index) => {
+        return record.address
+          ? `${record.address.slice(0, 50)}${
+              record.address.length > 50 ? "..." : ""
+            } `
+          : null;
+      },
       responsive: ["md"],
     },
     {

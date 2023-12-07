@@ -685,6 +685,13 @@ const Orderant = () => {
       dataIndex: "shippingAddress",
       key: "shippingAddress",
       responsive: ["lg"],
+      render: (value, record, index) => {
+        return record.shippingAddress
+          ? `${record.shippingAddress.slice(0, 50)}${
+              record.shippingAddress.length > 50 ? "..." : ""
+            } `
+          : null;
+      },
     },
     {
       title: "Shipping City",

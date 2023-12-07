@@ -144,6 +144,13 @@ const Employeeant = () => {
       dataIndex: "address",
       key: "address",
       responsive: ["md"],
+      render: (value, record, index) => {
+        return record.address
+          ? `${record.address.slice(0, 50)}${
+              record.address.length > 50 ? "..." : ""
+            } `
+          : null;
+      },
     },
     {
       title: "Birthday",
